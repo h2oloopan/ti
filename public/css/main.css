@@ -1,0 +1,25 @@
+.navbar-outer {
+    min-width: 980px;
+}
+
+/* UNIVERSAL */
+.blue {
+    color: #196488;
+}
+
+/* LAYOUT */
+.fake-table {
+
+}
+
+.fake-table > div > span {
+    display: block;
+}
+
+.fake-table > div > span:first-child {
+    float: left;
+}
+
+.fake-table > div > span.info {
+    margin-left: 150px;
+}

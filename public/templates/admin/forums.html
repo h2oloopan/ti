@@ -1,0 +1,53 @@
+<div>
+    <h4>FORUMS</h4>
+    <hr />
+    <form>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width: 20px;"><i class="icon-list"></i></th>
+                    <th style="width: 60px;">Order</th>
+                    <th style="width: 200px;">
+                        Section
+                        <a class="btn-addsection" title="Add new section"><i class="icon-plus"></i></a>
+                    </th>
+                    <th style="width: 200px;">Forum</th>
+                    <th style="width: 200px;">Sub-Forum</th>
+                    <th style="min-width: 120px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            <% _.each(sections, function(section) { %>
+                <tr>
+                    <td></td>
+                    <td><%= section.order %></td>
+                    <td><%- section.name %></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <a class="btn-editsection" data-id="<%= section.id  %>">Edit</a>
+                        |
+                        <a class="btn-deletesection" data-id="<%= section.id %>">Delete</a>
+                    </td>
+                </tr>
+            <% }); %>
+            </tbody>
+        </table>
+    </form>
+        <!-- place holder for editing need -->
+        <table class="table-holder" style="display: none;">
+            <tr class="row-edit row-editsection warning">
+                <td></td>
+                <td><input style="width: 20px;" type="text" value="0" name="order" maxlength="3" /></td>
+                <td><input style="width: 180px;" type="text" placeholder="Section name..." name="name" maxlength="255" /></td>
+                <td></td>
+                <td></td>
+                <td>
+                    <!-- actions -->
+                    <a class="btn-savesection">Save</a>
+                    |
+                    <a class="btn-cancelsection">Cancel</a>
+                </td>
+            </tr>
+        </table>
+</div>
