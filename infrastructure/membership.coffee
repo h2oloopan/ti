@@ -2,6 +2,7 @@ auth = require '../helpers/auth'
 config = require '../config'
 userRepo = require '../repos/userRepo'
 
+
 membership = module.exports =
     repo: userRepo
 
@@ -71,4 +72,12 @@ membership = module.exports =
             user.password = auth.encrypt password
         else
             return cb new Error 'Password is empty'
-        membership.repo.createUser user, cb
+
+        membership.repo.getGroup
+            privilege: config.system.privileges.user
+        , (err, group) ->
+            if err?
+                cb err
+            else
+                user.group_id = group.id
+                membership.repo.createUser user, cb

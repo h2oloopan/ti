@@ -27,6 +27,15 @@ userRepo = module.exports = {
       return cb(err);
     });
   },
+  getGroup: function(query, cb) {
+    return Group.find({
+      where: query
+    }).success(function(group) {
+      return cb(null, group);
+    }).error(function(err) {
+      return cb(err);
+    });
+  },
   createUser: function(user, cb) {
     var err, result;
 

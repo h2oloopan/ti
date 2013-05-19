@@ -18,6 +18,13 @@ userRepo = module.exports =
             cb null, user
         .error (err) ->
             cb err
+    getGroup: (query, cb) ->
+        Group.find
+            where: query
+        .success (group) ->
+            cb null, group
+        .error (err) ->
+            cb err
     createUser: (user, cb) ->
         user = User.build user
         result = user.validate()

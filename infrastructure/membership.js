@@ -90,6 +90,15 @@ membership = module.exports = {
     } else {
       return cb(new Error('Password is empty'));
     }
-    return membership.repo.createUser(user, cb);
+    return membership.repo.getGroup({
+      privilege: config.system.privileges.user
+    }, function(err, group) {
+      if (err != null) {
+        return cb(err);
+      } else {
+        user.group_id = group.id;
+        return membership.repo.createUser(user, cb);
+      }
+    });
   }
 };
