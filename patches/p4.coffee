@@ -1,20 +1,20 @@
-Forum = require '../models/forum'
-Section = require '../models/section'
-mysql = require('../infrastructure/db').mysql
+Group = require '../models/group'
+User = require '../models/user'
+auth = require '../helpers/auth'
+privileges = require('../config').system.privileges
 
 exports.apply = (cb) ->
-    query = 'ALTER TABLE forums ADD CONSTRAINT fk_forums_sections FOREIGN KEY (section_id) REFERENCES sections (id);'
-    Forum.sync
-        force: true
-    .success ->
-        Section.sync
-            force: true
+    Group.create
+        name: 'administrators'
+        privilege: privileges.admin
+    .success (group) ->
+        User.create
+            username: 'span'
+            email: 'i@thepans.me'
+            password: auth.encrypt '123321'
+            group_id: group.id
         .success ->
-            mysql.query(query)
-            .success ->
-                cb null
-            .error (err) ->
-                cb err
+            cb null
         .error (err) ->
             cb err
     .error (err) ->
