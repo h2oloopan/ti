@@ -62,12 +62,17 @@ describe 'membership', ->
 
         it 'should return user if repo succeeds', (done) ->
             mockRepo.createUser = (user, cb) ->
-                cb null, {id: 999}
+                user.id = 999
+                cb null, user
+
+            mockRepo.getGroup = (query, cb) ->
+                cb null, {id: 0}
 
             membership.signup {password: 'abcdef'}, (err, user) ->
                 should.not.exist err
                 should.exist user
                 user.should.have.property 'id', 999
+                user.should.have.property 'group_id', 0
                 done()
 
 

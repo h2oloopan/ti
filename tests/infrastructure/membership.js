@@ -93,8 +93,12 @@ describe('membership', function() {
     });
     return it('should return user if repo succeeds', function(done) {
       mockRepo.createUser = function(user, cb) {
+        user.id = 999;
+        return cb(null, user);
+      };
+      mockRepo.getGroup = function(query, cb) {
         return cb(null, {
-          id: 999
+          id: 0
         });
       };
       return membership.signup({
@@ -103,6 +107,7 @@ describe('membership', function() {
         should.not.exist(err);
         should.exist(user);
         user.should.have.property('id', 999);
+        user.should.have.property('group_id', 0);
         return done();
       });
     });
