@@ -3,6 +3,8 @@ define ['utils', 'text!templates/shared/header.html'], (utils, template) ->
         el: $('#header')
         events:
             'click .btn-logout': 'logout'
+            'click .btn-login': 'login'
+            'click .btn-signup': 'signup'
         render: ->
             element = @$el
             utils.auth (result) ->
@@ -11,5 +13,9 @@ define ['utils', 'text!templates/shared/header.html'], (utils, template) ->
                 element.html _.template(template, model)
         logout: ->
             utils.logout (err) ->
-                window.location.href '/'
+                window.location.replace '/'
+        login: ->
+            utils.navigate 'account/login'
+        signup: ->
+            utils.navigate 'account/signup'
 

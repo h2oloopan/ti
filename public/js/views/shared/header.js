@@ -5,7 +5,9 @@
     return HeaderView = Backbone.View.extend({
       el: $('#header'),
       events: {
-        'click .btn-logout': 'logout'
+        'click .btn-logout': 'logout',
+        'click .btn-login': 'login',
+        'click .btn-signup': 'signup'
       },
       render: function() {
         var element;
@@ -20,8 +22,14 @@
       },
       logout: function() {
         return utils.logout(function(err) {
-          return window.location.href('/');
+          return window.location.replace('/');
         });
+      },
+      login: function() {
+        return utils.navigate('account/login');
+      },
+      signup: function() {
+        return utils.navigate('account/signup');
       }
     });
   });

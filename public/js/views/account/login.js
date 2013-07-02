@@ -31,7 +31,7 @@
           if (err != null) {
             return view.error(err);
           } else {
-            return utils.navigate('');
+            return window.location.replace('/');
           }
         });
         return false;

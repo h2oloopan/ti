@@ -25,7 +25,7 @@ define ['utils', 'text!templates/account/login.html', 'models/user'], (utils, te
                 if err?
                     view.error err
                 else
-                    utils.navigate ''
+                    window.location.replace '/'
 
             return false
 
