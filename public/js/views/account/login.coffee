@@ -24,6 +24,8 @@ define ['utils', 'text!templates/account/login.html', 'models/user'], (utils, te
             utils.login user.toJSON(), (err) ->
                 if err?
                     view.error err
+                else
+                    utils.navigate ''
 
             return false
 

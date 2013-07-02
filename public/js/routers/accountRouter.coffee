@@ -1,36 +1,29 @@
-define ['utils', 'views/shared/header'], (utils, HeaderView) ->
+define ['utils'], (utils) ->
     AccountRouter = Backbone.Router.extend
-        view: null
-        header: null
         routes:
-            'signup': 'signup'
-            'login': 'login'
-            'login?from=:from': 'login'
+            'account/signup': 'signup'
+            'account/login': 'login'
+            'account/login?from=:from': 'login'
         change: (view, options) ->
-            if !@header?
-                @header = new HeaderView()
-                @header.render()
-
             options = options || {}
-            context = @
             require [view], (View) ->
-                context.view = new View options
-                context.view.render()
+                next = new View options
+                next.render()
         signup: ->
-            context = @
+            router = @
             utils.auth (result) ->
                 if result
                     window.location.href = '/'
                 else
-                    @change 'views/account/signup', {router: @}
+                    router.change 'views/account/signup', {router: router}
         login: (from) ->
             #if already logged in, just send back to home page
-            context = @
+            router = @
             utils.auth (result) ->
                 if result
                     window.location.href = '/'
                 else
                     if from?
-                        context.change 'views/account/login', {from: from}
+                        router.change 'views/account/login', {from: from}
                     else
-                        context.change 'views/account/login'
+                        router.change 'views/account/login'

@@ -7,12 +7,12 @@
       models: '/js/models',
       views: '/js/views',
       routers: '/js/routers',
-      app: '/js/apps/accountApp'
+      app: '/js/app'
     },
     shim: {
       'backbone': ['underscore', 'jquery'],
       'bootstrap': ['jquery'],
-      'utils': ['jquery'],
+      'utils': ['jquery', 'backbone'],
       'app': ['backbone', 'bootstrap', 'utils']
     }
   });

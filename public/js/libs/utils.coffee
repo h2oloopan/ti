@@ -26,8 +26,10 @@ define ['jquery'], ($) ->
                     o[@name] = value
 
             return o
-
-
+        title: (title) ->
+            document.title title
+        navigate: (route) ->
+            Backbone.history.navigate route, {trigger: true}
         auth: (cb) ->
             $.get('/api/account/auth')
                 .done ->
@@ -36,13 +38,14 @@ define ['jquery'], ($) ->
                     cb false
         logout: (cb) ->
             $.post('/api/account/logout')
-                .always ->
-                    window.location.reload()
+                .done ->
                     cb null
+                .fail (res) ->
+                    cb res.responseText
+
         login: (user, cb) ->
             $.post('/api/account/login', user)
                 .done ->
-                    window.location.href = '/'
                     cb null
-                .fail (result) ->
-                    cb result.responseText
+                .fail (res) ->
+                    cb res.responseText

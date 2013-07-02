@@ -30,6 +30,8 @@
         utils.login(user.toJSON(), function(err) {
           if (err != null) {
             return view.error(err);
+          } else {
+            return utils.navigate('');
           }
         });
         return false;

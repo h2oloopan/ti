@@ -9,5 +9,7 @@ define ['utils', 'text!templates/shared/header.html'], (utils, template) ->
                 model =
                     auth: result
                 element.html _.template(template, model)
-        logout: (e) ->
-            utils.logout()
+        logout: ->
+            utils.logout (err) ->
+                window.location.href '/'
+

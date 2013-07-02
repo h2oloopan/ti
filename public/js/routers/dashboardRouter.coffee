@@ -1,9 +1,9 @@
 define ['views/shared/header'], (HeaderView) ->
     DashboardRouter = Backbone.Router.extend
-        _view: null
-        _header: null
+        view: null
+        header: null
         routes:
-            '': 'index'
+            'dashboard': 'dashboard'
         change: (view, options) ->
             if !@_header?
                 @_header = new HeaderView()
@@ -14,5 +14,5 @@ define ['views/shared/header'], (HeaderView) ->
             require [view], (View) ->
                 context._view = new View options
                 context._view.render()
-        index: ->
+        dashboard: ->
             @change 'views/dashboard/index'

@@ -36,6 +36,14 @@
         });
         return o;
       },
+      title: function(title) {
+        return document.title(title);
+      },
+      navigate: function(route) {
+        return Backbone.history.navigate(route, {
+          trigger: true
+        });
+      },
       auth: function(cb) {
         return $.get('/api/account/auth').done(function() {
           return cb(true);
@@ -44,17 +52,17 @@
         });
       },
       logout: function(cb) {
-        return $.post('/api/account/logout').always(function() {
-          window.location.reload();
+        return $.post('/api/account/logout').done(function() {
           return cb(null);
+        }).fail(function(res) {
+          return cb(res.responseText);
         });
       },
       login: function(user, cb) {
         return $.post('/api/account/login', user).done(function() {
-          window.location.href = '/';
           return cb(null);
-        }).fail(function(result) {
-          return cb(result.responseText);
+        }).fail(function(res) {
+          return cb(res.responseText);
         });
       }
     };
