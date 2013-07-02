@@ -1,14 +1,20 @@
-define ['views/home/index', 'views/shared/header'],
-(IndexView, HeaderView) ->
+define ['views/shared/header'], (HeaderView) ->
     HomeRouter = Backbone.Router.extend
+        view: null
+        header: null
         routes:
             '': 'index'
-        initialize: ->
-            header = new HeaderView()
-            header.render()
-        index: ->
-            indexView = new IndexView()
-            indexView.render()
+        change: (view, options) ->
+            options = options || {}
+            if !@header?
+                @header = new HeaderView
+                @header.render()
 
+            context = @
+            require [view], (View) ->
+                context.view = new View options
+                context.view.render()
+        index: ->
+            @change 'views/home/index'
 
 

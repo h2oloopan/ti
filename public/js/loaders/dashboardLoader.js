@@ -6,13 +6,12 @@ require.config({
     models: '/js/models',
     views: '/js/views',
     routers: '/js/routers',
-    app: '/js/apps/homeApp'
+    app: '/js/apps/dashboardApp'
   },
   shim: {
     'backbone': ['underscore', 'jquery'],
     'bootstrap': ['jquery'],
-    'utils': ['jquery'],
-    'app': ['backbone', 'bootstrap', 'utils']
+    'app': ['backbone', 'bootstrap']
   }
 });
 
