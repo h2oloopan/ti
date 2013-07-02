@@ -1,10 +1,8 @@
-define ['text!templates/account/login.html', 'models/user'], (template, User) ->
+define ['utils', 'text!templates/account/login.html', 'models/user'], (utils, template, User) ->
     LoginView = Backbone.View.extend
         el: $('#content')
         events:
             'click .btn-login': 'login'
-        initialize: ->
-            @model = new User()
         render: ->
             @$el.html template
             @info()
@@ -13,21 +11,19 @@ define ['text!templates/account/login.html', 'models/user'], (template, User) ->
                          You have signed up successfully.
                          You can now log in with your new account.'''
         login: (e) ->
-            @model.clear()
             @error()
-            form = @$('form').serializeObject()
-            @model.set form, {validate: true}
+            form = utils.serialize @$('form')
+            user = new User()
+            user.set form, {validate: true}
 
-            if !@model.isValid()
-                @error @model.validationError
+            if !user.isValid()
+                @error user.validationError
                 return false
 
             view = @
-            $.post('/api/account/login', @model.toJSON())
-                .done ->
-                    window.location.href = '/'
-                .fail (fb) ->
-                    view.error fb.responseText
+            utils.login user.toJSON(), (err) ->
+                if err?
+                    view.error err
 
             return false
 

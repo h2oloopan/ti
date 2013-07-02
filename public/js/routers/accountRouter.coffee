@@ -1,32 +1,36 @@
-define ['views/shared/header'],
-    (HeaderView) ->
-        AccountRouter = Backbone.Router.extend
-            _view: null
-            _header: null
-            routes:
-                'signup': 'signup'
-                'login': 'login'
-                'login?from=:from': 'login'
-            change: (view, options) ->
-                if !@_header?
-                    @_header = new HeaderView()
-                    @_header.render()
+define ['utils', 'views/shared/header'], (utils, HeaderView) ->
+    AccountRouter = Backbone.Router.extend
+        view: null
+        header: null
+        routes:
+            'signup': 'signup'
+            'login': 'login'
+            'login?from=:from': 'login'
+        change: (view, options) ->
+            if !@header?
+                @header = new HeaderView()
+                @header.render()
 
-                options = options || {}
-                context = @
-                require [view], (View) ->
-                    context._view = new View options
-                    context._view.render()
-            signup: ->
-                @change 'views/account/signup', {router: @}
-            login: (from) ->
-                #if already logged in, just send back to home page
-                context = @
-                $.get('/api/account/auth')
-                    .done ->
-                        window.location.href = '/'
-                    .fail ->
-                        if from?
-                            context.change 'views/account/login', {from: from}
-                        else
-                            context.change 'views/account/login'
+            options = options || {}
+            context = @
+            require [view], (View) ->
+                context.view = new View options
+                context.view.render()
+        signup: ->
+            context = @
+            utils.auth (result) ->
+                if result
+                    window.location.href = '/'
+                else
+                    @change 'views/account/signup', {router: @}
+        login: (from) ->
+            #if already logged in, just send back to home page
+            context = @
+            utils.auth (result) ->
+                if result
+                    window.location.href = '/'
+                else
+                    if from?
+                        context.change 'views/account/login', {from: from}
+                    else
+                        context.change 'views/account/login'

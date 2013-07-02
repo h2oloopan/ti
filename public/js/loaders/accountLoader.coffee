@@ -9,8 +9,8 @@ require.config
     shim:
         'backbone': ['underscore', 'jquery']
         'bootstrap': ['jquery']
-        'helpers': ['jquery']
-        'app': ['backbone', 'bootstrap', 'helpers']
+        'utils': ['jquery']
+        'app': ['backbone', 'bootstrap', 'utils']
 
 require ['app'], (app) ->
     app.initialize()

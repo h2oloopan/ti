@@ -1,4 +1,4 @@
-define ['text!templates/account/signup.html', 'models/user'], (template, User) ->
+define ['utils', 'text!templates/account/signup.html', 'models/user'], (utils, template, User) ->
     SignupView = Backbone.View.extend
         el: $('#content')
         events:
@@ -16,7 +16,7 @@ define ['text!templates/account/signup.html', 'models/user'], (template, User) -
         signup: (e) ->
             @model.clear()
             @error()
-            form = @$('form').serializeObject()
+            form = utils.serialize @$('form')
             if form.password != form.confirm
                 @error 'Passwords do not match'
                 return false
