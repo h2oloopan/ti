@@ -11,6 +11,7 @@
       initialize: function() {
         new HomeRouter();
         new AccountRouter();
+        new DashboardRouter();
         Backbone.history.start();
         return this.prerender();
       }

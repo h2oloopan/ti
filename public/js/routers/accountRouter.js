@@ -10,6 +10,9 @@
       },
       change: function(view, options) {
         options = options || {};
+        if ((options.auth != null) && utils.auth() !== options.auth) {
+          return false;
+        }
         return require([view], function(View) {
           var next;
           next = new View(options);
@@ -17,34 +20,21 @@
         });
       },
       signup: function() {
-        var router;
-        router = this;
-        return utils.auth(function(result) {
-          if (result) {
-            return window.location.href = '/';
-          } else {
-            return router.change('views/account/signup', {
-              router: router
-            });
-          }
+        return this.change('views/account/signup', {
+          auth: false
         });
       },
       login: function(from) {
-        var router;
-        router = this;
-        return utils.auth(function(result) {
-          if (result) {
-            return window.location.href = '/';
-          } else {
-            if (from != null) {
-              return router.change('views/account/login', {
-                from: from
-              });
-            } else {
-              return router.change('views/account/login');
-            }
-          }
-        });
+        if (from != null) {
+          return this.change('views/account/login', {
+            from: from,
+            auth: false
+          });
+        } else {
+          return this.change('views/account/login', {
+            auth: false
+          });
+        }
       }
     });
   });

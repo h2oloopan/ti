@@ -30,12 +30,13 @@ define ['jquery'], ($) ->
             document.title title
         navigate: (route) ->
             Backbone.history.navigate route, {trigger: true}
-        auth: (cb) ->
-            $.get('/api/account/auth')
-                .done ->
-                    cb true
-                .fail ->
-                    cb false
+        auth: ->
+            #this is just a simple check, and cannot be trusted
+            #full server coverage for api exposure must be enforced
+            u = $.cookie 'U'
+            if u?
+                return true
+            return false
         logout: (cb) ->
             $.post('/api/account/logout')
                 .done ->

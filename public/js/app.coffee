@@ -9,6 +9,6 @@ define ['routers/homeRouter', 'routers/accountRouter', 'routers/dashboardRouter'
             #initialize routers
             new HomeRouter()
             new AccountRouter()
-            #new DashboardRouter()
+            new DashboardRouter()
             Backbone.history.start()
             @prerender()

@@ -7,10 +7,9 @@ define ['utils', 'text!templates/shared/header.html'], (utils, template) ->
             'click .btn-signup': 'signup'
         render: ->
             element = @$el
-            utils.auth (result) ->
-                model =
-                    auth: result
-                element.html _.template(template, model)
+            model =
+                auth: utils.auth()
+            element.html _.template(template, model)
         logout: ->
             utils.logout (err) ->
                 window.location.replace '/'

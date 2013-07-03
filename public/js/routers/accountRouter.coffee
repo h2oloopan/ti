@@ -6,24 +6,21 @@ define ['utils'], (utils) ->
             'account/login?from=:from': 'login'
         change: (view, options) ->
             options = options || {}
+
+            if options.auth? && utils.auth() != options.auth
+                return false
+
             require [view], (View) ->
                 next = new View options
                 next.render()
         signup: ->
-            router = @
-            utils.auth (result) ->
-                if result
-                    window.location.href = '/'
-                else
-                    router.change 'views/account/signup', {router: router}
+            @change 'views/account/signup',
+                auth: false
         login: (from) ->
-            #if already logged in, just send back to home page
-            router = @
-            utils.auth (result) ->
-                if result
-                    window.location.href = '/'
-                else
-                    if from?
-                        router.change 'views/account/login', {from: from}
-                    else
-                        router.change 'views/account/login'
+            if from?
+                @change 'views/account/login',
+                    from: from
+                    auth: false
+            else
+                @change 'views/account/login',
+                    auth: false

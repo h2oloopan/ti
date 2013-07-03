@@ -44,12 +44,13 @@
           trigger: true
         });
       },
-      auth: function(cb) {
-        return $.get('/api/account/auth').done(function() {
-          return cb(true);
-        }).fail(function() {
-          return cb(false);
-        });
+      auth: function() {
+        var u;
+        u = $.cookie('U');
+        if (u != null) {
+          return true;
+        }
+        return false;
       },
       logout: function(cb) {
         return $.post('/api/account/logout').done(function() {

@@ -10,15 +10,12 @@
         'click .btn-signup': 'signup'
       },
       render: function() {
-        var element;
+        var element, model;
         element = this.$el;
-        return utils.auth(function(result) {
-          var model;
-          model = {
-            auth: result
-          };
-          return element.html(_.template(template, model));
-        });
+        model = {
+          auth: utils.auth()
+        };
+        return element.html(_.template(template, model));
       },
       logout: function() {
         return utils.logout(function(err) {

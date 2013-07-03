@@ -9,7 +9,8 @@ require.config
     shim:
         'backbone': ['underscore', 'jquery']
         'bootstrap': ['jquery']
-        'utils': ['jquery', 'backbone']
+        'jquery.cookie': ['jquery']
+        'utils': ['jquery', 'jquery.cookie', 'backbone']
         'app': ['backbone', 'bootstrap', 'utils']
 
 require ['app'], (app) ->
