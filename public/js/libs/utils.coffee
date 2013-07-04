@@ -28,8 +28,12 @@ define ['jquery'], ($) ->
             return o
         title: (title) ->
             document.title title
-        navigate: (route) ->
+        navigate: (route, reload) ->
+            if !reload?
+                reload = false
             Backbone.history.navigate route, {trigger: true}
+            if reload
+                window.location.reload()
         auth: ->
             #this is just a simple check, and cannot be trusted
             #full server coverage for api exposure must be enforced

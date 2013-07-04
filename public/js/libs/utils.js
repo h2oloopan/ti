@@ -39,10 +39,16 @@
       title: function(title) {
         return document.title(title);
       },
-      navigate: function(route) {
-        return Backbone.history.navigate(route, {
+      navigate: function(route, reload) {
+        if (reload == null) {
+          reload = false;
+        }
+        Backbone.history.navigate(route, {
           trigger: true
         });
+        if (reload) {
+          return window.location.reload();
+        }
       },
       auth: function() {
         var u;

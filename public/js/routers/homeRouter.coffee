@@ -1,4 +1,4 @@
-define [], () ->
+define ['utils'], (utils) ->
     HomeRouter = Backbone.Router.extend
         routes:
             '': 'home'
@@ -8,6 +8,9 @@ define [], () ->
                 next = new View options
                 next.render()
         home: ->
-            @change 'views/home/index'
+            if utils.auth()
+                utils.navigate 'dashboard'
+            else
+                @change 'views/home/index'
 
 
