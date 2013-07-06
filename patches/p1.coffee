@@ -1,22 +1,24 @@
 User = require '../models/user'
+Group = require '../models/group'
+UserInfo = require '../models/userInfo'
 Goal = require '../models/goal'
-mysql = require('../infrastructure/db').mysql
-
+#drop all tables
 exports.apply = (cb) ->
-    Goal.sync
-        force: true
-    .success ->
-        User.sync
-            force: true
+    #need to chain drops accordingly, for the reason of foreign key constraints
+    Goal.drop()
         .success ->
-            query = 'ALTER TABLE goals ADD CONSTRAINT fk_goals_users FOREIGN KEY (user_id) REFERENCES users (id);'
-            mysql.query(query)
+            UserInfo.drop()
                 .success ->
-                    cb null
+                    User.drop()
+                        .success ->
+                            Group.drop()
+                                .success ->
+                                    cb null
+                                .error (err) ->
+                                    cb err
+                        .error (err) ->
+                            cb err
                 .error (err) ->
                     cb err
         .error (err) ->
             cb err
-    .error (err) ->
-        cb err
-

@@ -4,7 +4,7 @@ config = require '../config'
 options =
     host: config.db.host
     port: config.db.port
-    logging: false
+    #logging: false
     define:
         underscored: true
         freezeTableName: true
