@@ -32,10 +32,8 @@
         }
         view = this;
         this.model.save(form, {
-          success: function(model, response) {
-            return view.options.router.navigate('login?from=signup', {
-              trigger: true
-            });
+          success: function() {
+            return utils.navigate('account/login?from=signup');
           },
           error: function(model, response) {
             return view.error(response.responseText);

@@ -9,6 +9,7 @@
   options = {
     host: config.db.host,
     port: config.db.port,
+    logging: false,
     define: {
       underscored: true,
       freezeTableName: true,

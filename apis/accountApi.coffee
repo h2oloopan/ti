@@ -37,6 +37,7 @@ exports.bind = (app) ->
     app.post '/api/account/signup', (req, res) ->
         membership.signup req.body, (err, user) ->
             if err?
+                #TODO: here may need to send more accurate error message, e.g. duplicate users
                 res.send 500, err.message
             else
                 res.send 201, {id: user.id}

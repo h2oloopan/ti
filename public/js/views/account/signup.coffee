@@ -27,9 +27,8 @@ define ['utils', 'text!templates/account/signup.html', 'models/user'], (utils, t
 
             view = @
             @model.save form,
-                success: (model, response) ->
-                    view.options.router.navigate 'login?from=signup',
-                        trigger: true
+                success: ->
+                    utils.navigate 'account/login?from=signup'
                 error: (model, response) ->
                     view.error response.responseText
 
