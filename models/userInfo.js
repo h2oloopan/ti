@@ -25,10 +25,22 @@
         isAlphanumeric: true,
         len: [config.system.username.min, config.system.username.max]
       }
+    },
+    firstName: {
+      type: Sequelize.STRING,
+      unique: false,
+      allowNull: true
+    },
+    lastName: {
+      type: Sequelize.STRING,
+      unique: false,
+      allowNull: true
     }
   });
 
-  User.hasOne(UserInfo, UserInfo.belongsTo(User));
+  User.hasOne(UserInfo);
+
+  UserInfo.belongsTo(User);
 
   module.exports = UserInfo;
 

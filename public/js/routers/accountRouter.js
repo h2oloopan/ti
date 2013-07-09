@@ -3,6 +3,7 @@
   define(['utils'], function(utils) {
     var AccountRouter;
     return AccountRouter = Backbone.Router.extend({
+      currentView: null,
       routes: {
         'account/signup': 'signup',
         'account/login': 'login',
@@ -13,10 +14,14 @@
         if ((options.auth != null) && utils.auth() !== options.auth) {
           return false;
         }
+        if (this.currentView != null) {
+          this.currentView.undelegateEvents();
+        }
         return require([view], function(View) {
           var next;
           next = new View(options);
-          return next.render();
+          this.currentView = next;
+          return this.currentView.render();
         });
       },
       signup: function() {

@@ -3,15 +3,20 @@
   define(['utils'], function(utils) {
     var DashboardRouter;
     return DashboardRouter = Backbone.Router.extend({
+      currentView: null,
       routes: {
         'dashboard': 'dashboard'
       },
       change: function(view, options) {
         options = options | {};
+        if (this.currentView != null) {
+          this.currentView.undelegateEvents();
+        }
         return require([view], function(View) {
           var next;
           next = new View(options);
-          return next.render();
+          this.currentView = next;
+          return this.currentView.render();
         });
       },
       dashboard: function() {

@@ -1,5 +1,6 @@
 define ['utils'], (utils) ->
     AccountRouter = Backbone.Router.extend
+        currentView: null
         routes:
             'account/signup': 'signup'
             'account/login': 'login'
@@ -10,9 +11,13 @@ define ['utils'], (utils) ->
             if options.auth? && utils.auth() != options.auth
                 return false
 
+            if @currentView?
+                @currentView.undelegateEvents()
+
             require [view], (View) ->
                 next = new View options
-                next.render()
+                @currentView = next
+                @currentView.render()
         signup: ->
             @change 'views/account/signup',
                 auth: false

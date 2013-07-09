@@ -19,8 +19,18 @@ UserInfo = mysql.define 'user_infos',
             len:
                 [config.system.username.min, config.system.username.max]
 
+    #extra information, can all be null so no need to fill up upon registration
+    #TODO: may need to add some validation in the future, but good for now
+    firstName:
+        type: Sequelize.STRING
+        unique: false
+        allowNull: true
+    lastName:
+        type: Sequelize.STRING
+        unique: false
+        allowNull: true
 
-User.hasOne UserInfo,
+User.hasOne UserInfo
 UserInfo.belongsTo User
 
 module.exports = UserInfo

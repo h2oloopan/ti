@@ -10,6 +10,9 @@ module.exports = {
     username: "dev",
     password: "dev123321"
   },
+  path: {
+      profiles: 'storage/profiles'
+  },
   system: {
     username: {
         min: 4,
