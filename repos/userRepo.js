@@ -30,6 +30,15 @@
         return cb(err);
       });
     },
+    getUserInfo: function(query, cb) {
+      return UserInfo.find({
+        where: query
+      }).success(function(info) {
+        return cb(null, info);
+      }).error(function(err) {
+        return cb(err);
+      });
+    },
     getUserWithInfo: function(query, cb) {
       return User.find({
         where: query,

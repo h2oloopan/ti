@@ -29,12 +29,14 @@
     firstName: {
       type: Sequelize.STRING,
       unique: false,
-      allowNull: true
+      allowNull: true,
+      defaultValue: null
     },
     lastName: {
       type: Sequelize.STRING,
       unique: false,
-      allowNull: true
+      allowNull: true,
+      defaultValue: null
     }
   });
 

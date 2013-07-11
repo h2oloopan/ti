@@ -10,6 +10,7 @@ module.exports = {
     username: "dev",
     password: "dev123321"
   },
+
   path: {
       profiles: 'storage/profiles'
   },
@@ -29,6 +30,10 @@ module.exports = {
       admin: 99,
       guest: 0,
       user: 10
+    },
+    profiles: {
+        path: 'storage/profiles',
+        format: 'jpg'
     }
   }
 }

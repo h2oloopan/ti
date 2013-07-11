@@ -16,6 +16,12 @@ userRepo = module.exports =
                 cb null, user
             .error (err) ->
                 cb err
+    getUserInfo: (query, cb) ->
+        UserInfo.find(where: query)
+            .success (info) ->
+                cb null, info
+            .error (err) ->
+                cb err
     getUserWithInfo: (query, cb) ->
         User.find(where: query, include: [UserInfo])
             .success (user) ->

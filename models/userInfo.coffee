@@ -25,10 +25,12 @@ UserInfo = mysql.define 'user_infos',
         type: Sequelize.STRING
         unique: false
         allowNull: true
+        defaultValue: null
     lastName:
         type: Sequelize.STRING
         unique: false
         allowNull: true
+        defaultValue: null
 
 User.hasOne UserInfo
 UserInfo.belongsTo User
