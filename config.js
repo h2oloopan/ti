@@ -33,7 +33,9 @@ module.exports = {
     },
     profiles: {
         path: 'storage/profiles',
-        format: 'jpg'
+        format: 'jpg',
+        width: 220,
+        height: 220
     }
   }
 }

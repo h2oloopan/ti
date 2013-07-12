@@ -7,10 +7,8 @@
   config = require('../../config');
 
   image = module.exports = {
-    getProfileImageUrl: function(uid) {
-      var url;
-      url = path.join(config.system.profiles.path, uid) + config.system.profiles.format;
-      return url;
+    getProfileImagePath: function(uid) {
+      return path.join(config.system.profiles.path, uid.toString()) + '.' + config.system.profiles.format;
     }
   };
 

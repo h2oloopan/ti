@@ -4,16 +4,14 @@
     var IndexView;
     return IndexView = Backbone.View.extend({
       el: $('#content'),
-      initialize: function() {
+      render: function() {
         this.model = new User();
         this.model.url = this.model.urlRoot + '/self';
-        this.model.on('change', this.onModelChange);
+        this.model.on('change', this.onModelChange, this);
         return this.model.fetch();
       },
-      render: function() {
-        return this.$el.html(template);
-      },
-      onModelChange: function(user) {
+      onModelChange: function() {
+        this.$el.html(_.template(template, this.model.toJSON()));
         return false;
       }
     });
