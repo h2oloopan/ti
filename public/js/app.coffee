@@ -1,4 +1,5 @@
-define ['routers/homeRouter', 'routers/accountRouter', 'routers/dashboardRouter', 'views/shared/header', 'views/shared/footer'],
+define ['routers/homeRouter', 'routers/accountRouter', 'routers/dashboardRouter',
+        'views/shared/header', 'views/shared/footer'],
 (HomeRouter, AccountRouter, DashboardRouter, HeaderView, FooterView) ->
     App =
         prerender: ->

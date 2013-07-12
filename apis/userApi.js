@@ -24,13 +24,6 @@
           }
         });
       }
-      /*
-      if req.user?
-          res.send 200, req.user
-      else
-          res.send 401, 'Permission denied'
-      */
-
     });
   };
 

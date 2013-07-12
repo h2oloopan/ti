@@ -14,7 +14,7 @@
         return this.$el.html(template);
       },
       onModelChange: function(user) {
-        return alert(user.id);
+        return false;
       }
     });
   });

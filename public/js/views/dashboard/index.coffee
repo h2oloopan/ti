@@ -10,4 +10,4 @@ define ['text!templates/dashboard/index.html', 'models/User'], (template, User) 
         render: ->
             @$el.html template
         onModelChange: (user) ->
-            alert user.id
+            return false

@@ -9,6 +9,13 @@
         'click .btn-login': 'login',
         'click .btn-signup': 'signup'
       },
+      initialize: function() {
+        var view;
+        view = this;
+        return utils.onNavigate(function() {
+          return view.render();
+        });
+      },
       render: function() {
         var element, model;
         element = this.$el;
@@ -19,7 +26,7 @@
       },
       logout: function() {
         return utils.logout(function(err) {
-          return window.location.replace('/');
+          return utils.navigate('/');
         });
       },
       login: function() {

@@ -1,5 +1,6 @@
 define ['jquery'], ($) ->
     utils =
+        onNavigateHandlers: []
         serialize: (element, trim) ->
             if !trim?
                 trim = false
@@ -28,12 +29,14 @@ define ['jquery'], ($) ->
             return o
         title: (title) ->
             document.title title
-        navigate: (route, reload) ->
-            if !reload?
-                reload = false
+        onNavigate: (handler) ->
+            if $.inArray(handler, @onNavigateHandlers) >= 0
+                return false
+
+            @onNavigateHandlers.push handler
+        navigate: (route) ->
+            handler() for handler in @onNavigateHandlers
             Backbone.history.navigate route, {trigger: true}
-            if reload
-                window.location.reload()
         auth: ->
             #this is just a simple check, and cannot be trusted
             #full server coverage for api exposure must be enforced

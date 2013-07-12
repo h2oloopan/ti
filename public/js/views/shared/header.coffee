@@ -5,6 +5,10 @@ define ['utils', 'text!templates/shared/header.html'], (utils, template) ->
             'click .btn-logout': 'logout'
             'click .btn-login': 'login'
             'click .btn-signup': 'signup'
+        initialize: ->
+            view = @
+            utils.onNavigate ->
+                view.render()
         render: ->
             element = @$el
             model =
@@ -12,7 +16,7 @@ define ['utils', 'text!templates/shared/header.html'], (utils, template) ->
             element.html _.template(template, model)
         logout: ->
             utils.logout (err) ->
-                window.location.replace '/'
+                utils.navigate '/'
         login: ->
             utils.navigate 'account/login'
         signup: ->

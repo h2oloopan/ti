@@ -31,7 +31,7 @@
           if (err != null) {
             return view.error(err);
           } else {
-            return utils.navigate('dashboard', true);
+            return utils.navigate('dashboard');
           }
         });
         return false;

@@ -3,6 +3,7 @@
   define(['jquery'], function($) {
     var utils;
     return utils = {
+      onNavigateHandlers: [],
       serialize: function(element, trim) {
         var a, form, o;
         if (trim == null) {
@@ -39,16 +40,22 @@
       title: function(title) {
         return document.title(title);
       },
-      navigate: function(route, reload) {
-        if (reload == null) {
-          reload = false;
+      onNavigate: function(handler) {
+        if ($.inArray(handler, this.onNavigateHandlers) >= 0) {
+          return false;
         }
-        Backbone.history.navigate(route, {
+        return this.onNavigateHandlers.push(handler);
+      },
+      navigate: function(route) {
+        var handler, _i, _len, _ref;
+        _ref = this.onNavigateHandlers;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          handler = _ref[_i];
+          handler();
+        }
+        return Backbone.history.navigate(route, {
           trigger: true
         });
-        if (reload) {
-          return window.location.reload();
-        }
       },
       auth: function() {
         var u;

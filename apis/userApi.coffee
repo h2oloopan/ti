@@ -18,13 +18,5 @@ exports.bind = (app) ->
 
                     res.send 200, user
 
-        ###
-        if req.user?
-            res.send 200, req.user
-        else
-            res.send 401, 'Permission denied'
-
-###
-
 
 
