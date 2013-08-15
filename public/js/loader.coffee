@@ -5,6 +5,7 @@ require.config
         models: '/js/models'
         views: '/js/views'
         routers: '/js/routers'
+        widgets: '/js/widgets'
         app: '/js/app'
     shim:
         'backbone': ['underscore', 'jquery']
