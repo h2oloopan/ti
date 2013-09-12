@@ -16,6 +16,7 @@
           if (err != null) {
             return res.send(500, err.message);
           } else {
+            res.set('Content-Type', 'image/jpeg');
             return res.send(200, data);
           }
         });

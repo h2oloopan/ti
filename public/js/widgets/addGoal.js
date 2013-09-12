@@ -3,7 +3,9 @@
   define(['text!templates/widgets/addgoal.html'], function(template) {
     var AddGoalWidget;
     return AddGoalWidget = Backbone.View.extend({
-      el: $('#widget_add_goal'),
+      initialize: function(el) {
+        return this.setElement(el);
+      },
       render: function() {
         return this.$el.html(template);
       },

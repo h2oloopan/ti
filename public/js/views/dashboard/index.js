@@ -4,7 +4,10 @@
     var IndexView;
     return IndexView = Backbone.View.extend({
       el: $('#content'),
-      addGoalWidget: new AddGoalWidget(),
+      events: {
+        'click .btn-add-goal': 'addGoal'
+      },
+      addGoalWidget: null,
       render: function() {
         this.model = new User();
         this.model.url = this.model.urlRoot + '/self';
@@ -12,7 +15,10 @@
         return this.model.fetch();
       },
       onModelChange: function() {
-        this.$el.html(_.template(template, this.model.toJSON()));
+        return this.$el.html(_.template(template, this.model.toJSON()));
+      },
+      addGoal: function() {
+        this.addGoalWidget = new AddGoalWidget($('#widget_add_goal'));
         return this.addGoalWidget.render();
       }
     });

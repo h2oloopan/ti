@@ -7,12 +7,11 @@ exports.bind = (app) ->
         if req.user? && req.user.id == uid
             #user can only access his/her own profile image
             path = utils.image.getProfileImagePath(uid)
-
             fs.readFile path, (err, data) ->
                 if err?
                     res.send 500, err.message
                 else
+                    res.set 'Content-Type', 'image/jpeg'
                     res.send 200, data
-
         else
             res.send 401, 'Permission denied'

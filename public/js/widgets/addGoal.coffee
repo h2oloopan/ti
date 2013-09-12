@@ -1,6 +1,7 @@
 define ['text!templates/widgets/addgoal.html'], (template) ->
     AddGoalWidget = Backbone.View.extend
-        el: $('#widget_add_goal')
+        initialize: (el) ->
+            @setElement el
         render: ->
             @$el.html template
         destroy: ->
