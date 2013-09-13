@@ -4,13 +4,27 @@
         <div class="control-group">
             <label class="control-label" for="inputTitle">Title</label>
             <div class="controls">
-                <input type="text" id="inputTitle" placeholder="Title" />
+                <input type="text" name="inputTitle" id="inputTitle" placeholder="Title" />
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="inputDescription">Description</label>
             <div class="controls">
-                <input type="text" id="inputDescription" placeholder="Description" />
+                <input type="text" name="inputDescription" id="inputDescription" placeholder="Description" />
+            </div>
+        </div>
+        <!-- TODO: need to automatically generate the following based on server-side settings -->
+        <div class="control-group">
+            <label class="control-label">Type</label>
+            <div class="controls">
+                <label class="radio inline">
+                    <input type="radio" name="inputType" id="inputType1" value="0" checked />
+                    Progressable
+                </label>
+                <label class="radio inline">
+                    <input type="radio" name="inputType" id="inputType2" value="1" />
+                    One Stop
+                </label>
             </div>
         </div>
     </form>
