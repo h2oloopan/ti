@@ -35,6 +35,7 @@ Goal = mysql.define 'goals',
     end:
         type: Sequelize.DATE
         allowNull: false
+        #all you need to make sure is end time is later than start time
     target:
         type: Sequelize.DECIMAL 32, 10
         allowNull: true

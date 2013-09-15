@@ -1,9 +1,11 @@
-define ['text!templates/dashboard/index.html', 'models/User', 'widgets/addGoal'], (template, User, AddGoalWidget) ->
+define ['text!templates/dashboard/index.html', 'models/User', 'widgets/addGoal'], (template, User, WidgetAddGoal) ->
     IndexView = Backbone.View.extend
         el: $('#content')
         events:
             'click .btn-add-goal': 'addGoal'
-        addGoalWidget: null
+        widgets:
+            wAddGoal: null
+            wProfile: null
         render: ->
             @model = new User()
             @model.url = @model.urlRoot + '/self'
@@ -12,5 +14,6 @@ define ['text!templates/dashboard/index.html', 'models/User', 'widgets/addGoal']
         onModelChange: ->
             @$el.html _.template(template, @model.toJSON())
         addGoal: ->
-            @addGoalWidget = new AddGoalWidget($('#widget_add_goal'))
-            @addGoalWidget.render()
+            if !@widgets.wAddGoal
+                @widgets.wAddGoal = new WidgetAddGoal $('#widget_add_goal')
+            @widgets.wAddGoal.render()
