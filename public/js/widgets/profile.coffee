@@ -4,4 +4,4 @@ define ['text!templates/widgets/profile.html'], (template) ->
             @setElement el
             @model = model
         render: ->
-            @$el.html template #need to dynamically generate view from user model!
+            @$el.html _.template(template, @model.toJSON())

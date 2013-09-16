@@ -8,7 +8,7 @@
         return this.model = model;
       },
       render: function() {
-        return this.$el.html(template);
+        return this.$el.html(_.template(template, this.model.toJSON()));
       }
     });
   });

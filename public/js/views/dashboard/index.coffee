@@ -1,4 +1,5 @@
-define ['text!templates/dashboard/index.html', 'models/User', 'widgets/addGoal'], (template, User, WidgetAddGoal) ->
+define ['text!templates/dashboard/index.html', 'models/User', 'widgets/addGoal', 'widgets/profile'],
+(template, User, WidgetAddGoal, WidgetProfile) ->
     IndexView = Backbone.View.extend
         el: $('#content')
         events:
@@ -13,6 +14,8 @@ define ['text!templates/dashboard/index.html', 'models/User', 'widgets/addGoal']
             @model.fetch()
         onModelChange: ->
             @$el.html _.template(template, @model.toJSON())
+            @widgets.wProfile = new WidgetProfile $('#widget_profile'), @model
+            @widgets.wProfile.render()
         addGoal: ->
             if !@widgets.wAddGoal
                 @widgets.wAddGoal = new WidgetAddGoal $('#widget_add_goal')
