@@ -32,6 +32,7 @@ starter.start app, (err) ->
         console.log 'Something is wrong, failed to start application'
         throw err
 
-    http.createServer(app).listen app.get('port'), ->
-        console.log 'Server listening on port ' + app.get 'port'
+    port = app.get 'port'
+    http.createServer(app).listen port, ->
+        console.log 'Server listening on port ' + port
 
