@@ -3,11 +3,23 @@
   define(['text!templates/widgets/addgoal.html'], function(template) {
     var WidgetAddGoal;
     return WidgetAddGoal = Backbone.View.extend({
+      events: {
+        'click .btn-goal-save': 'goalSave',
+        'click .btn-goal-cancel': 'goalCancel'
+      },
       initialize: function(el) {
         return this.setElement(el);
       },
       render: function() {
         return this.$el.html(template);
+      },
+      goalSave: function() {
+        alert('save');
+        return false;
+      },
+      goalCancel: function() {
+        alert('cancel');
+        return false;
       }
     });
   });
