@@ -6,6 +6,7 @@ starter = require './infrastructure/starter'
 routes = require './routes'
 membership = require './infrastructure/membership'
 
+
 app = express()
 app.configure ->
     app.set 'port', config.server.port

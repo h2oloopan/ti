@@ -1,6 +1,5 @@
 {
   "name": "mygoals",
-  "description": "A light-weighted forum system, it is still in progress right now",
   "version": "0.0.2",
   "author": {
     "name": "Shengying Pan",
@@ -14,30 +13,25 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/h2oloopan/alke.git"
+    "url": "https://github.com/h2oloopan/mygoals.git"
   },
   "scripts": {
     "test": "mocha --require should --recursive tests"
   },
   "dependencies": {
     "express": "3.1.0",
-    "sequelize": "1.6.0"
   },
   "devDependencies": {
     "mocha": "~1.9.0",
     "should": "~1.2.2"
   },
   "keywords": [
-    "bbs",
-    "forum",
-    "alke"
+    "mygoals"
   ],
   "engines": {
     "node": ">= 0.8.x"
   },
-  "license": "MIT",
-  "readme": "alke\n====\n\nAlke.js is a bulletin board system based on Node.js and Express.js with MySQL database. This is going to be the best and most powerful open source bbs.\n",
   "readmeFilename": "README.md",
-  "_id": "alke@0.0.2",
-  "_from": "alke@"
+  "_id": "mygoals@0.0.2",
+  "_from": "mygoals@"
 }
