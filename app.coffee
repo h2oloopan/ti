@@ -2,9 +2,8 @@ express = require 'express'
 http = require 'http'
 path = require 'path'
 config = require './config'
-starter = require './infrastructure/starter'
-routes = require './routes'
-membership = require './infrastructure/membership'
+starter = require './starter'
+#membership = require './infrastructure/membership'
 
 
 app = express()
@@ -18,7 +17,7 @@ app.configure ->
     app.use express.cookieParser(config.server.secret)
 
     #custom middlewares
-    app.use membership.middleware
+    #app.use membership.middleware
 
     app.use app.router
     app.use express.static(path.join(__dirname, 'public'))
@@ -26,14 +25,12 @@ app.configure ->
 app.configure 'development', ->
     app.use express.errorHandler()
 
-routes.bind app
-
 starter.start app, (err) ->
     if err
         console.log 'Something is wrong, failed to start application'
         throw err
-
-    port = app.get 'port'
-    http.createServer(app).listen port, ->
-        console.log 'Server listening on port ' + port
+    else
+        port = app.get 'port'
+        http.createServer(app).listen port, ->
+            console.log 'Server listening on port ' + port
 

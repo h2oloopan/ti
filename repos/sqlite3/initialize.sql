@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS users;
+CREATE TABLE users(id INTEGER PRIMARY KEY ASC, username TEXT, password TEXT, email TEXT);

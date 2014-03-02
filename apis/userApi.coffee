@@ -1,4 +1,3 @@
-repo = require '../repos/userRepo'
 
 exports.bind = (app) ->
     #should expose user info rather than basic data
