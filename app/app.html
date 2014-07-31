@@ -3,7 +3,19 @@
 </head>
 
 <body>
-  {{> hello}}
+	<div class="container">
+		<div class="navbar navbar-default" role="navigation">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">MyGoals.me</a>
+					{{> loginButtons}}
+				</div>
+			</div>
+		</div>
+		<div>
+			{{> hello}}
+		</div>
+	</div>
 </body>
 
 <template name="hello">
