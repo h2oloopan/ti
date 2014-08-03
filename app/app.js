@@ -8,6 +8,11 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
+var pe = require('psy-ember');
+var models = require('./models');
+
+
+
 var app = express();
 
 // view engine setup
@@ -21,8 +26,17 @@ app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+//doing my stuff here
+models.init(pe);
+
+
 app.use('/', routes);
 app.use('/users', users);
+
+
+
+
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {
