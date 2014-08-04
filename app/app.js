@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
-var pe = require('psy-ember');
+var me = require('mongo-ember');
 var models = require('./models');
 
 
@@ -28,7 +28,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 //doing my stuff here
-models.init(pe);
+var connectionString = 'mongodb://localhost/mygoals';
+me.setup({});
+app.use(me.middleware);
+me.connect(connectionString);
+
 
 
 app.use('/', routes);
