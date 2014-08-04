@@ -1,5 +1,5 @@
-exports.init = (pe) ->
-	pe.createModel 'User',
+module.exports =
+	User:
 		username:
 			type: String
 			required: true

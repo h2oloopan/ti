@@ -9,7 +9,6 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var me = require('mongo-ember');
-var models = require('./models');
 
 
 
@@ -29,7 +28,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //doing my stuff here
 var connectionString = 'mongodb://localhost/mygoals';
-me.setup({});
+me.setup({
+    modelsFolder: path.join(__dirname, 'models')
+});
 app.use(me.middleware);
 me.connect(connectionString);
 
