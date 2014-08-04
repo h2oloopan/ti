@@ -29,7 +29,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 //doing my stuff here
 var connectionString = 'mongodb://localhost/mygoals';
 me.setup({
-    modelsFolder: path.join(__dirname, 'models')
+    modelsFolder: path.join(__dirname, 'models'),
+    namespace: 'api'
 });
 app.use(me.middleware);
 me.connect(connectionString);
