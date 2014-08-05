@@ -4,10 +4,7 @@ var favicon = require('static-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
-var routes = require('./routes/index');
-var users = require('./routes/users');
-
+var fs = require('fs');
 var me = require('mongo-ember');
 
 
@@ -35,8 +32,16 @@ me.setup({
 
 
 
-app.use('/', routes);
-app.use('/users', users);
+app.get('/', function(req, res) {
+    fs.readFile(path.resolve('index.html'), {encoding: 'utf8'}, function (err, data){
+        if (err) {
+            res.send(500, err.message);
+        }
+        else {
+            res.send(200, data);
+        }
+    });
+});
 
 
 
