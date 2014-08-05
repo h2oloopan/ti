@@ -29,7 +29,7 @@ me.setup({
     namespace: 'api',
     connectionString: 'mongodb://localhost/mygoals',
     mePath: '/js/libs/me.js'
-}).start(app);
+}).init(app);
 
 
 

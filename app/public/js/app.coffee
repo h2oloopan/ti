@@ -11,8 +11,6 @@ define ['me',
 				@route 'login'
 				@route 'signup'
 
-
-
 			return false
 
 
