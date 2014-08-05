@@ -1,1 +1,1 @@
-mygoals is a lightweight simple goal tracking web app with meteorjs and redis
+mygoals is used to implement basic version of mongo-ember
