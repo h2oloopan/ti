@@ -20,7 +20,7 @@ define(['me', 'ehbs!templates/header', 'ehbs!templates/footer', 'ehbs!templates/
           return this.store.createRecord('user', {});
         }
       });
-      return App.LoginController = Ember.ObjectController.extend({
+      App.LoginController = Ember.ObjectController.extend({
         actions: {
           login: function() {
             return me.auth.login(this.get('model')).then(function() {
@@ -29,6 +29,23 @@ define(['me', 'ehbs!templates/header', 'ehbs!templates/footer', 'ehbs!templates/
               console.log(errors);
               return false;
             });
+          }
+        }
+      });
+      App.SignupRoute = Ember.Route.extend({
+        model: function() {
+          return this.store.createRecord('user', {});
+        }
+      });
+      return App.SignupController = Ember.ObjectController.extend({
+        actions: {
+          signup: function() {
+            me.auth.signup(this.get('model')).then(function() {
+              return true;
+            }, function(errors) {
+              return alert(errors);
+            });
+            return false;
           }
         }
       });

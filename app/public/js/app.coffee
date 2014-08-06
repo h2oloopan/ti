@@ -30,7 +30,23 @@ define ['me',
 							console.log errors
 							#fail
 							return false
+
+			#signup
+			App.SignupRoute = Ember.Route.extend
+				model: ->
+					return @store.createRecord 'user', {}
+
+			App.SignupController = Ember.ObjectController.extend
+				actions:
+					signup: ->
+						me.auth.signup(@get('model')).then ->
+							#done
+							
+						, (errors) ->
+							#fail
+							alert errors
+						return false
 						
 
 
-	return app
+	return app					
