@@ -38,10 +38,17 @@ define(['me', 'ehbs!templates/header', 'ehbs!templates/footer', 'ehbs!templates/
         }
       });
       return App.SignupController = Ember.ObjectController.extend({
+        errors: {},
         actions: {
           signup: function() {
+            var thiz;
+            thiz = this;
+            if (this.get('confirm') !== this.get('password')) {
+              this.set('errors.confirm', 'Passwords do not match');
+              return false;
+            }
             me.auth.signup(this.get('model')).then(function() {
-              return true;
+              return thiz.transitionToRoute('login');
             }, function(errors) {
               return alert(errors);
             });

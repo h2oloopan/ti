@@ -4,6 +4,10 @@
   margin: auto;
 }
 
+.jumbotron .text-danger {
+  font-size: 0.9em;
+}
+
 
 /* Space out content a bit */
 body {

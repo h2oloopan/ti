@@ -37,11 +37,18 @@ define ['me',
 					return @store.createRecord 'user', {}
 
 			App.SignupController = Ember.ObjectController.extend
+				errors: {} #store errors for client-side validation
 				actions:
 					signup: ->
+						thiz = @
+						#password confirmation should be checked here
+						if @get('confirm') != @get('password')
+							@set 'errors.confirm', 'Passwords do not match'
+							return false
+
 						me.auth.signup(@get('model')).then ->
 							#done
-							
+							thiz.transitionToRoute 'login'
 						, (errors) ->
 							#fail
 							alert errors
