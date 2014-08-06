@@ -28,7 +28,9 @@ me.setup({
     modelsFolder: path.join(__dirname, 'models'),
     namespace: 'api',
     connectionString: 'mongodb://localhost/mygoals',
-    mePath: '/js/libs/me.js'
+    mePath: '/js/libs/me.js',
+    primaryKey: '_id',
+    userModel: 'User'
 }).init(app);
 
 
