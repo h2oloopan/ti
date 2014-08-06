@@ -11,7 +11,9 @@ define ['me',
 				@route 'login'
 				@route 'signup'
 
-			return false
+			App.IndexRoute = Ember.Route.extend
+				model: ->
+					return me.auth.check()
 
 
 	return app

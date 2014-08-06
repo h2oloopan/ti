@@ -10,7 +10,11 @@ define(['me', 'ehbs!templates/header', 'ehbs!templates/footer', 'ehbs!templates/
         this.route('login');
         return this.route('signup');
       });
-      return false;
+      return App.IndexRoute = Ember.Route.extend({
+        model: function() {
+          return me.auth.check();
+        }
+      });
     }
   };
   return app;
