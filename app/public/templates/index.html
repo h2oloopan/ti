@@ -3,8 +3,8 @@
 	<p class="lead">
 		mongo-ember (me) is a framework built on top of express.js and mongoose that simplifies the process to construct your front-centered web application powered by ember. You only need to define your mongoose models and me will take care of everything else. It's flexible and scalable that you can configure and customize everything you need.
 	</p>
-	{{#if logedIn}}
-		A
+	{{#if model}}
+		<h3>Welcome back, {{firstName}} {{lastName}}</h3>
 	{{else}}
 		{{#link-to "signup" class="btn btn-primary"}}Signup{{/link-to}}
 		{{#link-to "login" class="btn btn-default"}}Login{{/link-to}}
