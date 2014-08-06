@@ -15,5 +15,22 @@ define ['me',
 				model: ->
 					return me.auth.check()
 
+			#login
+			App.LoginRoute = Ember.Route.extend
+				model: ->
+					return @store.createRecord 'user', {}
+
+			App.LoginController = Ember.ObjectController.extend
+				actions:
+					login: ->
+						me.auth.login(@get('model')).then ->
+							#done
+							return true
+						, (errors) ->
+							console.log errors
+							#fail
+							return false
+						
+
 
 	return app

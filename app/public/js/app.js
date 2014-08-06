@@ -10,9 +10,26 @@ define(['me', 'ehbs!templates/header', 'ehbs!templates/footer', 'ehbs!templates/
         this.route('login');
         return this.route('signup');
       });
-      return App.IndexRoute = Ember.Route.extend({
+      App.IndexRoute = Ember.Route.extend({
         model: function() {
           return me.auth.check();
+        }
+      });
+      App.LoginRoute = Ember.Route.extend({
+        model: function() {
+          return this.store.createRecord('user', {});
+        }
+      });
+      return App.LoginController = Ember.ObjectController.extend({
+        actions: {
+          login: function() {
+            return me.auth.login(this.get('model')).then(function() {
+              return true;
+            }, function(errors) {
+              console.log(errors);
+              return false;
+            });
+          }
         }
       });
     }
