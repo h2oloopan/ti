@@ -4,7 +4,8 @@ module.exports = {
     schema: {
       username: {
         type: String,
-        required: true
+        required: true,
+        match: /^[A-Z0-9\._-]+$/i
       },
       password: {
         type: String,

@@ -41,6 +41,7 @@ define ['me',
 				actions:
 					signup: ->
 						thiz = @
+						@get('model').validate()
 						#password confirmation should be checked here
 						if @get('confirm') != @get('password')
 							@set 'errors.confirm', 'Passwords do not match'

@@ -4,6 +4,7 @@ module.exports =
 			username:
 				type: String
 				required: true
+				match: /^[A-Z0-9\._-]+$/i
 			password:
 				type: String
 				required: true

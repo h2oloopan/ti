@@ -43,6 +43,7 @@ define(['me', 'ehbs!templates/header', 'ehbs!templates/footer', 'ehbs!templates/
           signup: function() {
             var thiz;
             thiz = this;
+            this.get('model').validate();
             if (this.get('confirm') !== this.get('password')) {
               this.set('errors.confirm', 'Passwords do not match');
               return false;
