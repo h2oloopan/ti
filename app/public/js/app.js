@@ -10,10 +10,26 @@ define(['me', 'ehbs!templates/header', 'ehbs!templates/footer', 'ehbs!templates/
         this.route('login');
         return this.route('signup');
       });
-      App.IndexRoute = Ember.Route.extend({
+      App.ApplicationRoute = Ember.Route.extend({
         model: function() {
           return me.auth.check();
+        },
+        actions: {
+          logout: function() {
+            var thiz;
+            thiz = this;
+            me.auth.logout().then(function() {
+              return thiz.controllerFor('application').set('model', null);
+            }, function(errors) {
+              return false;
+            });
+            return false;
+          }
         }
+      });
+      App.IndexController = Ember.ObjectController.extend({
+        needs: 'application',
+        modelBinding: 'controllers.application.model'
       });
       App.LoginRoute = Ember.Route.extend({
         model: function() {
@@ -21,6 +37,7 @@ define(['me', 'ehbs!templates/header', 'ehbs!templates/footer', 'ehbs!templates/
         }
       });
       App.LoginController = Ember.ObjectController.extend({
+        needs: 'application',
         actions: {
           login: function() {
             var result, thiz;
@@ -29,7 +46,10 @@ define(['me', 'ehbs!templates/header', 'ehbs!templates/footer', 'ehbs!templates/
             if (!result) {
               return false;
             }
-            me.auth.login(this.get('model')).then(function() {
+            me.auth.login(this.get('model')).then(function(user) {
+              var controller;
+              controller = thiz.get('controllers.application');
+              controller.set('model', user);
               return thiz.transitionToRoute('index');
             }, function(errors) {
               return alert(errors);

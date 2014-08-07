@@ -1,7 +1,11 @@
 <div class="header">
 	<ul class="nav nav-pills pull-right">
-		<li>{{#link-to "signup"}}Signup{{/link-to}}</li>
-		<li>{{#link-to "login"}}Login{{/link-to}}</li>
+		{{#if model}}
+			<li><a href="#" {{action "logout"}}>Logout</a></li>
+		{{else}}
+			<li>{{#link-to "signup"}}Signup{{/link-to}}</li>
+			<li>{{#link-to "login"}}Login{{/link-to}}</li>
+		{{/if}}
 	</ul>
 	<h3 class="text-muted">
 		{{#link-to "index"}}mongo-ember{{/link-to}}
