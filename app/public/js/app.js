@@ -11,15 +11,12 @@ define(['me', 'ehbs!templates/header', 'ehbs!templates/footer', 'ehbs!templates/
         return this.route('signup');
       });
       App.ApplicationRoute = Ember.Route.extend({
-        model: function() {
-          return me.auth.check();
-        },
         actions: {
           logout: function() {
             var thiz;
             thiz = this;
             me.auth.logout().then(function() {
-              return thiz.controllerFor('application').set('model', null);
+              return thiz.controllerFor('application').set('model', {});
             }, function(errors) {
               return false;
             });
@@ -27,30 +24,37 @@ define(['me', 'ehbs!templates/header', 'ehbs!templates/footer', 'ehbs!templates/
           }
         }
       });
-      App.IndexController = Ember.ObjectController.extend({
-        needs: 'application',
-        modelBinding: 'controllers.application.model'
+      App.ApplicationController = Ember.Controller.extend({
+        needs: 'index',
+        modelBinding: 'controllers.index.model'
       });
+      App.IndexRoute = Ember.Route.extend({
+        model: function() {
+          return me.auth.check();
+        }
+      });
+      App.IndexController = Ember.Controller.extend({});
+
+      /*
+      			App.IndexController = Ember.ObjectController.extend
+      				needs: 'application'
+      				modelBinding: 'controllers.application.model'
+       */
       App.LoginRoute = Ember.Route.extend({
         model: function() {
           return this.store.createRecord('user', {});
-        }
-      });
-      App.LoginController = Ember.ObjectController.extend({
-        needs: 'application',
+        },
         actions: {
           login: function() {
-            var result, thiz;
+            var model, result, thiz;
             thiz = this;
-            result = this.get('model').validate(['username', 'password']);
+            model = this.controllerFor('login').get('model');
+            result = model.validate(['username', 'password']);
             if (!result) {
               return false;
             }
-            me.auth.login(this.get('model')).then(function(user) {
-              var controller;
-              controller = thiz.get('controllers.application');
-              controller.set('model', user);
-              return thiz.transitionToRoute('index');
+            me.auth.login(model).then(function(user) {
+              return thiz.transitionTo('index');
             }, function(errors) {
               return alert(errors);
             });

@@ -11,41 +11,49 @@ define ['me',
 				@route 'login'
 				@route 'signup'
 
+			
 			App.ApplicationRoute = Ember.Route.extend
-				model: ->
-					return me.auth.check()
 				actions:
 					logout: ->
 						thiz = @
 						me.auth.logout().then ->
 							#done
-							thiz.controllerFor('application').set 'model', null
+							thiz.controllerFor('application').set 'model', {}
 						, (errors) ->
 							#fail
 							return false
 						return false
+			
+			App.ApplicationController = Ember.Controller.extend
+				needs: 'index'
+				modelBinding: 'controllers.index.model'
 
+			App.IndexRoute = Ember.Route.extend
+				model: ->
+					return me.auth.check()
+
+			App.IndexController = Ember.Controller.extend {}
+
+			###
 			App.IndexController = Ember.ObjectController.extend
 				needs: 'application'
 				modelBinding: 'controllers.application.model'
+			###
+
 
 			#login
 			App.LoginRoute = Ember.Route.extend
 				model: ->
 					return @store.createRecord 'user', {}
-
-			App.LoginController = Ember.ObjectController.extend
-				needs: 'application'
 				actions:
 					login: ->
 						thiz = @
-						result = @get('model').validate ['username', 'password']
+						model = @controllerFor('login').get 'model'
+						result = model.validate ['username', 'password']
 						if !result then return false
-						me.auth.login(@get('model')).then (user) ->
+						me.auth.login(model).then (user) ->
 							#done
-							controller = thiz.get 'controllers.application'
-							controller.set 'model', user
-							thiz.transitionToRoute 'index'
+							thiz.transitionTo 'index'
 						, (errors) ->
 							#fail
 							alert errors

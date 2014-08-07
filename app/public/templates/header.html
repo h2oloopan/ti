@@ -1,6 +1,6 @@
 <div class="header">
 	<ul class="nav nav-pills pull-right">
-		{{#if model}}
+		{{#if model.username}}
 			<li><a href="#" {{action "logout"}}>Logout</a></li>
 		{{else}}
 			<li>{{#link-to "signup"}}Signup{{/link-to}}</li>
