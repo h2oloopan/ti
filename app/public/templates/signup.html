@@ -2,18 +2,22 @@
 	<form role="form">
 		<div {{bind-attr class=":form-group errors.firstName:has-error"}}>
 			<label>First Name</label>
+			<p class="text-danger">{{errors.firstName}}</p>
 			{{input class="form-control" name="firstName" value=firstName placeholder="First Name"}}
 		</div>
 		<div {{bind-attr class=":form-group errors.lastName:has-error"}}>
 			<label>Last Name</label>
+			<p class="text-danger">{{errors.lastName}}</p>
 			{{input class="form-control" name="lastName" value=lastName placeholder="Last Name"}}
 		</div>
 		<div {{bind-attr class=":form-group errors.username:has-error"}}>
 			<label>Username</label>
+			<p class="text-danger">{{errors.username}}</p>
 			{{input class="form-control" name="username" value=username placeholder="Username"}}
 		</div>
 		<div {{bind-attr class=":form-group errors.password:has-error"}}>
 			<label>Password</label>
+			<p class="text-danger">{{errors.password}}</p>
 			{{input class="form-control" name="password" type="password" value=password placeholder="Password"}}
 		</div>
 		<div {{bind-attr class=":form-group errors.confirm:has-error"}}>

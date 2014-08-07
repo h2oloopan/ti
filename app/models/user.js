@@ -19,6 +19,21 @@ module.exports = {
         type: String,
         required: true
       }
+    },
+    validationMessages: {
+      username: {
+        required: 'Username cannot be empty',
+        match: 'Invalid username'
+      },
+      password: {
+        required: 'Password cannot be empty'
+      },
+      firstName: {
+        required: 'First name cannot be empty'
+      },
+      lastName: {
+        required: 'Last name cannot be empty'
+      }
     }
   }
 };
