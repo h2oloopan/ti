@@ -23,13 +23,17 @@ define ['me',
 			App.LoginController = Ember.ObjectController.extend
 				actions:
 					login: ->
+						thiz = @
+						result = @get('model').validate ['username', 'password']
+						if !result then return false
 						me.auth.login(@get('model')).then ->
 							#done
-							return true
+							thiz.transitionToRoute 'index'
 						, (errors) ->
-							console.log errors
 							#fail
-							return false
+							alert errors
+						
+						return false
 
 			#signup
 			App.SignupRoute = Ember.Route.extend
@@ -42,7 +46,7 @@ define ['me',
 						thiz = @
 						result = @get('model').validate()
 						if !result then return false
-						
+
 						#password confirmation should be checked here
 						if @get('confirm') != @get('password')
 							@set 'model.errors.confirm', 'Passwords do not match'

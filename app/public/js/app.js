@@ -23,12 +23,18 @@ define(['me', 'ehbs!templates/header', 'ehbs!templates/footer', 'ehbs!templates/
       App.LoginController = Ember.ObjectController.extend({
         actions: {
           login: function() {
-            return me.auth.login(this.get('model')).then(function() {
-              return true;
-            }, function(errors) {
-              console.log(errors);
+            var result, thiz;
+            thiz = this;
+            result = this.get('model').validate(['username', 'password']);
+            if (!result) {
               return false;
+            }
+            me.auth.login(this.get('model')).then(function() {
+              return thiz.transitionToRoute('index');
+            }, function(errors) {
+              return alert(errors);
             });
+            return false;
           }
         }
       });

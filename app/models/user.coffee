@@ -14,6 +14,7 @@ module.exports =
 			lastName:
 				type: String
 				required: true
+
 		validationMessages:
 			username:
 				required: 'Username cannot be empty'

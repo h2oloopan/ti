@@ -5,6 +5,7 @@
 	</p>
 	{{#if model}}
 		<h3>Welcome back, {{firstName}} {{lastName}}</h3>
+		<button {{action "logout"}}>Logout</button>
 	{{else}}
 		{{#link-to "signup" class="btn btn-primary"}}Signup{{/link-to}}
 		{{#link-to "login" class="btn btn-default"}}Login{{/link-to}}
