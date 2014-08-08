@@ -13,6 +13,8 @@
     "body-parser": "~1.0.0",
     "debug": "~0.7.4",
     "jade": "~1.3.0",
-    "express-session": "~1.7.4"
+    "express-session": "~1.7.4",
+    "mongo-ember": "~0.0.1",
+    "ember-precompile": "~0.0.1"
   }
 }
