@@ -18,6 +18,10 @@ module.exports = {
       lastName: {
         type: String,
         required: true
+      },
+      power: {
+        type: Number,
+        "default": 10
       }
     },
     validationMessages: {
@@ -34,6 +38,12 @@ module.exports = {
       lastName: {
         required: 'Last name cannot be empty'
       }
+    },
+    auth: {
+      c: 999,
+      r: 999,
+      u: 999,
+      d: 999
     }
   }
 };
