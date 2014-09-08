@@ -1,7 +1,7 @@
-define ['me',
+define ['me', 'routes/questionsRoute',
 'ehbs!templates/header', 'ehbs!templates/footer',
-'ehbs!templates/index', 'ehbs!templates/login', 'ehbs!templates/signup'
-], (me) ->
+'ehbs!templates/login', 'ehbs!templates/signup'
+], (me, QuestionsRoute) ->
 	app =
 		start: ->
 			App = Ember.Application.create()
@@ -11,7 +11,22 @@ define ['me',
 				@route 'login'
 				@route 'signup'
 
-			
+			QuestionsRoute.setup App
+
+			App.IndexRoute = Ember.Route.extend
+				beforeModel: ->
+					thiz = @
+					me.auth.check().then (user) ->
+						#done
+						if user?
+							thiz.transitionTo 'questions'
+						else
+							thiz.transitionTo 'login'
+					, (errors) ->
+						#fail
+						thiz.transitionTo 'login'
+
+			###
 			App.ApplicationRoute = Ember.Route.extend
 				actions:
 					logout: ->
@@ -33,13 +48,6 @@ define ['me',
 					return me.auth.check()
 
 			App.IndexController = Ember.Controller.extend {}
-
-			###
-			App.IndexController = Ember.ObjectController.extend
-				needs: 'application'
-				modelBinding: 'controllers.application.model'
-			###
-
 
 			#login
 			App.LoginRoute = Ember.Route.extend
@@ -84,6 +92,7 @@ define ['me',
 							#fail
 							alert errors
 						return false
+			###
 						
 
 
