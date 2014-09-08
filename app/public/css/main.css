@@ -2,3 +2,19 @@ body {
 	padding-top: 50px;
 	padding-bottom: 20px;
 }
+
+.login-form {
+	background: #fff;
+	border-radius: 6px;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+	z-index: 682;
+	padding: 20px;
+}
+
+.login-form .form-bottom {
+	height: 30px;
+}
+
+.login-form .btn-login {
+	float: right;
+}
