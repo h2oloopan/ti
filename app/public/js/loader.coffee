@@ -7,6 +7,7 @@ require.config
 		templates: '/templates'
 		routes: '/js/routes'
 		app: '/js/app'
+		tinymce: '/js/tiny_mce'
 	shim:
 		'bootstrap': ['jquery']
 		'ember': ['handlebars', 'jquery']

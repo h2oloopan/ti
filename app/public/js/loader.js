@@ -8,7 +8,8 @@ require.config({
   paths: {
     templates: '/templates',
     routes: '/js/routes',
-    app: '/js/app'
+    app: '/js/app',
+    tinymce: '/js/tiny_mce'
   },
   shim: {
     'bootstrap': ['jquery'],
