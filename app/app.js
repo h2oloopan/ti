@@ -29,7 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 me.setup({
     modelsFolder: path.join(__dirname, 'models'),
     namespace: 'api',
-    connectionString: 'mongodb://localhost/mygoals',
+    connectionString: 'mongodb://localhost/ti',
     mePath: '/js/libs/me.js',
     primaryKey: '_id',
     userModel: 'User'

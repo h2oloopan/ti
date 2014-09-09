@@ -8,12 +8,10 @@ module.exports =
 			password:
 				type: String
 				required: true
-			firstName:
+			email:
 				type: String
 				required: true
-			lastName:
-				type: String
-				required: true
+				match: /^[A-Z0-9\._%+-]+@[A-Z0-9\.-]+\.[A-Z]{2,4}$/i
 			power:
 				type: Number
 				default: 10
@@ -23,10 +21,9 @@ module.exports =
 				match: 'Invalid username'
 			password:
 				required: 'Password cannot be empty'
-			firstName:
-				required: 'First name cannot be empty'
-			lastName:
-				required: 'Last name cannot be empty'
+			email:
+				required: 'Email cannot be empty'
+				match: 'Invalid email address'
 		auth:
 			c: 999
 			r: 999
