@@ -7,6 +7,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var fs = require('fs');
 var me = require('mongo-ember');
+var initializer = require('./initializer');
 
 
 
@@ -33,8 +34,7 @@ me.setup({
     mePath: '/js/libs/me.js',
     primaryKey: '_id',
     userModel: 'User'
-}).init(app);
-
+}).init(app, initializer.init);
 
 
 app.get('/', function(req, res) {
