@@ -15,8 +15,7 @@ exports.init = ->
 			email: 'span@easyace.ca'
 			power: 999
 
-		model = me.getModel['User']
-		console.log model
+		model = me.getModel 'User'
 		model.findOne
 			username: 'span'
 		, (err, result) ->
@@ -29,4 +28,26 @@ exports.init = ->
 						console.log err
 					else
 						console.log 'admin span created'
-	setTimeout addAdmin, 3000
+	addUser = ->
+		#add regular user
+		user = 
+			username: 'user'
+			password: encrypt 'us123321'
+			email: 'user@easyace.ca'
+
+		model = me.getModel 'User'
+		model.findOne
+			username: 'user'
+		, (err, result) ->
+			if err
+				console.log err
+			else if !result?
+				user = new model user
+				user.save (err, result) ->
+					if err
+						console.log err
+					else
+						console.log 'user user created'
+
+	addAdmin()
+	addUser()
