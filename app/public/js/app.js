@@ -11,7 +11,7 @@ define(['me', 'routes/questionsRoute', 'ehbs!templates/header', 'ehbs!templates/
         return this.route('signup');
       });
       QuestionsRoute.setup(App);
-      return App.IndexRoute = Ember.Route.extend({
+      App.IndexRoute = Ember.Route.extend({
         beforeModel: function() {
           var thiz;
           thiz = this;
@@ -24,6 +24,28 @@ define(['me', 'routes/questionsRoute', 'ehbs!templates/header', 'ehbs!templates/
           }, function(errors) {
             return thiz.transitionTo('login');
           });
+        }
+      });
+      return App.LoginRoute = Ember.Route.extend({
+        model: function() {
+          return this.store.createRecord('user', {});
+        },
+        actions: {
+          login: function() {
+            var model, result, thiz;
+            thiz = this;
+            model = this.controllerFor('login').get('model');
+            result = model.validate(['username', 'password']);
+            if (!result) {
+              return false;
+            }
+            me.auth.login(model).then(function(user) {
+              return thiz.transitionTo('questions');
+            }, function(errors) {
+              return alert(errors);
+            });
+            return false;
+          }
         }
       });
 

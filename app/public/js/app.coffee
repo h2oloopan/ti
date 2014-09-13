@@ -26,6 +26,24 @@ define ['me', 'routes/questionsRoute',
 						#fail
 						thiz.transitionTo 'login'
 
+			App.LoginRoute = Ember.Route.extend
+				model: ->
+					return @store.createRecord 'user', {}
+				actions:
+					login: ->
+						thiz = @
+						model = @controllerFor('login').get 'model'
+						result = model.validate ['username', 'password']
+						if !result then return false
+						me.auth.login(model).then (user) ->
+							#done
+							thiz.transitionTo 'questions'
+						, (errors) ->
+							#fail
+							alert errors
+						
+						return false
+
 			###
 			App.ApplicationRoute = Ember.Route.extend
 				actions:
