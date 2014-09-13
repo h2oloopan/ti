@@ -11,6 +11,11 @@ define(['me', 'routes/questionsRoute', 'ehbs!templates/header', 'ehbs!templates/
         return this.route('signup');
       });
       QuestionsRoute.setup(App);
+      App.ApplicationRoute = Ember.Route.extend({
+        model: function() {
+          return me.auth.check();
+        }
+      });
       App.IndexRoute = Ember.Route.extend({
         beforeModel: function() {
           var thiz;

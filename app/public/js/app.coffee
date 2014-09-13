@@ -13,6 +13,10 @@ define ['me', 'routes/questionsRoute',
 
 			QuestionsRoute.setup App
 
+			App.ApplicationRoute = Ember.Route.extend
+				model: ->
+					return me.auth.check()
+
 			App.IndexRoute = Ember.Route.extend
 				beforeModel: ->
 					thiz = @
