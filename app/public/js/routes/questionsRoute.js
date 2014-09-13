@@ -8,6 +8,19 @@ define(['jquery', 'me', 'tinymce/tiny_mce', 'ehbs!templates/questions/questions.
           return this.route('new');
         });
       });
+      App.QuestionsRoute = Ember.Route.extend({
+        beforeModel: function() {
+          var thiz;
+          thiz = this;
+          return me.auth.check().then(function(user) {
+            if (user == null) {
+              return thiz.transitionTo('login');
+            }
+          }, function(errors) {
+            return thiz.transitionTo('login');
+          });
+        }
+      });
       return App.QuestionsNewView = Ember.View.extend({
         didInsertElement: function() {
           this._super();

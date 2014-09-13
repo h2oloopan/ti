@@ -16,6 +16,17 @@ define ['me', 'routes/questionsRoute',
 			App.ApplicationRoute = Ember.Route.extend
 				model: ->
 					return me.auth.check()
+				actions:
+					logout: ->
+						thiz = @
+						me.auth.logout().then ->
+							#done
+							thiz.controllerFor('application').set 'model', {}
+							thiz.transitionTo 'index'
+						, (errors) ->
+							#fail
+							return false
+						return false
 
 			App.IndexRoute = Ember.Route.extend
 				beforeModel: ->

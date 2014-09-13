@@ -14,6 +14,19 @@ define(['me', 'routes/questionsRoute', 'ehbs!templates/header', 'ehbs!templates/
       App.ApplicationRoute = Ember.Route.extend({
         model: function() {
           return me.auth.check();
+        },
+        actions: {
+          logout: function() {
+            var thiz;
+            thiz = this;
+            me.auth.logout().then(function() {
+              thiz.controllerFor('application').set('model', {});
+              return thiz.transitionTo('index');
+            }, function(errors) {
+              return false;
+            });
+            return false;
+          }
         }
       });
       App.IndexRoute = Ember.Route.extend({

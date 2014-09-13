@@ -9,6 +9,17 @@ define ['jquery', 'me',
 				@resource 'questions', ->
 					@route 'new'
 
+			App.QuestionsRoute = Ember.Route.extend
+				beforeModel: ->
+					thiz = @
+					me.auth.check().then (user) ->
+						#done
+						if !user?
+							thiz.transitionTo 'login'
+					, (errors) ->
+						#fail
+						thiz.transitionTo 'login'
+
 
 			#m
 

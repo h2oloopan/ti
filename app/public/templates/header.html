@@ -18,7 +18,7 @@
 					{{#if model.username}}
 					<li><a>Welcome back, {{model.username}}</a></li>
 					<li class="divider"></li>
-					<li><a>Logout</a></li>
+					<li><a href="" {{action "logout"}}>Logout</a></li>
 					{{else}}
 					<li>{{#link-to "login"}}Login{{/link-to}}</li>
 					{{/if}}
