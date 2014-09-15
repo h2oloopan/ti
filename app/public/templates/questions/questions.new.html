@@ -7,13 +7,12 @@
 				<div class="form-group">
 					<label>Question</label>
 					<div>
-						Preview
-						<div id="math-preview"></div>
-						<div id="math-buffer"></div>
+						<div id="math-preview" class="math-preview" style="visibility: hidden;"></div>
+						<div id="math-buffer" class="math-preview"></div>
 					</div>
-
-					<textarea id="math-input" class="form-control" style="width:100%" rows="5" onkeyup="Preview.update()"></textarea>
+					<textarea id="math-input" {{bind-attr value=model.question}} class="form-control" style="width:100%" rows="5" {{action "updateMath" on="keyUp"}}></textarea>
 				</div>
+				<button type="submit" class="btn btn-primary" {{action "add"}}>Add</button>
 			</form>
 		</div>
 	</div>
