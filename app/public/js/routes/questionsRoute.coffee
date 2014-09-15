@@ -1,4 +1,4 @@
-define ['jquery', 'me',
+define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
 'ehbs!templates/questions/questions.index',
 'ehbs!templates/questions/questions.new'], 
 ($, me) ->
@@ -24,18 +24,46 @@ define ['jquery', 'me',
 			#m
 
 			#v
-			###
-			App.QuestionsNewView = Ember.View.extend
+			
+			App.QuestionsNewController = Ember.ObjectController.extend
 				didInsertElement: ->
 					@_super()
-					tinyMCE.init
-    					theme: 'advanced'
-    					mode: 'textareas'
-    					plugins: 'latex'
-    					theme_advanced_buttons1: 'latex'
-    					theme_advanced_buttons2: ''
-    					theme_advanced_buttons3: ''
-    		###
+					Preview = 
+						delay: 150
+						preview: null
+						buffer: null
+						timeout: null
+						mjRunning: false
+						oldText: null
+						init: ->
+							@preview = document.getElementById 'math-preview'
+							@buffer = document.getElementById 'math-buffer'
+						swapBuffers: ->
+							buffer = @preview
+							preview = @buffer
+							buffer.style.visibility = 'hidden'
+							buffer.style.position = 'absolute'
+							preview.style.position = ''
+							preview.style.visibility = ''
+						update: ->
+							if @timeout then clearTimeout @timeout
+							@timeout = setTimeout @callback, @delay
+						createPreview: ->
+							Preview.timeout = null
+							if @mjRunning then return
+							text = document.getElementById('math-input').value
+							if text == @oldtext then return
+							@buffer.innerHTML = @oldtext = text
+							@mjRunning = true
+							MathJax.Hub.Queue ['Typeset', MathJax.Hub, @buffer], ['previewDone', @]
+						previewDone: ->
+							@mjRunning = false
+							@swapBuffers()
+
+					Preview.callback = MathJax.Callback ['createPreview', Preview]
+					Preview.callback.autoReset = true
+
+    		
 
 
 	return QuestionsRoute

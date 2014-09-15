@@ -49,5 +49,25 @@ exports.init = ->
 					else
 						console.log 'user user created'
 
+	addSchool = ->
+		#add uw for testing
+		school =
+			name: 'University of Waterloo'
+
+		model = me.getModel 'School'
+		model.findOne
+			name: 'University of Waterloo'
+		, (err, result) ->
+			if err
+				console.log err
+			else if !result?
+				school = new model school
+				school.save (err, result) ->
+					if err
+						console.log err
+					else
+						console.log 'school UW created'
+
 	addAdmin()
 	addUser()
+	addSchool()

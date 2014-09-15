@@ -6,8 +6,13 @@
 			<form role="form">
 				<div class="form-group">
 					<label>Question</label>
-					<div>Preview</div>
-					<textarea class="form-control" style="width:100%" rows="5"></textarea>
+					<div>
+						Preview
+						<div id="math-preview"></div>
+						<div id="math-buffer"></div>
+					</div>
+
+					<textarea id="math-input" class="form-control" style="width:100%" rows="5" onkeyup="Preview.update()"></textarea>
 				</div>
 			</form>
 		</div>
