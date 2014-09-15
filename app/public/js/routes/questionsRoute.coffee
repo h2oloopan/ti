@@ -1,5 +1,5 @@
 define ['jquery', 'me',
-'tinymce/tiny_mce',
+'ehbs!templates/questions/questions.index',
 'ehbs!templates/questions/questions.new'], 
 ($, me) ->
 	QuestionsRoute = 
@@ -24,6 +24,7 @@ define ['jquery', 'me',
 			#m
 
 			#v
+			###
 			App.QuestionsNewView = Ember.View.extend
 				didInsertElement: ->
 					@_super()
@@ -34,6 +35,7 @@ define ['jquery', 'me',
     					theme_advanced_buttons1: 'latex'
     					theme_advanced_buttons2: ''
     					theme_advanced_buttons3: ''
+    		###
 
 
 	return QuestionsRoute
