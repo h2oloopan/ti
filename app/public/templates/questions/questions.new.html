@@ -5,12 +5,16 @@
 		<div>
 			<form role="form">
 				<div class="form-group">
+					<label>School</label>
+					{{view Ember.Select classNames="form-control" content=schools optionLabelPath="content.name" selection=question.school}}
+				</div>
+				<div class="form-group">
 					<label>Question</label>
 					<div>
 						<div id="math-preview" class="math-preview" style="visibility: hidden;"></div>
 						<div id="math-buffer" class="math-preview"></div>
 					</div>
-					{{textarea id="math-input" value=model.question class="form-control" style="width:100%" rows="5"}}
+					{{textarea id="math-input" value=question.question class="form-control" style="width:100%" rows="5"}}
 				</div>
 				<button type="submit" class="btn btn-primary" {{action "add"}}>Add</button>
 			</form>

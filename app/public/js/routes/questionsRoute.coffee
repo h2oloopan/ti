@@ -25,7 +25,17 @@ define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
 
 			App.QuestionsNewRoute = Ember.Route.extend
 				model: ->
-					return @store.createRecord 'question', {}
+					thiz = @
+					return new Ember.RSVP.Promise (resolve, reject) ->
+						new Ember.RSVP.hash
+							question: thiz.store.createRecord 'question', {}
+							schools: thiz.store.find 'school'
+						.then (result) ->
+							resolve
+								question: result.question
+								schools: result.schools
+						, (errors) ->
+							reject errors
 
 
 			#m
@@ -78,12 +88,13 @@ define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
 						@mjRunning = false
 						@swapBuffers()
 				actions:
-					updateMath: ->
-						@Preview.update()
 					add: ->
-						console.log @get('model')
-
-					
+						thiz = @
+						question = @get 'question'
+						result = question.validate()
+						if !result then return false
+						alert 'pass'
+						
 
     		
 

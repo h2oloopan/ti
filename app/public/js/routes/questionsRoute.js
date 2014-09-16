@@ -24,7 +24,21 @@ define(['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML', '
       });
       App.QuestionsNewRoute = Ember.Route.extend({
         model: function() {
-          return this.store.createRecord('question', {});
+          var thiz;
+          thiz = this;
+          return new Ember.RSVP.Promise(function(resolve, reject) {
+            return new Ember.RSVP.hash({
+              question: thiz.store.createRecord('question', {}),
+              schools: thiz.store.find('school')
+            }).then(function(result) {
+              return resolve({
+                question: result.question,
+                schools: result.schools
+              });
+            }, function(errors) {
+              return reject(errors);
+            });
+          });
         }
       });
       App.QuestionsNewView = Ember.View.extend({
@@ -87,11 +101,15 @@ define(['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML', '
           }
         },
         actions: {
-          updateMath: function() {
-            return this.Preview.update();
-          },
           add: function() {
-            return console.log(this.get('model'));
+            var question, result, thiz;
+            thiz = this;
+            question = this.get('question');
+            result = question.validate();
+            if (!result) {
+              return false;
+            }
+            return alert('pass');
           }
         }
       });
