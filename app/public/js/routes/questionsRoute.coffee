@@ -40,6 +40,10 @@ define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
 					Preview.callback = MathJax.Callback ['createPreview', Preview]
 					Preview.callback.autoReset = true
 
+					#bind keyup event to textarea
+					$('#math-input').keyup ->
+						Preview.update()
+
 			#c
 			App.QuestionsNewController = Ember.ObjectController.extend
 				Preview:
