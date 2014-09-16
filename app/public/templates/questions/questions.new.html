@@ -3,15 +3,16 @@
 		<h2>Add New Question</h2>
 		<br/>
 		<div>
-			<form role="form">
+			<form role="form" class="question-form">
 				<div class="form-group">
 					<label>School</label>
 					{{view Ember.Select classNames="form-control" content=schools optionLabelPath="content.name" selection=question.school}}
 				</div>
 				<div class="form-group">
 					<label>Question</label>
+					<p class="text-danger">{{question.errors.question}}</p>
 					<div>
-						<div id="math-preview" class="math-preview" style="visibility: hidden;"></div>
+						<div id="math-preview" class="math-preview" style="visibility: hidden; display: none;"></div>
 						<div id="math-buffer" class="math-preview"></div>
 					</div>
 					{{textarea id="math-input" value=question.question class="form-control" style="width:100%" rows="5"}}

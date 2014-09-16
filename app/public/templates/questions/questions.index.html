@@ -4,5 +4,32 @@
 		<div>
 			{{#link-to "questions.new" class="btn btn-success"}}Add New{{/link-to}}
 		</div>
+		<br/>
+		<div>
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>School</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{{#each question in controller}}
+						<tr>
+							<td>
+								{{question.id}}
+							</td>
+							<td>
+								{{question.school.name}}
+							</td>
+							<td>
+								Something
+							</td>
+						</tr>
+					{{/each}}
+				</tbody>
+			</table>
+		</div>
 	</div>
 </div>

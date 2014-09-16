@@ -20,7 +20,16 @@ define(['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML', '
           }, function(errors) {
             return thiz.transitionTo('login');
           });
+        },
+        model: function() {
+          return this.store.find('question');
         }
+      });
+      App.QuestionsController = Ember.ArrayController.extend({
+        itemController: 'question'
+      });
+      App.QuestionController = Ember.ObjectController.extend({
+        needs: 'questions'
       });
       App.QuestionsNewRoute = Ember.Route.extend({
         model: function() {
@@ -109,7 +118,12 @@ define(['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML', '
             if (!result) {
               return false;
             }
-            return alert('pass');
+            question.save().then(function() {
+              return thiz.transitionToRoute('questions');
+            }, function(errors) {
+              return console.log(errors);
+            });
+            return false;
           }
         }
       });

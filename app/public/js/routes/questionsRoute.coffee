@@ -21,6 +21,15 @@ define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
 					, (errors) ->
 						#fail
 						thiz.transitionTo 'login'
+				model: ->
+					return @store.find 'question'
+
+			App.QuestionsController = Ember.ArrayController.extend
+				itemController: 'question'
+
+			App.QuestionController = Ember.ObjectController.extend
+				needs: 'questions'
+
 
 
 			App.QuestionsNewRoute = Ember.Route.extend
@@ -93,7 +102,13 @@ define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
 						question = @get 'question'
 						result = question.validate()
 						if !result then return false
-						alert 'pass'
+						question.save().then ->
+							#done
+							thiz.transitionToRoute 'questions'
+						, (errors) ->
+							#fail
+							console.log errors
+						return false
 						
 
     		
