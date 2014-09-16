@@ -31,9 +31,9 @@ define(['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&del
         }
       });
       App.QuestionsIndexController = Ember.ArrayController.extend({
-        itemController: 'question'
+        itemController: 'questionItem'
       });
-      App.QuestionController = Ember.ObjectController.extend({
+      App.QuestionItemController = Ember.ObjectController.extend({
         needs: 'questionsIndex',
         actions: {
           "delete": function(question) {
@@ -47,6 +47,111 @@ define(['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&del
                 return alert(errors.responseText);
               });
             }
+            return false;
+          }
+        }
+      });
+      App.QuestionEditRoute = Ember.Route.extend({
+        model: function() {
+          var qid, thiz;
+          thiz = this;
+          qid = this.modelFor('question').id;
+          return new Ember.RSVP.Promise(function(resolve, reject) {
+            return new Ember.RSVP.hash({
+              question: thiz.store.find('question', qid),
+              schools: thiz.store.find('school')
+            }).then(function(result) {
+              return resolve({
+                question: result.question,
+                schools: result.schools
+              });
+            }, function(errors) {
+              return reject(errors);
+            });
+          });
+        }
+      });
+      App.QuestionEditView = Ember.View.extend({
+        didInsertElement: function() {
+          var Preview;
+          this._super();
+          MathJax.Hub.Config({
+            tex2jax: {
+              inlineMath: [['$', '$'], ['\\(', '\\)']]
+            }
+          });
+          MathJax.Hub.Configured();
+          Preview = this.controller.get('Preview');
+          Preview.init();
+          Preview.callback = MathJax.Callback(['createPreview', Preview]);
+          Preview.callback.autoReset = true;
+          Preview.update();
+          return $('#math-input').keyup(function() {
+            return Preview.update();
+          });
+        }
+      });
+      App.QuestionEditController = Ember.ObjectController.extend({
+        Preview: {
+          delay: 150,
+          preview: null,
+          buffer: null,
+          timeout: null,
+          mjRunning: false,
+          oldText: null,
+          init: function() {
+            this.preview = document.getElementById('math-preview');
+            return this.buffer = document.getElementById('math-buffer');
+          },
+          swapBuffers: function() {
+            var buffer, preview;
+            buffer = this.preview;
+            preview = this.buffer;
+            buffer.style.visibility = 'hidden';
+            buffer.style.position = 'absolute';
+            preview.style.position = '';
+            return preview.style.visibility = '';
+          },
+          update: function() {
+            if (this.timeout) {
+              clearTimeout(this.timeout);
+            }
+            return this.timeout = setTimeout(this.callback, this.delay);
+          },
+          createPreview: function() {
+            var text;
+            this.timeout = null;
+            if (this.mjRunning) {
+              return;
+            }
+            text = document.getElementById('math-input').value;
+            if (text === this.oldtext) {
+              return;
+            }
+            this.buffer.innerHTML = this.oldtext = text;
+            this.mjRunning = true;
+            return MathJax.Hub.Queue(['Typeset', MathJax.Hub, this.buffer], ['previewDone', this]);
+          },
+          previewDone: function() {
+            this.mjRunning = false;
+            return this.swapBuffers();
+          }
+        },
+        actions: {
+          save: function() {
+            var question, result, thiz;
+            thiz = this;
+            question = this.get('question');
+            result = question.validate();
+            if (!result) {
+              return false;
+            }
+            question.save().then(function() {
+              return thiz.transitionToRoute('questions');
+            }, function(errors) {
+              console.log(errors);
+              return alert(errors);
+            });
             return false;
           }
         }
@@ -147,7 +252,8 @@ define(['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&del
             question.save().then(function() {
               return thiz.transitionToRoute('questions');
             }, function(errors) {
-              return console.log(errors);
+              console.log(errors);
+              return alert(errors);
             });
             return false;
           }

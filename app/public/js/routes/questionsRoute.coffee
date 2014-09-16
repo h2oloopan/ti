@@ -28,9 +28,9 @@ define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&del
 					return @store.find 'question'
 
 			App.QuestionsIndexController = Ember.ArrayController.extend
-				itemController: 'question'
+				itemController: 'questionItem'
 
-			App.QuestionController = Ember.ObjectController.extend
+			App.QuestionItemController = Ember.ObjectController.extend
 				needs: 'questionsIndex'
 				actions:
 					delete: (question) ->
@@ -45,6 +45,90 @@ define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&del
 								alert errors.responseText
 						return false
 
+
+			App.QuestionEditRoute = Ember.Route.extend
+				model: ->
+					thiz = @
+					qid = @modelFor('question').id
+					return new Ember.RSVP.Promise (resolve, reject) ->
+						new Ember.RSVP.hash
+							question: thiz.store.find 'question', qid
+							schools: thiz.store.find 'school'
+						.then (result) ->
+							resolve
+								question: result.question
+								schools: result.schools
+						, (errors) ->
+							reject errors
+
+			App.QuestionEditView = Ember.View.extend
+				didInsertElement: ->
+					@_super()
+
+					MathJax.Hub.Config 
+						tex2jax: 
+							inlineMath: [['$','$'],['\\(','\\)']]
+  					
+					MathJax.Hub.Configured()
+
+					Preview = @controller.get 'Preview'
+					Preview.init()
+					Preview.callback = MathJax.Callback ['createPreview', Preview]
+					Preview.callback.autoReset = true
+					Preview.update()
+
+					#bind keyup event to textarea
+					$('#math-input').keyup ->
+						Preview.update()
+
+
+
+			App.QuestionEditController = Ember.ObjectController.extend
+				Preview:
+					delay: 150
+					preview: null
+					buffer: null
+					timeout: null
+					mjRunning: false
+					oldText: null
+					init: ->
+						@preview = document.getElementById 'math-preview'
+						@buffer = document.getElementById 'math-buffer'
+					swapBuffers: ->
+						buffer = @preview
+						preview = @buffer
+						buffer.style.visibility = 'hidden'
+						buffer.style.position = 'absolute'
+						preview.style.position = ''
+						preview.style.visibility = ''
+					update: ->
+						if @timeout then clearTimeout @timeout
+						@timeout = setTimeout @callback, @delay
+					createPreview: ->
+						@timeout = null
+						if @mjRunning then return
+						text = document.getElementById('math-input').value
+						if text == @oldtext then return
+						@buffer.innerHTML = @oldtext = text
+						@mjRunning = true
+						MathJax.Hub.Queue ['Typeset', MathJax.Hub, @buffer], ['previewDone', @]
+					previewDone: ->
+						@mjRunning = false
+						@swapBuffers()
+				actions:
+					save: ->
+						thiz = @
+						question = @get 'question'
+						result = question.validate()
+						if !result then return false
+						question.save().then ->
+							#done
+							thiz.transitionToRoute 'questions'
+						, (errors) ->
+							#fail
+							console.log errors
+							alert errors
+						return false
 
 
 			App.QuestionsNewRoute = Ember.Route.extend
@@ -61,10 +145,6 @@ define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&del
 						, (errors) ->
 							reject errors
 			
-
-			#m
-
-			#v
 			
 			App.QuestionsNewView = Ember.View.extend
 				didInsertElement: ->
@@ -131,6 +211,7 @@ define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&del
 						, (errors) ->
 							#fail
 							console.log errors
+							alert errors
 						return false
 						
 
