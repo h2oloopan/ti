@@ -1,4 +1,4 @@
-define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&delayStartupUntil=configured',
+define ['jquery', 'me', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
 'ehbs!templates/questions/question.edit',
 'ehbs!templates/questions/questions.index',
 'ehbs!templates/questions/questions.new'], 
@@ -47,6 +47,11 @@ define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&del
 						return false
 					view: (question) ->
 						@set 'controllers.questionsIndex.preview', question
+						math = document.getElementById 'modal-math'
+						math.innerHTML = question.get 'question'
+						
+						MathJax.Hub.Queue ['Typeset', MathJax.Hub, math]
+
 						$('.modal').modal()
 						return false
 
@@ -69,12 +74,6 @@ define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&del
 			App.QuestionEditView = Ember.View.extend
 				didInsertElement: ->
 					@_super()
-
-					MathJax.Hub.Config 
-						tex2jax: 
-							inlineMath: [['$','$'],['\\(','\\)']]
-  					
-					MathJax.Hub.Configured()
 
 					Preview = @controller.get 'Preview'
 					Preview.init()
@@ -154,12 +153,6 @@ define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&del
 			App.QuestionsNewView = Ember.View.extend
 				didInsertElement: ->
 					@_super()
-
-					MathJax.Hub.Config 
-						tex2jax: 
-							inlineMath: [['$','$'],['\\(','\\)']]
-  					
-					MathJax.Hub.Configured()
 
 					Preview = @controller.get 'Preview'
 					Preview.init()
