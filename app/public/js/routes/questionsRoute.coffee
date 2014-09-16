@@ -1,4 +1,5 @@
-define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&delayStartupUntil=configured'
+define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&delayStartupUntil=configured',
+'ehbs!templates/questions/question.edit'
 'ehbs!templates/questions/questions.index',
 'ehbs!templates/questions/questions.new'], 
 ($, me) ->
@@ -10,6 +11,8 @@ define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&del
 			App.Router.map ->
 				@resource 'questions', ->
 					@route 'new'
+				@resource 'question', {path: '/question/:question_id'}, ->
+					@route 'edit'
 
 			App.QuestionsRoute = Ember.Route.extend
 				beforeModel: ->
