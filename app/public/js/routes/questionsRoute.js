@@ -31,6 +31,7 @@ define(['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&del
         }
       });
       App.QuestionsIndexController = Ember.ArrayController.extend({
+        preview: {},
         itemController: 'questionItem'
       });
       App.QuestionItemController = Ember.ObjectController.extend({
@@ -47,6 +48,11 @@ define(['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&del
                 return alert(errors.responseText);
               });
             }
+            return false;
+          },
+          view: function(question) {
+            this.set('controllers.questionsIndex.preview', question);
+            $('.modal').modal();
             return false;
           }
         }

@@ -28,6 +28,7 @@ define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&del
 					return @store.find 'question'
 
 			App.QuestionsIndexController = Ember.ArrayController.extend
+				preview: {}
 				itemController: 'questionItem'
 
 			App.QuestionItemController = Ember.ObjectController.extend
@@ -43,6 +44,10 @@ define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&del
 								#fail
 								question.rollback()
 								alert errors.responseText
+						return false
+					view: (question) ->
+						@set 'controllers.questionsIndex.preview', question
+						$('.modal').modal()
 						return false
 
 

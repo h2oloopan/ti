@@ -39,3 +39,7 @@ body {
 	font-size: 0.8em;
 	margin: 0;
 }
+
+.modal-dialog {
+	margin-top: 100px;
+}
