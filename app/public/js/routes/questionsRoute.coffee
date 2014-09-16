@@ -1,6 +1,6 @@
 define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&delayStartupUntil=configured',
-'ehbs!templates/questions/question.edit'
-'ehbs!templates/questions/questions',
+'ehbs!templates/questions/question.edit',
+'ehbs!templates/questions/questions.index',
 'ehbs!templates/questions/questions.new'], 
 ($, me) ->
 	QuestionsRoute = 
@@ -14,7 +14,7 @@ define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&del
 				@resource 'question', {path: '/question/:question_id'}, ->
 					@route 'edit'
 
-			App.QuestionsRoute = Ember.Route.extend
+			App.QuestionsIndexRoute = Ember.Route.extend
 				beforeModel: ->
 					thiz = @
 					me.auth.check().then (user) ->
@@ -27,11 +27,11 @@ define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&del
 				model: ->
 					return @store.find 'question'
 
-			App.QuestionsController = Ember.ArrayController.extend
+			App.QuestionsIndexController = Ember.ArrayController.extend
 				itemController: 'question'
 
 			App.QuestionController = Ember.ObjectController.extend
-				needs: 'questions'
+				needs: 'questionsIndex'
 				actions:
 					delete: (question) ->
 						ans = confirm 'Do you want to delete question ' + question.id + '?'
@@ -60,11 +60,12 @@ define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&del
 								schools: result.schools
 						, (errors) ->
 							reject errors
-
+			
 
 			#m
 
 			#v
+			
 			App.QuestionsNewView = Ember.View.extend
 				didInsertElement: ->
 					@_super()
@@ -83,6 +84,7 @@ define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&del
 					#bind keyup event to textarea
 					$('#math-input').keyup ->
 						Preview.update()
+			
 
 			#c
 			App.QuestionsNewController = Ember.ObjectController.extend
