@@ -1,4 +1,4 @@
-define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
+define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&delayStartupUntil=configured'
 'ehbs!templates/questions/questions.index',
 'ehbs!templates/questions/questions.new'], 
 ($, me) ->
@@ -53,6 +53,12 @@ define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
 			App.QuestionsNewView = Ember.View.extend
 				didInsertElement: ->
 					@_super()
+
+					MathJax.Hub.Config 
+						tex2jax: 
+							inlineMath: [['$','$'],['\\(','\\)']]
+  					
+					MathJax.Hub.Configured()
 
 					Preview = @controller.get 'Preview'
 					Preview.init()

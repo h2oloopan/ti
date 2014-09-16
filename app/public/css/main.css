@@ -34,3 +34,8 @@ body {
 	font-size: 0.85em;
 	margin: 0;
 }
+
+.question-list .text-muted {
+	font-size: 0.8em;
+	margin: 0;
+}

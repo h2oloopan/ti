@@ -6,27 +6,35 @@
 		</div>
 		<br/>
 		<div>
-			<table class="table table-bordered">
+			<table class="table table-bordered question-list">
 				<thead>
 					<tr>
-						<th>ID</th>
+						<th style="width:20%;">ID</th>
 						<th>School</th>
-						<th>Actions</th>
+						<th>Snippet</th>
+						<th style="width:20%;">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
 					{{#each question in controller}}
-						<tr>
-							<td>
-								{{question.id}}
-							</td>
-							<td>
-								{{question.school.name}}
-							</td>
-							<td>
-								Something
-							</td>
-						</tr>
+						{{#unless question.isNew}}
+							<tr>
+								<td>
+									{{question.id}}
+								</td>
+								<td>
+									{{question.school.name}}
+								</td>
+								<td>
+									<p class="text-muted">
+										{{question.question}}
+									</p>
+								</td>
+								<td>
+									Something
+								</td>
+							</tr>
+						{{/unless}}
 					{{/each}}
 				</tbody>
 			</table>
