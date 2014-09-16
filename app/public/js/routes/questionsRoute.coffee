@@ -1,6 +1,6 @@
 define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&delayStartupUntil=configured',
 'ehbs!templates/questions/question.edit'
-'ehbs!templates/questions/questions.index',
+'ehbs!templates/questions/questions',
 'ehbs!templates/questions/questions.new'], 
 ($, me) ->
 	QuestionsRoute = 
@@ -32,6 +32,18 @@ define ['jquery', 'me', '/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML&del
 
 			App.QuestionController = Ember.ObjectController.extend
 				needs: 'questions'
+				actions:
+					delete: (question) ->
+						ans = confirm 'Do you want to delete question ' + question.id + '?'
+						if ans
+							question.destroyRecord().then ->
+								#done
+								return true
+							, (errors) ->
+								#fail
+								question.rollback()
+								alert errors.responseText
+						return false
 
 
 
