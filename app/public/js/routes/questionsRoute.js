@@ -209,6 +209,14 @@ define(['jquery', 'me', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML', 'e
         }
       });
       return App.QuestionsNewController = Ember.ObjectController.extend({
+        subjects: (function() {
+          var school;
+          school = this.get('question.school');
+          if (school == null) {
+            return [];
+          }
+          return school.toJSON().subjects;
+        }).property('question.school'),
         Preview: {
           delay: 150,
           preview: null,

@@ -32,14 +32,14 @@ module.exports = {
         type: Schema.Types.ObjectId,
         ref: 'School'
       },
-      term: {
-        type: Number
-      },
       subject: {
-        type: Number
+        type: String
+      },
+      term: {
+        type: String
       },
       "class": {
-        type: Number
+        type: String
       }
     },
     validationMessages: {

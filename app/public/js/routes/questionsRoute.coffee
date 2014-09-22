@@ -148,6 +148,7 @@ define ['jquery', 'me', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
 				preview: {}
 				itemController: 'questionItem'
 
+			#m
 			App.QuestionsNewRoute = Ember.Route.extend
 				model: ->
 					thiz = @
@@ -162,7 +163,7 @@ define ['jquery', 'me', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
 						, (errors) ->
 							reject errors
 			
-			
+			#v
 			App.QuestionsNewView = Ember.View.extend
 				didInsertElement: ->
 					@_super()
@@ -179,6 +180,11 @@ define ['jquery', 'me', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
 
 			#c
 			App.QuestionsNewController = Ember.ObjectController.extend
+				subjects: ( ->
+					school = @get 'question.school'
+					if !school? then return []
+					return JSON.parse(school.toJSON().info)subjects
+				).property 'question.school'
 				Preview:
 					delay: 150
 					preview: null
