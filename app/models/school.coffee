@@ -10,6 +10,7 @@ module.exports =
 				type: Schema.Types.Mixed
 				default: {}
 			#info example, see configurations folder for real stuff
+			#assume everything is string to cater to different schools
 			###
 			info: {
 				subjects: [
@@ -22,7 +23,7 @@ module.exports =
 								code: '1149'
 								classes: [
 									name: 'Calculus 1 for Honours Math'
-									number: 137
+									number: '137'
 								]
 							}
 						]

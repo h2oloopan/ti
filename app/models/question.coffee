@@ -22,7 +22,6 @@ module.exports =
 			flag:
 				type: Number
 
-
 			#relationship
 			school:
 				type: Schema.Types.ObjectId
