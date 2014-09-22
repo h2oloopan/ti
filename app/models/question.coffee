@@ -8,7 +8,7 @@ module.exports =
 				required: true
 			hint:
 				type: String
-			answer:
+			solution:
 				type: String
 			summary:
 				type: String

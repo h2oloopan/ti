@@ -13,7 +13,7 @@ module.exports = {
       hint: {
         type: String
       },
-      answer: {
+      solution: {
         type: String
       },
       summary: {
