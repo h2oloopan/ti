@@ -5,8 +5,6 @@ define ['jquery', 'me', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
 ($, me) ->
 	QuestionsRoute = 
 		setup: (App) ->
-			me.attach App, ['Question', 'School']
-
 			#route
 			App.Router.map ->
 				@resource 'questions', ->

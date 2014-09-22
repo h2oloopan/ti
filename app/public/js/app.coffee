@@ -5,7 +5,7 @@ define ['me', 'routes/questionsRoute',
 	app =
 		start: ->
 			App = Ember.Application.create()
-			me.attach App, ['User']
+			me.attach App, ['User', 'Question', 'School']
 			
 			App.Router.map ->
 				@route 'login'

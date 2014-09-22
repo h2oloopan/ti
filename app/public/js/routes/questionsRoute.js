@@ -3,7 +3,6 @@ define(['jquery', 'me', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML', 'e
   var QuestionsRoute;
   QuestionsRoute = {
     setup: function(App) {
-      me.attach(App, ['Question', 'School']);
       App.Router.map(function() {
         this.resource('questions', function() {
           return this.route('new');

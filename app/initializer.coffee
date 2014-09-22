@@ -53,6 +53,7 @@ exports.init = ->
 		#add uw for testing
 		school =
 			name: 'University of Waterloo'
+			info: require('./configurations/uwaterloo').info
 
 		model = me.getModel 'School'
 		model.findOne

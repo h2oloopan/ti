@@ -5,7 +5,7 @@ define(['me', 'routes/questionsRoute', 'ehbs!templates/header', 'ehbs!templates/
     start: function() {
       var App;
       App = Ember.Application.create();
-      me.attach(App, ['User']);
+      me.attach(App, ['User', 'Question', 'School']);
       App.Router.map(function() {
         this.route('login');
         return this.route('signup');
