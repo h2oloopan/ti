@@ -14,7 +14,6 @@ define ['jquery', 'me', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
 				@resource 'question', {path: '/question/:question_id'}, ->
 					@route 'edit'
 
-###safe guard
 			App.QuestionsRoute = Ember.Route.extend
 				beforeModel: ->
 					thiz = @
@@ -36,7 +35,6 @@ define ['jquery', 'me', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
 					, (errors) ->
 						@fail
 						thiz.transitionTo 'login'
-###
 
 			
 #question

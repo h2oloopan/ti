@@ -42,15 +42,6 @@ define(['jquery', 'me', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML', 'e
           });
         }
       });
-      App.QuestionsIndexRoute = Ember.Route.extend({
-        model: function() {
-          return this.store.find('question');
-        }
-      });
-      App.QuestionsIndexController = Ember.ArrayController.extend({
-        preview: {},
-        itemController: 'questionItem'
-      });
       App.QuestionItemController = Ember.ObjectController.extend({
         needs: 'questionsIndex',
         actions: {
@@ -176,6 +167,15 @@ define(['jquery', 'me', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML', 'e
             return false;
           }
         }
+      });
+      App.QuestionsIndexRoute = Ember.Route.extend({
+        model: function() {
+          return this.store.find('question');
+        }
+      });
+      App.QuestionsIndexController = Ember.ArrayController.extend({
+        preview: {},
+        itemController: 'questionItem'
       });
       App.QuestionsNewRoute = Ember.Route.extend({
         model: function() {
