@@ -14,7 +14,8 @@ define ['jquery', 'me', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
 				@resource 'question', {path: '/question/:question_id'}, ->
 					@route 'edit'
 
-			App.QuestionsIndexRoute = Ember.Route.extend
+###safe guard
+			App.QuestionsRoute = Ember.Route.extend
 				beforeModel: ->
 					thiz = @
 					me.auth.check().then (user) ->
@@ -22,15 +23,23 @@ define ['jquery', 'me', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
 						if !user?
 							thiz.transitionTo 'login'
 					, (errors) ->
-						#fail
+						@fail
 						thiz.transitionTo 'login'
-				model: ->
-					return @store.find 'question'
 
-			App.QuestionsIndexController = Ember.ArrayController.extend
-				preview: {}
-				itemController: 'questionItem'
+			App.QuestionRoute = Ember.Route.extend
+				beforeModel: ->
+					thiz = @
+					me.auth.check().then (user) ->
+						#done
+						if !user?
+							thiz.transitionTo 'login'
+					, (errors) ->
+						@fail
+						thiz.transitionTo 'login'
+###
 
+			
+#question
 			App.QuestionItemController = Ember.ObjectController.extend
 				needs: 'questionsIndex'
 				actions:
@@ -134,6 +143,14 @@ define ['jquery', 'me', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
 							alert errors
 						return false
 
+#questions
+			App.QuestionsIndexRoute = Ember.Route.extend
+				model: ->
+					return @store.find 'question'
+
+			App.QuestionsIndexController = Ember.ArrayController.extend
+				preview: {}
+				itemController: 'questionItem'
 
 			App.QuestionsNewRoute = Ember.Route.extend
 				model: ->
