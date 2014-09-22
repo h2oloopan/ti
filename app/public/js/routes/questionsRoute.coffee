@@ -180,11 +180,25 @@ define ['jquery', 'me', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
 
 			#c
 			App.QuestionsNewController = Ember.ObjectController.extend
+				difficulties: [1, 2, 3, 4, 5]
 				subjects: ( ->
 					school = @get 'question.school'
 					if !school? then return []
-					return JSON.parse(school.toJSON().info)subjects
+					@set 'question.subject', school.toJSON().info.subjects[0]
+					return school.toJSON().info.subjects
 				).property 'question.school'
+				terms: ( ->
+					subject = @get 'question.subject'
+					if !subject? then return []
+					@set 'question.term', subject.terms[0]
+					return subject.terms
+				).property 'question.subject'
+				courses: ( ->
+					term = @get 'question.term'
+					if !term? then return []
+					@set 'question.course', term.courses[0]
+					return term.courses
+				).property 'question.term'
 				Preview:
 					delay: 150
 					preview: null
@@ -216,10 +230,20 @@ define ['jquery', 'me', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
 					previewDone: ->
 						@mjRunning = false
 						@swapBuffers()
+				prepare: (question) ->
+					another = question.toJSON()
+					another.subject = question.get('subject.code')
+					another.term = question.get('term.name')
+					another.course = question.get('course.number')
+					another = @store.createRecord 'Question', another
+					another.set 'school', question.get('school')
+					return another
 				actions:
 					add: ->
 						thiz = @
-						question = @get 'question'
+						question = @prepare(@get 'question')
+						console.log question
+						return false
 						result = question.validate()
 						if !result then return false
 						question.save().then ->

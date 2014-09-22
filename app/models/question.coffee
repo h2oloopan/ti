@@ -30,7 +30,7 @@ module.exports =
 				type: String
 			term:
 				type: String
-			class:
+			course:
 				type: String
 
 		validationMessages:
