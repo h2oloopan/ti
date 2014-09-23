@@ -68,6 +68,14 @@ exports.init = ->
 						console.log err
 					else
 						console.log 'school UW created'
+			else
+				#update
+				result.info = school.info
+				result.save (err, result) ->
+					if err
+						console.log err
+					else
+						console.log 'school UW updated'
 
 	addAdmin()
 	addUser()

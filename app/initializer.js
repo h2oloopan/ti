@@ -86,6 +86,15 @@ exports.init = function() {
             return console.log('school UW created');
           }
         });
+      } else {
+        result.info = school.info;
+        return result.save(function(err, result) {
+          if (err) {
+            return console.log(err);
+          } else {
+            return console.log('school UW updated');
+          }
+        });
       }
     });
   };
