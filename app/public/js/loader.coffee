@@ -10,6 +10,8 @@ require.config
 		mj: '/js/MathJax'
 	shim:
 		'bootstrap': ['jquery']
+		'jquery.hotkeys': ['jquery']
+		'bootstrap-wysiwyg': ['bootstrap', 'jquery', 'jquery.hotkeys']
 		'ember': ['handlebars', 'jquery']
 		'ember-data': ['ember']
 		'app': ['ember', 'ember-data', 'bootstrap']

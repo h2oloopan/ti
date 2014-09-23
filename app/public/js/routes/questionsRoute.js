@@ -200,21 +200,9 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
           var hintEditor, questionEditor, solutionEditor, summaryEditor;
           this._super();
           questionEditor = utils.createMathEditor($('#question-input'), $('#question-preview'));
-          $('#question-input').on('keyup', function() {
-            return questionEditor.update();
-          });
           hintEditor = utils.createMathEditor($('#hint-input'), $('#hint-preview'));
-          $('#hint-input').on('keyup', function() {
-            return hintEditor.update();
-          });
           solutionEditor = utils.createMathEditor($('#solution-input'), $('#solution-preview'));
-          $('#solution-input').on('keyup', function() {
-            return solutionEditor.update();
-          });
-          summaryEditor = utils.createMathEditor($('#summary-input'), $('#summary-preview'));
-          return $('#summary-input').on('keyup', function() {
-            return summaryEditor.update();
-          });
+          return summaryEditor = utils.createMathEditor($('#summary-input'), $('#summary-preview'));
         }
       });
       return App.QuestionsNewController = Ember.ObjectController.extend({

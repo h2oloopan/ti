@@ -169,21 +169,9 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 					@_super()
 					
 					questionEditor = utils.createMathEditor($('#question-input'), $('#question-preview'))
-					$('#question-input').on 'keyup', ->
-						questionEditor.update()
-
 					hintEditor = utils.createMathEditor($('#hint-input'), $('#hint-preview'))
-					$('#hint-input').on 'keyup', ->
-						hintEditor.update()
-
 					solutionEditor = utils.createMathEditor($('#solution-input'), $('#solution-preview'))
-					$('#solution-input').on 'keyup', ->
-						solutionEditor.update()
-
 					summaryEditor = utils.createMathEditor($('#summary-input'), $('#summary-preview'))
-					$('#summary-input').on 'keyup', ->
-						summaryEditor.update()
-			
 
 			#c
 			App.QuestionsNewController = Ember.ObjectController.extend
