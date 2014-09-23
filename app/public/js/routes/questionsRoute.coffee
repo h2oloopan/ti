@@ -90,11 +90,10 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 							break
 					fake.set 'course', course
 
-					console.log fake.toJSON()
-
 			App.QuestionEditView = Ember.View.extend
 				didInsertElement: ->
 					@_super()
+
 					questionEditor = utils.createMathEditor($('#question-input'), $('#question-preview'))
 					hintEditor = utils.createMathEditor($('#hint-input'), $('#hint-preview'))
 					solutionEditor = utils.createMathEditor($('#solution-input'), $('#solution-preview'))
@@ -104,6 +103,7 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 					hintEditor.update()
 					solutionEditor.update()
 					summaryEditor.update()
+					
 
 
 			App.QuestionEditController = Ember.ObjectController.extend
@@ -135,17 +135,36 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 						@set 'question_fake.course', term.courses[0]
 					return term.courses
 				).property 'question_fake.term'
+				prepare: (question) ->
+					another = question.toJSON()
+					another.subject = question.get('subject.code')
+					another.term = question.get('term.name')
+					another.course = question.get('course.number')
+					another.question = $('#question-input').html()
+					another.hint = $('#hint-input').html()
+					another.solution = $('#solution-input').html()
+					another.summary = $('#summary-input').html()
+					another = @store.createRecord 'Question', another
+					another.set 'school', question.get('school')
 				actions:
 					save: ->
 						thiz = @
-						question = @get 'question'
-						result = question.validate()
+						question_fake = @prepare(@get 'question_fake')
+						result = question_fake.validate()
+						@set 'question_fake.errors', question_fake.errors
 						if !result then return false
+
+						question = @get 'question_real'
+						#copy fake to real
+						question.eachAttribute (name, meta) ->
+							question.set name, question_fake.get name
+
 						question.save().then ->
 							#done
 							thiz.transitionToRoute 'questions'
 						, (errors) ->
 							#fail
+							question.rollback
 							console.log errors
 							alert errors
 						return false
@@ -245,7 +264,6 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 					add: ->
 						thiz = @
 						question = @prepare(@get 'question')
-						console.log question
 						result = question.validate()
 						@set 'question.errors', question.errors
 						if !result then return false
@@ -254,6 +272,7 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 							thiz.transitionToRoute 'questions'
 						, (errors) ->
 							#fail
+							question.rollback()
 							console.log errors
 							alert errors
 						return false

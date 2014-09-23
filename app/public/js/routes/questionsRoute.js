@@ -105,8 +105,7 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
               break;
             }
           }
-          fake.set('course', course);
-          return console.log(fake.toJSON());
+          return fake.set('course', course);
         }
       });
       App.QuestionEditView = Ember.View.extend({
@@ -164,18 +163,37 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
           }
           return term.courses;
         }).property('question_fake.term'),
+        prepare: function(question) {
+          var another;
+          another = question.toJSON();
+          another.subject = question.get('subject.code');
+          another.term = question.get('term.name');
+          another.course = question.get('course.number');
+          another.question = $('#question-input').html();
+          another.hint = $('#hint-input').html();
+          another.solution = $('#solution-input').html();
+          another.summary = $('#summary-input').html();
+          another = this.store.createRecord('Question', another);
+          return another.set('school', question.get('school'));
+        },
         actions: {
           save: function() {
-            var question, result, thiz;
+            var question, question_fake, result, thiz;
             thiz = this;
-            question = this.get('question');
-            result = question.validate();
+            question_fake = this.prepare(this.get('question_fake'));
+            result = question_fake.validate();
+            this.set('question_fake.errors', question_fake.errors);
             if (!result) {
               return false;
             }
+            question = this.get('question_real');
+            question.eachAttribute(function(name, meta) {
+              return question.set(name, question_fake.get(name));
+            });
             question.save().then(function() {
               return thiz.transitionToRoute('questions');
             }, function(errors) {
+              question.rollback;
               console.log(errors);
               return alert(errors);
             });
@@ -299,7 +317,6 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
             var question, result, thiz;
             thiz = this;
             question = this.prepare(this.get('question'));
-            console.log(question);
             result = question.validate();
             this.set('question.errors', question.errors);
             if (!result) {
@@ -308,6 +325,7 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
             question.save().then(function() {
               return thiz.transitionToRoute('questions');
             }, function(errors) {
+              question.rollback();
               console.log(errors);
               return alert(errors);
             });
