@@ -53,6 +53,9 @@
 					<div id="summary-preview" class="math-preview"></div>
 					<div id="summary-input" class="math-input"></div>
 				</div>
+				<div class="form-group">
+					<p class="text-danger">{{question.errors.question}}</p>
+				</div>
 				<button type="submit" class="btn btn-primary" {{action "add"}}>Add</button>
 			</form>
 		</div>
