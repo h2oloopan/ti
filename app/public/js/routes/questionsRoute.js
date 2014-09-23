@@ -240,6 +240,10 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
           another.subject = question.get('subject.code');
           another.term = question.get('term.name');
           another.course = question.get('course.number');
+          another.question = $('#question-input').html();
+          another.hint = $('#hint-input').html();
+          another.solution = $('#solution-input').html();
+          another.summary = $('#summary-input').html();
           another = this.store.createRecord('Question', another);
           another.set('school', question.get('school'));
           return another;
@@ -250,8 +254,8 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
             thiz = this;
             question = this.prepare(this.get('question'));
             console.log(question);
-            return false;
             result = question.validate();
+            this.set('question.errors', question.errors);
             if (!result) {
               return false;
             }

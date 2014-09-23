@@ -9,9 +9,12 @@
 			<table class="table table-bordered question-list">
 				<thead>
 					<tr>
-						<th style="width:20%;">ID</th>
-						<th>School</th>
-						<th style="width:20%;">Actions</th>
+						<th style="width:200px;">School</th>
+						<th style="width:100px;">Term</th>
+						<th style="width:100px;">Subject</th>
+						<th style="width:100px;">Course</th>
+						<th style="width:250px;">Note</th>
+						<th>Actions</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -19,10 +22,19 @@
 						{{#unless question.isNew}}
 							<tr>
 								<td>
-									{{question.id}}
+									{{question.school.name}}
 								</td>
 								<td>
-									{{question.school.name}}
+									{{question.term}}
+								</td>
+								<td>
+									{{question.subject}}
+								</td>
+								<td>
+									{{question.course}}
+								</td>
+								<td>
+									{{question.note}}
 								</td>
 								<td>
 									

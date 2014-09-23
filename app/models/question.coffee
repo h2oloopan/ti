@@ -12,6 +12,8 @@ module.exports =
 				type: String
 			summary:
 				type: String
+			note:
+				type: String
 			tags:
 				type: [String]
 			difficulty: 

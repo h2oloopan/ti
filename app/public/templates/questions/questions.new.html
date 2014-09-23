@@ -25,6 +25,10 @@
 					{{view Ember.Select classNames="form-control" content=difficulties selection=question.difficulty}}
 				</div>
 				<div class="form-group">
+					<label>Note</label>
+					{{input name="note" class="form-control" value=question.note}}
+				</div>
+				<div class="form-group">
 					<label>Tags</label>
 					{{input name="tags" class="form-control" value=question.tags}}
 				</div>

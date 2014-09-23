@@ -199,6 +199,10 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 					another.subject = question.get('subject.code')
 					another.term = question.get('term.name')
 					another.course = question.get('course.number')
+					another.question = $('#question-input').html()
+					another.hint = $('#hint-input').html()
+					another.solution = $('#solution-input').html()
+					another.summary = $('#summary-input').html()
 					another = @store.createRecord 'Question', another
 					another.set 'school', question.get('school')
 					return another
@@ -207,8 +211,8 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 						thiz = @
 						question = @prepare(@get 'question')
 						console.log question
-						return false
 						result = question.validate()
+						@set 'question.errors', question.errors
 						if !result then return false
 						question.save().then ->
 							#done
