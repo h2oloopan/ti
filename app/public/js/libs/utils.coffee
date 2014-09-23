@@ -2,15 +2,23 @@ define ['jquery'], ($) ->
 	return utils = 
 		createMathEditor: (input, preview) ->
 
-			MathEditor = (input, preview) ->
-				@input = input
-				@preview = preview
-			
-				#private
-				delay = 150
-
-			MathEditor.prototype.update = ->
-
+			class MathEditor
+				constructor: (@input, @preview) ->
+				delay: 300
+				timeout: null
+				running: false
+				update: ->
+					thiz = @
+					if @timeout then clearTimeout @timeout
+					@timeout = setTimeout ->
+						if thiz.running then return
+						text = $(thiz.input).val()
+						$(thiz.preview).html text
+						thiz.running = true
+						MathJax.Hub.Queue ['Typeset', MathJax.Hub, $(thiz.dummy)[0]], ['done', thiz]
+					, @delay
+				done: ->
+					@running = false
 
 			return new MathEditor input, preview
 ###			

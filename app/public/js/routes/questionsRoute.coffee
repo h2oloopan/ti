@@ -1,8 +1,8 @@
-define ['jquery', 'me', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
+define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
 'ehbs!templates/questions/question.edit',
 'ehbs!templates/questions/questions.index',
 'ehbs!templates/questions/questions.new'], 
-($, me) ->
+($, me, utils) ->
 	QuestionsRoute = 
 		setup: (App) ->
 			#route
@@ -167,15 +167,22 @@ define ['jquery', 'me', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
 			App.QuestionsNewView = Ember.View.extend
 				didInsertElement: ->
 					@_super()
+					
+					questionEditor = utils.createMathEditor($('#question-input'), $('#question-preview'))
+					$('#question-input').on 'keyup', ->
+						questionEditor.update()
 
-					Preview = @controller.get 'Preview'
-					Preview.init()
-					Preview.callback = MathJax.Callback ['createPreview', Preview]
-					Preview.callback.autoReset = true
+					hintEditor = utils.createMathEditor($('#hint-input'), $('#hint-preview'))
+					$('#hint-input').on 'keyup', ->
+						hintEditor.update()
 
-					#bind keyup event to textarea
-					$('#math-input').keyup ->
-						Preview.update()
+					solutionEditor = utils.createMathEditor($('#solution-input'), $('#solution-preview'))
+					$('#solution-input').on 'keyup', ->
+						solutionEditor.update()
+
+					summaryEditor = utils.createMathEditor($('#summary-input'), $('#summary-preview'))
+					$('#summary-input').on 'keyup', ->
+						summaryEditor.update()
 			
 
 			#c
@@ -199,37 +206,6 @@ define ['jquery', 'me', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
 					@set 'question.course', term.courses[0]
 					return term.courses
 				).property 'question.term'
-				Preview:
-					delay: 150
-					preview: null
-					buffer: null
-					timeout: null
-					mjRunning: false
-					oldText: null
-					init: ->
-						@preview = document.getElementById 'math-preview'
-						@buffer = document.getElementById 'math-buffer'
-					swapBuffers: ->
-						buffer = @preview
-						preview = @buffer
-						buffer.style.visibility = 'hidden'
-						buffer.style.position = 'absolute'
-						preview.style.position = ''
-						preview.style.visibility = ''
-					update: ->
-						if @timeout then clearTimeout @timeout
-						@timeout = setTimeout @callback, @delay
-					createPreview: ->
-						@timeout = null
-						if @mjRunning then return
-						text = document.getElementById('math-input').value
-						if text == @oldtext then return
-						@buffer.innerHTML = @oldtext = text
-						@mjRunning = true
-						MathJax.Hub.Queue ['Typeset', MathJax.Hub, @buffer], ['previewDone', @]
-					previewDone: ->
-						@mjRunning = false
-						@swapBuffers()
 				prepare: (question) ->
 					another = question.toJSON()
 					another.subject = question.get('subject.code')
