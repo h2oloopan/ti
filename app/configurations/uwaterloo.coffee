@@ -9,6 +9,14 @@ exports.info =
 					code: '1149'
 					courses: [
 						{
+							number: '135'
+							name: 'Algebra for Honours Mathematics'
+						}
+						{
+							number: '136'
+							name: 'Linear Algebra 1 (Honours Mathematics)'
+						}
+						{
 							number: '137'
 							name: 'Calculus 1 for Honours Math'
 						}

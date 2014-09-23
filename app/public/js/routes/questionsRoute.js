@@ -63,19 +63,38 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
       });
       App.QuestionEditView = Ember.View.extend({
         didInsertElement: function() {
-          var Preview;
-          this._super();
-          Preview = this.controller.get('Preview');
-          Preview.init();
-          Preview.callback = MathJax.Callback(['createPreview', Preview]);
-          Preview.callback.autoReset = true;
-          Preview.update();
-          return $('#math-input').keyup(function() {
-            return Preview.update();
-          });
+          return this._super();
         }
       });
       App.QuestionEditController = Ember.ObjectController.extend({
+        difficulties: [1, 2, 3, 4, 5],
+        subjects: (function() {
+          var school;
+          school = this.get('question.school');
+          if (school == null) {
+            return [];
+          }
+          this.set('question.subject', school.toJSON().info.subjects[0]);
+          return school.toJSON().info.subjects;
+        }).property('question.school'),
+        terms: (function() {
+          var subject;
+          subject = this.get('question.subject');
+          if (subject == null) {
+            return [];
+          }
+          this.set('question.term', subject.terms[0]);
+          return subject.terms;
+        }).property('question.subject'),
+        courses: (function() {
+          var term;
+          term = this.get('question.term');
+          if (term == null) {
+            return [];
+          }
+          this.set('question.course', term.courses[0]);
+          return term.courses;
+        }).property('question.term'),
         actions: {
           save: function() {
             var question, result, thiz;

@@ -34,7 +34,8 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 						@fail
 						thiz.transitionTo 'login'
 	
-#question
+#question 
+#edit
 			App.QuestionEditRoute = Ember.Route.extend
 				model: ->
 					thiz = @
@@ -54,19 +55,27 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 				didInsertElement: ->
 					@_super()
 
-					Preview = @controller.get 'Preview'
-					Preview.init()
-					Preview.callback = MathJax.Callback ['createPreview', Preview]
-					Preview.callback.autoReset = true
-					Preview.update()
-
-					#bind keyup event to textarea
-					$('#math-input').keyup ->
-						Preview.update()
-
-
 
 			App.QuestionEditController = Ember.ObjectController.extend
+				difficulties: [1, 2, 3, 4, 5]
+				subjects: ( ->
+					school = @get 'question.school'
+					if !school? then return []
+					@set 'question.subject', school.toJSON().info.subjects[0]
+					return school.toJSON().info.subjects
+				).property 'question.school'
+				terms: ( ->
+					subject = @get 'question.subject'
+					if !subject? then return []
+					@set 'question.term', subject.terms[0]
+					return subject.terms
+				).property 'question.subject'
+				courses: ( ->
+					term = @get 'question.term'
+					if !term? then return []
+					@set 'question.course', term.courses[0]
+					return term.courses
+				).property 'question.term'
 				actions:
 					save: ->
 						thiz = @
