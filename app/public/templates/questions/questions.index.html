@@ -14,6 +14,7 @@
 						<th style="width:100px;">Subject</th>
 						<th style="width:100px;">Course</th>
 						<th style="width:250px;">Note</th>
+						<th style="width:60px;">Status</th>
 						<th>Actions</th>
 					</tr>
 				</thead>
@@ -37,10 +38,20 @@
 									{{question.note}}
 								</td>
 								<td>
+									{{#if question.flag}}
+										<a title="OK"><span class="glyphicon glyphicon-ok"></span></a>
+									{{else}}
+										<a title="To Be Removed"><span class="glyphicon glyphicon-remove"></span></a>
+									{{/if}}
+								</td>
+								<td>
 									
 									<a title="View Question" href="" {{action "view" question}}><span class="glyphicon glyphicon-book"></span></a>
 									{{#link-to "question.edit" question title="Edit Question"}}<span class="glyphicon glyphicon-pencil"></span>{{/link-to}}
+									<!-- CANNOt DELETE FOR NOW -->
+									<!--
 									<a title="Delete Question" href="" {{action "delete" question}}><span class="glyphicon glyphicon-remove"></span></a>
+									-->
 								</td>
 							</tr>
 						{{/unless}}
@@ -55,10 +66,16 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h6>{{preview.school.name}}</h6>
+        <h6>{{preview.school.name}}, {{preview.term}}, {{preview.subject}} {{preview.course}}</h6>
         <h4 class="modal-title">Question ID: {{preview.id}}</h4>
       </div>
-      <div id="modal-math" class="modal-body">
+      <div class="modal-body">
+      	<div class="well">
+      			Tags: {{preview.tags}}
+      			<br/>
+      			Note: {{preview.note}}
+      	</div>
+      	<div id="modal-math"></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

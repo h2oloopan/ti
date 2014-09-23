@@ -29,7 +29,8 @@ module.exports = {
         type: Number
       },
       flag: {
-        type: Number
+        type: Number,
+        "default": 1
       },
       school: {
         type: Schema.Types.ObjectId,

@@ -33,34 +33,8 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 					, (errors) ->
 						@fail
 						thiz.transitionTo 'login'
-
-			
+	
 #question
-			App.QuestionItemController = Ember.ObjectController.extend
-				needs: 'questionsIndex'
-				actions:
-					delete: (question) ->
-						ans = confirm 'Do you want to delete question ' + question.id + '?'
-						if ans
-							question.destroyRecord().then ->
-								#done
-								return true
-							, (errors) ->
-								#fail
-								question.rollback()
-								alert errors.responseText
-						return false
-					view: (question) ->
-						@set 'controllers.questionsIndex.preview', question
-						math = document.getElementById 'modal-math'
-						math.innerHTML = question.get 'question'
-						
-						MathJax.Hub.Queue ['Typeset', MathJax.Hub, math]
-
-						$('.modal').modal()
-						return false
-
-
 			App.QuestionEditRoute = Ember.Route.extend
 				model: ->
 					thiz = @
@@ -93,37 +67,6 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 
 
 			App.QuestionEditController = Ember.ObjectController.extend
-				Preview:
-					delay: 150
-					preview: null
-					buffer: null
-					timeout: null
-					mjRunning: false
-					oldText: null
-					init: ->
-						@preview = document.getElementById 'math-preview'
-						@buffer = document.getElementById 'math-buffer'
-					swapBuffers: ->
-						buffer = @preview
-						preview = @buffer
-						buffer.style.visibility = 'hidden'
-						buffer.style.position = 'absolute'
-						preview.style.position = ''
-						preview.style.visibility = ''
-					update: ->
-						if @timeout then clearTimeout @timeout
-						@timeout = setTimeout @callback, @delay
-					createPreview: ->
-						@timeout = null
-						if @mjRunning then return
-						text = document.getElementById('math-input').value
-						if text == @oldtext then return
-						@buffer.innerHTML = @oldtext = text
-						@mjRunning = true
-						MathJax.Hub.Queue ['Typeset', MathJax.Hub, @buffer], ['previewDone', @]
-					previewDone: ->
-						@mjRunning = false
-						@swapBuffers()
 				actions:
 					save: ->
 						thiz = @
@@ -147,6 +90,30 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 			App.QuestionsIndexController = Ember.ArrayController.extend
 				preview: {}
 				itemController: 'questionItem'
+
+			App.QuestionItemController = Ember.ObjectController.extend
+				needs: 'questionsIndex'
+				actions:
+					delete: (question) ->
+						ans = confirm 'Do you want to delete question ' + question.id + '?'
+						if ans
+							question.destroyRecord().then ->
+								#done
+								return true
+							, (errors) ->
+								#fail
+								question.rollback()
+								alert errors.responseText
+						return false
+					view: (question) ->
+						@set 'controllers.questionsIndex.preview', question
+						math = document.getElementById 'modal-math'
+						math.innerHTML = question.get 'question'
+						
+						MathJax.Hub.Queue ['Typeset', MathJax.Hub, math]
+
+						$('.modal').modal()
+						return false
 
 			#m
 			App.QuestionsNewRoute = Ember.Route.extend

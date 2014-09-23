@@ -23,6 +23,7 @@ module.exports =
 			#remove it from database directly
 			flag:
 				type: Number
+				default: 1
 
 			#relationship
 			school:
