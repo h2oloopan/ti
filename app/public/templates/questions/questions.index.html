@@ -46,7 +46,7 @@
 								</td>
 								<td>
 									
-									<a title="View Question" href="" {{action "view" question}}><span class="glyphicon glyphicon-book"></span></a>
+									<a title="View Question" href="" {{action "view" question}}><span class="glyphicon glyphicon-search"></span></a>
 									{{#link-to "question.edit" question title="Edit Question"}}<span class="glyphicon glyphicon-pencil"></span>{{/link-to}}
 									<!-- CANNOt DELETE FOR NOW -->
 									<!--
@@ -75,7 +75,16 @@
       			<br/>
       			Note: {{preview.note}}
       	</div>
-      	<div id="modal-math"></div>
+      	<div id="modal-math">
+      		<h5 class="page-header">Question</h5>
+      		<div id="question-view"></div>
+      		<h5 class="page-header">Hint</h5>
+      		<div id="hint-view"></div>
+      		<h5 class="page-header">Solution</h5>
+      		<div id="solution-view"></div>
+      		<h5 class="page-header">Summary</h5>
+      		<div id="summary-view"></div>
+      	</div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

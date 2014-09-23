@@ -116,11 +116,15 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 						return false
 					view: (question) ->
 						@set 'controllers.questionsIndex.preview', question
-						math = document.getElementById 'modal-math'
-						math.innerHTML = question.get 'question'
-						
-						MathJax.Hub.Queue ['Typeset', MathJax.Hub, math]
-
+						question = question.toJSON()
+						questionView = $('#question-view').html question.question
+						hintView = $('#hint-view').html question.hint
+						solutionView = $('#solution-view').html question.solution
+						summaryView = $('#summary-view').html question.summary
+						MathJax.Hub.Queue ['Typeset', MathJax.Hub, $('#modal-math')[0]]
+						#MathJax.Hub.Queue ['Typeset', MathJax.Hub, $(hintView)[0]]
+						#MathJax.Hub.Queue ['Typeset', MathJax.Hub, $(solutionView)[0]]
+						#MathJax.Hub.Queue ['Typeset', MathJax.Hub, $(summaryView)[0]]
 						$('.modal').modal()
 						return false
 

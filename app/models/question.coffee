@@ -15,7 +15,7 @@ module.exports =
 			note:
 				type: String
 			tags:
-				type: [String]
+				type: String
 			difficulty: 
 				type: Number
 			#flag is used to mark the state of the question

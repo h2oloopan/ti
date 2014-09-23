@@ -23,7 +23,7 @@ module.exports = {
         type: String
       },
       tags: {
-        type: [String]
+        type: String
       },
       difficulty: {
         type: Number
