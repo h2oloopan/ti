@@ -57,8 +57,9 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 					fake = model.question_fake
 					fake.set 'school', real.get 'school'
 					school = fake.get('school').toJSON()
-					console.log real.toJSON()
-					console.log school
+					
+					real.eachAttribute (name, meta) ->
+						fake.set name, real.get name
 
 					fake.set 'initialize', 
 						subject: true
@@ -74,13 +75,35 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 					fake.set 'subject', subject
 
 					#term
-
+					term = subject.terms[0]
+					for t in subject.terms
+						if t.name == real.get 'term'
+							term = t
+							break
+					fake.set 'term', term
 
 					#course
+					course = term.courses[0]
+					for c in term.courses
+						if c.number == real.get 'course'
+							course = c
+							break
+					fake.set 'course', course
+
+					console.log fake.toJSON()
 
 			App.QuestionEditView = Ember.View.extend
 				didInsertElement: ->
 					@_super()
+					questionEditor = utils.createMathEditor($('#question-input'), $('#question-preview'))
+					hintEditor = utils.createMathEditor($('#hint-input'), $('#hint-preview'))
+					solutionEditor = utils.createMathEditor($('#solution-input'), $('#solution-preview'))
+					summaryEditor = utils.createMathEditor($('#summary-input'), $('#summary-preview'))
+
+					questionEditor.update()
+					hintEditor.update()
+					solutionEditor.update()
+					summaryEditor.update()
 
 
 			App.QuestionEditController = Ember.ObjectController.extend
@@ -180,7 +203,6 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 			App.QuestionsNewView = Ember.View.extend
 				didInsertElement: ->
 					@_super()
-					
 					questionEditor = utils.createMathEditor($('#question-input'), $('#question-preview'))
 					hintEditor = utils.createMathEditor($('#hint-input'), $('#hint-preview'))
 					solutionEditor = utils.createMathEditor($('#solution-input'), $('#solution-preview'))

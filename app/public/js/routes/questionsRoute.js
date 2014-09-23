@@ -63,13 +63,14 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
           });
         },
         afterModel: function(model, transition) {
-          var fake, real, s, school, subject, _i, _len, _ref;
+          var c, course, fake, real, s, school, subject, t, term, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
           real = model.question_real;
           fake = model.question_fake;
           fake.set('school', real.get('school'));
           school = fake.get('school').toJSON();
-          console.log(real.toJSON());
-          console.log(school);
+          real.eachAttribute(function(name, meta) {
+            return fake.set(name, real.get(name));
+          });
           fake.set('initialize', {
             subject: true,
             term: true,
@@ -84,12 +85,42 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
               break;
             }
           }
-          return fake.set('subject', subject);
+          fake.set('subject', subject);
+          term = subject.terms[0];
+          _ref1 = subject.terms;
+          for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+            t = _ref1[_j];
+            if (t.name === real.get('term')) {
+              term = t;
+              break;
+            }
+          }
+          fake.set('term', term);
+          course = term.courses[0];
+          _ref2 = term.courses;
+          for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
+            c = _ref2[_k];
+            if (c.number === real.get('course')) {
+              course = c;
+              break;
+            }
+          }
+          fake.set('course', course);
+          return console.log(fake.toJSON());
         }
       });
       App.QuestionEditView = Ember.View.extend({
         didInsertElement: function() {
-          return this._super();
+          var hintEditor, questionEditor, solutionEditor, summaryEditor;
+          this._super();
+          questionEditor = utils.createMathEditor($('#question-input'), $('#question-preview'));
+          hintEditor = utils.createMathEditor($('#hint-input'), $('#hint-preview'));
+          solutionEditor = utils.createMathEditor($('#solution-input'), $('#solution-preview'));
+          summaryEditor = utils.createMathEditor($('#summary-input'), $('#summary-preview'));
+          questionEditor.update();
+          hintEditor.update();
+          solutionEditor.update();
+          return summaryEditor.update();
         }
       });
       App.QuestionEditController = Ember.ObjectController.extend({
