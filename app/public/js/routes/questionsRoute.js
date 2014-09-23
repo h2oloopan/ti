@@ -48,17 +48,43 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
           qid = this.modelFor('question').id;
           return new Ember.RSVP.Promise(function(resolve, reject) {
             return new Ember.RSVP.hash({
-              question: thiz.store.find('question', qid),
+              question_real: thiz.store.find('question', qid),
+              question_fake: thiz.store.createRecord('question', {}),
               schools: thiz.store.find('school')
             }).then(function(result) {
               return resolve({
-                question: result.question,
+                question_real: result.question_real,
+                question_fake: result.question_fake,
                 schools: result.schools
               });
             }, function(errors) {
               return reject(errors);
             });
           });
+        },
+        afterModel: function(model, transition) {
+          var fake, real, s, school, subject, _i, _len, _ref;
+          real = model.question_real;
+          fake = model.question_fake;
+          fake.set('school', real.get('school'));
+          school = fake.get('school').toJSON();
+          console.log(real.toJSON());
+          console.log(school);
+          fake.set('initialize', {
+            subject: true,
+            term: true,
+            course: true
+          });
+          subject = school.info.subjects[0];
+          _ref = school.info.subjects;
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            s = _ref[_i];
+            if (s.code === real.get('subject')) {
+              subject = s;
+              break;
+            }
+          }
+          return fake.set('subject', subject);
         }
       });
       App.QuestionEditView = Ember.View.extend({
@@ -70,31 +96,43 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
         difficulties: [1, 2, 3, 4, 5],
         subjects: (function() {
           var school;
-          school = this.get('question.school');
+          school = this.get('question_fake.school');
           if (school == null) {
             return [];
           }
-          this.set('question.subject', school.toJSON().info.subjects[0]);
+          if (this.get('question_fake.initialize.subject')) {
+            this.set('question_fake.initialize.subject', false);
+          } else {
+            this.set('question_fake.subject', school.toJSON().info.subjects[0]);
+          }
           return school.toJSON().info.subjects;
-        }).property('question.school'),
+        }).property('question_fake.school'),
         terms: (function() {
           var subject;
-          subject = this.get('question.subject');
+          subject = this.get('question_fake.subject');
           if (subject == null) {
             return [];
           }
-          this.set('question.term', subject.terms[0]);
+          if (this.get('question_fake.initialize.term')) {
+            this.set('question_fake.initialize.term', false);
+          } else {
+            this.set('question_fake.term', subject.terms[0]);
+          }
           return subject.terms;
-        }).property('question.subject'),
+        }).property('question_fake.subject'),
         courses: (function() {
           var term;
-          term = this.get('question.term');
+          term = this.get('question_fake.term');
           if (term == null) {
             return [];
           }
-          this.set('question.course', term.courses[0]);
+          if (this.get('question_fake.initialize.course')) {
+            this.set('question_fake.initialize.course', false);
+          } else {
+            this.set('question_fake.course', term.courses[0]);
+          }
           return term.courses;
-        }).property('question.term'),
+        }).property('question_fake.term'),
         actions: {
           save: function() {
             var question, result, thiz;

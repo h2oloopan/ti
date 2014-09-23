@@ -42,14 +42,41 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 					qid = @modelFor('question').id
 					return new Ember.RSVP.Promise (resolve, reject) ->
 						new Ember.RSVP.hash
-							question: thiz.store.find 'question', qid
+							question_real: thiz.store.find 'question', qid
+							question_fake: thiz.store.createRecord 'question', {}
 							schools: thiz.store.find 'school'
 						.then (result) ->
 							resolve
-								question: result.question
+								question_real: result.question_real
+								question_fake: result.question_fake
 								schools: result.schools
 						, (errors) ->
 							reject errors
+				afterModel: (model, transition) ->
+					real = model.question_real
+					fake = model.question_fake
+					fake.set 'school', real.get 'school'
+					school = fake.get('school').toJSON()
+					console.log real.toJSON()
+					console.log school
+
+					fake.set 'initialize', 
+						subject: true
+						term: true
+						course: true
+
+					#subject
+					subject = school.info.subjects[0]
+					for s in school.info.subjects
+						if s.code == real.get 'subject'
+							subject = s
+							break
+					fake.set 'subject', subject
+
+					#term
+
+
+					#course
 
 			App.QuestionEditView = Ember.View.extend
 				didInsertElement: ->
@@ -59,23 +86,32 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 			App.QuestionEditController = Ember.ObjectController.extend
 				difficulties: [1, 2, 3, 4, 5]
 				subjects: ( ->
-					school = @get 'question.school'
+					school = @get 'question_fake.school'
 					if !school? then return []
-					@set 'question.subject', school.toJSON().info.subjects[0]
+					if @get 'question_fake.initialize.subject'
+						@set 'question_fake.initialize.subject', false
+					else
+						@set 'question_fake.subject', school.toJSON().info.subjects[0]
 					return school.toJSON().info.subjects
-				).property 'question.school'
+				).property 'question_fake.school'
 				terms: ( ->
-					subject = @get 'question.subject'
+					subject = @get 'question_fake.subject'
 					if !subject? then return []
-					@set 'question.term', subject.terms[0]
+					if @get 'question_fake.initialize.term'
+						@set 'question_fake.initialize.term', false
+					else
+						@set 'question_fake.term', subject.terms[0]
 					return subject.terms
-				).property 'question.subject'
+				).property 'question_fake.subject'
 				courses: ( ->
-					term = @get 'question.term'
+					term = @get 'question_fake.term'
 					if !term? then return []
-					@set 'question.course', term.courses[0]
+					if @get 'question_fake.initialize.course'
+						@set 'question_fake.initialize.course', false
+					else
+						@set 'question_fake.course', term.courses[0]
 					return term.courses
-				).property 'question.term'
+				).property 'question_fake.term'
 				actions:
 					save: ->
 						thiz = @
@@ -122,9 +158,6 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 						solutionView = $('#solution-view').html question.solution
 						summaryView = $('#summary-view').html question.summary
 						MathJax.Hub.Queue ['Typeset', MathJax.Hub, $('#modal-math')[0]]
-						#MathJax.Hub.Queue ['Typeset', MathJax.Hub, $(hintView)[0]]
-						#MathJax.Hub.Queue ['Typeset', MathJax.Hub, $(solutionView)[0]]
-						#MathJax.Hub.Queue ['Typeset', MathJax.Hub, $(summaryView)[0]]
 						$('.modal').modal()
 						return false
 
