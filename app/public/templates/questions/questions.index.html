@@ -71,6 +71,13 @@
       </div>
       <div class="modal-body">
       	<div class="well">
+      			Difficulty: 
+      			{{#if preview.difficulty}}
+      				{{preview.difficulty}}
+      			{{else}}
+      				TBD
+      			{{/if}}
+      			<br/>
       			Tags: {{preview.tags}}
       			<br/>
       			Note: {{preview.note}}

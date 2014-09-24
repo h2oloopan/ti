@@ -173,6 +173,9 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
           another.hint = $('#hint-input').html();
           another.solution = $('#solution-input').html();
           another.summary = $('#summary-input').html();
+          if (question.get('difficulty') == null) {
+            another.difficulty = 0;
+          }
           another = this.store.createRecord('Question', another);
           return another.set('school', question.get('school'));
         },
@@ -308,6 +311,9 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
           another.hint = $('#hint-input').html();
           another.solution = $('#solution-input').html();
           another.summary = $('#summary-input').html();
+          if (question.get('difficulty') == null) {
+            another.difficulty = 0;
+          }
           another = this.store.createRecord('Question', another);
           another.set('school', question.get('school'));
           return another;
