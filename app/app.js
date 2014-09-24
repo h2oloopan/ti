@@ -32,6 +32,7 @@ me.setup({
     namespace: 'api',
     connectionString: 'mongodb://localhost/ti',
     mePath: '/js/libs/me.js',
+    meOutputPath: path.join(__dirname, 'public/js/libs/me.js'),
     primaryKey: '_id',
     userModel: 'User'
 }).init(app, initializer.init);
