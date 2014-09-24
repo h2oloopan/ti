@@ -51,6 +51,12 @@ body {
 	margin: 0;
 }
 
+.question-form .help-block {
+	font-size: 0.85em;
+	margin-top: 2px;
+	margin-bottom: 7px;
+}
+
 .question-list .text-muted {
 	font-size: 0.8em;
 	margin: 0;

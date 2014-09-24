@@ -71,6 +71,7 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
           real.eachAttribute(function(name, meta) {
             return fake.set(name, real.get(name));
           });
+          fake.set('id', real.get('id'));
           fake.set('initialize', {
             subject: true,
             term: true,
