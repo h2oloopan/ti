@@ -10,6 +10,7 @@ define ['me', 'routes/questionsRoute',
 			App.Router.map ->
 				@route 'login'
 				@route 'signup'
+				@route 'admin'
 
 			QuestionsRoute.setup App
 
@@ -27,6 +28,15 @@ define ['me', 'routes/questionsRoute',
 							#fail
 							return false
 						return false
+
+			App.ApplicationController = Ember.ObjectController.extend
+				isAdmin: ( ->
+					power = @get 'model.power'
+					if power >= 999
+						return true
+					else
+						return false
+				).property 'model.power'
 
 			App.IndexRoute = Ember.Route.extend
 				beforeModel: ->

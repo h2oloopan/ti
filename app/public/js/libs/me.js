@@ -36,7 +36,7 @@ define([], function() {
       pattern = pattern.substr(1, pattern.length - 2);
       return new RegExp(pattern, flags);
     },
-    version: 5309,
+    version: 5659,
     models: {Question:{ model: {question: DS.attr("string"), hint: DS.attr("string"), solution: DS.attr("string"), summary: DS.attr("string"), note: DS.attr("string"), tags: DS.attr("string"), difficulty: DS.attr("number"), flag: DS.attr("number"), school: DS.belongsTo("school"), subject: DS.attr("string"), term: DS.attr("string"), course: DS.attr("string"), _id: DS.attr("string")}, adapter: {namespace: "api"}, serializer: {primaryKey: "_id"}, validations: {"question":[{"type":"required","message":"Question cannot be empty"}],"hint":[],"solution":[],"summary":[],"note":[],"tags":[],"difficulty":[],"flag":[],"school":[],"subject":[],"term":[],"course":[],"_id":[]}},School:{ model: {name: DS.attr("string"), info: DS.attr("json"), _id: DS.attr("string")}, adapter: {namespace: "api"}, serializer: {primaryKey: "_id"}, validations: {"name":[{"type":"required","message":"School name cannot be empty"}],"info":[],"_id":[]}},User:{ model: {username: DS.attr("string"), password: DS.attr("string"), email: DS.attr("string"), power: DS.attr("number"), role: DS.attr("json"), _id: DS.attr("string")}, adapter: {namespace: "api"}, serializer: {primaryKey: "_id"}, validations: {"username":[{"type":"required","message":"Username cannot be empty"},{"type":"match","message":"Invalid username","parameters":["/^[A-Z0-9\\._-]+$/i"]}],"password":[{"type":"required","message":"Password cannot be empty"}],"email":[{"type":"required","message":"Email cannot be empty"},{"type":"match","message":"Invalid email address","parameters":["/^[A-Z0-9\\._%+-]+@[A-Z0-9\\.-]+\\.[A-Z]{2,4}$/i"]}],"power":[],"role":[],"_id":[]}}},
     validators: {
       required: function(value) {
@@ -150,6 +150,17 @@ define([], function() {
             return resolve({});
           }).fail(function() {
             return resolve({});
+          });
+        });
+      },
+      power: function(point) {
+        var url;
+        url = '/api/auth/power' + '/' + point;
+        return new Ember.RSVP.Promise(function(resolve, reject) {
+          return $.get(url).done(function(data) {
+            return resolve(data);
+          }).fail(function(errors) {
+            return reject(errors);
           });
         });
       },

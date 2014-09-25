@@ -8,7 +8,8 @@ define(['me', 'routes/questionsRoute', 'ehbs!templates/header', 'ehbs!templates/
       me.attach(App, ['User', 'Question', 'School']);
       App.Router.map(function() {
         this.route('login');
-        return this.route('signup');
+        this.route('signup');
+        return this.route('admin');
       });
       QuestionsRoute.setup(App);
       App.ApplicationRoute = Ember.Route.extend({
@@ -28,6 +29,17 @@ define(['me', 'routes/questionsRoute', 'ehbs!templates/header', 'ehbs!templates/
             return false;
           }
         }
+      });
+      App.ApplicationController = Ember.ObjectController.extend({
+        isAdmin: (function() {
+          var power;
+          power = this.get('model.power');
+          if (power >= 999) {
+            return true;
+          } else {
+            return false;
+          }
+        }).property('model.power')
       });
       App.IndexRoute = Ember.Route.extend({
         beforeModel: function() {
