@@ -16,7 +16,7 @@ module.exports =
 				match: /^[A-Z0-9\._%+-]+@[A-Z0-9\.-]+\.[A-Z]{2,4}$/i
 			power:
 				type: Number
-				default: 10
+				default: 1
 			role:
 				type: Schema.Types.Mixed
 				default: {}
@@ -29,5 +29,48 @@ module.exports =
 			email:
 				required: 'Email cannot be empty'
 				match: 'Invalid email address'
+		auth:
+			#c
+			c: (req, user, power, cb) ->
+				if power >= 999
+					cb null
+				else
+					cb new Error 'You do not have the permission to access this'
+
+			#r
+			ra: (req, user, power, cb) ->
+				if power >= 999
+					cb null
+				else
+					cb new Error 'You do not have the permission to access this'
+
+			ro: (req, user, power, cb) ->
+				#now we just block any access to non admin user
+				#but we may want user to access himself/herself
+				if power >= 999
+					cb null
+				else
+					cb new Error 'You do not have the permission to access this'
+
+			#u
+			u: (req, user, power, cb) ->
+				if power >= 999
+					cb null
+				else
+					cb new Error 'You do not have the permission to access this'
+
+			#d
+			d: (req, user, power, cb) ->
+				if power >= 999
+					cb null
+				else
+					cb new Error 'You do not have the permission to access this'
+
+
+
+
+
+
+
 
 

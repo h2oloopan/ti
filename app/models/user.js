@@ -22,7 +22,7 @@ module.exports = {
       },
       power: {
         type: Number,
-        "default": 10
+        "default": 1
       },
       role: {
         type: Schema.Types.Mixed,
@@ -40,6 +40,43 @@ module.exports = {
       email: {
         required: 'Email cannot be empty',
         match: 'Invalid email address'
+      }
+    },
+    auth: {
+      c: function(req, user, power, cb) {
+        if (power >= 999) {
+          return cb(null);
+        } else {
+          return cb(new Error('You do not have the permission to access this'));
+        }
+      },
+      ra: function(req, user, power, cb) {
+        if (power >= 999) {
+          return cb(null);
+        } else {
+          return cb(new Error('You do not have the permission to access this'));
+        }
+      },
+      ro: function(req, user, power, cb) {
+        if (power >= 999) {
+          return cb(null);
+        } else {
+          return cb(new Error('You do not have the permission to access this'));
+        }
+      },
+      u: function(req, user, power, cb) {
+        if (power >= 999) {
+          return cb(null);
+        } else {
+          return cb(new Error('You do not have the permission to access this'));
+        }
+      },
+      d: function(req, user, power, cb) {
+        if (power >= 999) {
+          return cb(null);
+        } else {
+          return cb(new Error('You do not have the permission to access this'));
+        }
       }
     }
   }

@@ -20,7 +20,10 @@ exports.init = function() {
       username: 'span',
       password: encrypt('psy123321'),
       email: 'span@easyace.ca',
-      power: 999
+      power: 999,
+      role: {
+        name: 'admin'
+      }
     };
     model = me.getModel('User');
     return model.findOne({
@@ -44,8 +47,12 @@ exports.init = function() {
     var model, user;
     user = {
       username: 'user',
-      password: encrypt('us123321'),
-      email: 'user@easyace.ca'
+      password: encrypt('123321'),
+      email: 'user@easyace.ca',
+      power: 10,
+      role: {
+        name: 'editor'
+      }
     };
     model = me.getModel('User');
     return model.findOne({
