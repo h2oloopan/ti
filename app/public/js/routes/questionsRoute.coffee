@@ -178,6 +178,8 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 					return @store.find 'question'
 
 			App.QuestionsIndexController = Ember.ArrayController.extend
+				sortProperties: ['id']
+				sortAscending: false
 				preview: {}
 				itemController: 'questionItem'
 

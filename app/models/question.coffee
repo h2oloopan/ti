@@ -39,6 +39,18 @@ module.exports =
 		validationMessages:
 			question:
 				required: 'Question cannot be empty'
+		auth:
+			c: (user, power, cb) ->
+				cb null
+
+
+
+
+
+
+
+
+
 		
 			
 

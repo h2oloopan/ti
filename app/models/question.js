@@ -50,6 +50,11 @@ module.exports = {
       question: {
         required: 'Question cannot be empty'
       }
+    },
+    auth: {
+      c: function(user, power, cb) {
+        return cb(null);
+      }
     }
   }
 };

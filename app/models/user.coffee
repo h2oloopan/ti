@@ -1,3 +1,5 @@
+Schema = require('mongo-ember').Schema
+
 module.exports =
 	User:
 		schema:
@@ -15,6 +17,9 @@ module.exports =
 			power:
 				type: Number
 				default: 10
+			role:
+				type: Schema.Types.Mixed
+				default: {}
 		validationMessages:
 			username:
 				required: 'Username cannot be empty'
@@ -24,10 +29,5 @@ module.exports =
 			email:
 				required: 'Email cannot be empty'
 				match: 'Invalid email address'
-		auth:
-			c: 999
-			r: 999
-			u: 999
-			d: 999
 
 
