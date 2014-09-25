@@ -3,6 +3,11 @@ body {
 	padding-bottom: 20px;
 }
 
+
+.login-page .text-danger {
+	font-size: 0.85em;
+}
+
 .login-form {
 	background: #fff;
 	border-radius: 6px;
@@ -17,10 +22,6 @@ body {
 
 .login-form .btn-login {
 	float: right;
-}
-
-.login-form .text-danger {
-	font-size: 0.85em;
 }
 
 .math-preview {
@@ -65,4 +66,8 @@ body {
 .modal-dialog {
 	margin-top: 100px;
 	width: 800px;
+}
+
+.error-page {
+	text-align: center;
 }
