@@ -36,7 +36,12 @@ define ['jquery', 'me', 'utils',
 					@_super()
 					$('.nav-tabs a:first').click() #click the first tab by default
 
-			App.UsersController = Ember.ArrayController.extend {} 
+			App.UsersController = Ember.ArrayController.extend
+				itemController: 'user'
+
+			App.UserController = Ember.ObjectController.extend
+				type: ( ->
+				).property 'role'
 
 
 

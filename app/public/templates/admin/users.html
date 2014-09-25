@@ -1,3 +1,16 @@
-<div>
-	Users
+<div class="row admin-users">
+	<div class="left col-md-2">
+		<ul>
+			{{#each user in controller}}
+				{{#unless user.isNew}}
+					<li>
+						{{user.username}}
+					</li>
+				{{/unless}}
+			{{/each}}
+		</ul>
+	</div>
+	<div class="right col-md-10">
+	R
+	</div>
 </div>

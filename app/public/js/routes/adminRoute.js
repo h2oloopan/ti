@@ -42,7 +42,12 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
           return $('.nav-tabs a:first').click();
         }
       });
-      return App.UsersController = Ember.ArrayController.extend({});
+      App.UsersController = Ember.ArrayController.extend({
+        itemController: 'user'
+      });
+      return App.UserController = Ember.ObjectController.extend({
+        type: (function() {}).property('role')
+      });
     }
   };
   return AdminRoute;

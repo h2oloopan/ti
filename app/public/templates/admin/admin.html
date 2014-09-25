@@ -1,17 +1,24 @@
 <div class="jumbotron">
 	<div class="container">
 		<h2>Admin Panel</h2>
-		<ul class="nav nav-tabs" role="tablist">
-			<li><a role="tab" data-toggle="tab" href="#users">Users</a></li>
-			<li><a role="tab" data-toggle="tab" href="#schools">Schools</a></li>
-		</ul>
-		<div class="tab-content">
-			<div class="tab-pane" id="users">
-				{{render "users" users}}
-			</div>
-			<div class="tab-pane" id="schools">
-				{{render "schools" schools}}
-			</div>
+		<h6>Manage users, schools, and advanced settings</h6>
+	</div>
+</div>
+<div class="container">
+	<ul class="nav nav-tabs" role="tablist">
+		<li><a role="tab" data-toggle="tab" href="#users">Users</a></li>
+		<li><a role="tab" data-toggle="tab" href="#schools">Schools</a></li>
+		<li><a role="tab" data-toggle="tab" href="#settings">Settings</a></li>
+	</ul>
+	<div class="tab-content">
+		<div class="tab-pane" id="users">
+			{{render "users" users}}
+		</div>
+		<div class="tab-pane" id="schools">
+			{{render "schools" schools}}
+		</div>
+		<div class="tab-pane" id="settings">
+			We do not have any settings at the moment
 		</div>
 	</div>
 </div>
