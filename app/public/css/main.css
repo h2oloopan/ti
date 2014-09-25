@@ -3,6 +3,9 @@ body {
 	padding-bottom: 20px;
 }
 
+.nav-tabs {
+	margin-bottom: 15px;
+}
 
 .login-page .text-danger {
 	font-size: 0.85em;

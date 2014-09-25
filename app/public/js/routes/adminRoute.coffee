@@ -1,7 +1,7 @@
 define ['jquery', 'me', 'utils',
 'ehbs!templates/admin/admin',
-'ehbs!templates/admin/admin.users',
-'ehbs!templates/admin/admin.schools'
+'ehbs!templates/admin/users',
+'ehbs!templates/admin/schools'
 ], ($, me, utils) ->
 	AdminRoute = 
 		setup: (App) ->
@@ -31,7 +31,12 @@ define ['jquery', 'me', 'utils',
 						, (errors) ->
 							reject errors
 
-			App.Admin 
+			App.AdminView = Ember.View.extend
+				didInsertElement: ->
+					@_super()
+					$('.nav-tabs a:first').click() #click the first tab by default
+
+			App.UsersController = Ember.ArrayController.extend {} 
 
 
 
