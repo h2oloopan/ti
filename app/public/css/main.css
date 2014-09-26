@@ -66,6 +66,10 @@ body {
 	margin: 0;
 }
 
+.question-list {
+	margin-top: 20px;
+}
+
 .modal-dialog {
 	margin-top: 100px;
 	width: 800px;
