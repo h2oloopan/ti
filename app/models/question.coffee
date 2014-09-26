@@ -18,6 +18,8 @@ module.exports =
 				type: String
 			difficulty: 
 				type: Number
+			type:
+				type: String
 			#flag is used to mark the state of the question
 			#e.g. it may be marked to delete but we will not
 			#remove it from database directly

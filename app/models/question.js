@@ -28,6 +28,9 @@ module.exports = {
       difficulty: {
         type: Number
       },
+      type: {
+        type: String
+      },
       flag: {
         type: Number,
         "default": 1

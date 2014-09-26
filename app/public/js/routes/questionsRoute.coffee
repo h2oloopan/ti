@@ -109,6 +109,7 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 
 
 			App.QuestionEditController = Ember.ObjectController.extend
+				types: ['other', 'assignment', 'midterm', 'final', 'textbook']
 				difficulties: [1, 2, 3, 4, 5]
 				subjects: ( ->
 					school = @get 'question_fake.school'
@@ -235,6 +236,7 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 
 			#c
 			App.QuestionsNewController = Ember.ObjectController.extend
+				types: ['other', 'assignment', 'midterm', 'final', 'textbook']
 				difficulties: [1, 2, 3, 4, 5]
 				subjects: ( ->
 					school = @get 'question.school'

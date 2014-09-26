@@ -124,6 +124,7 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
         }
       });
       App.QuestionEditController = Ember.ObjectController.extend({
+        types: ['other', 'assignment', 'midterm', 'final', 'textbook'],
         difficulties: [1, 2, 3, 4, 5],
         subjects: (function() {
           var school;
@@ -276,6 +277,7 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
         }
       });
       return App.QuestionsNewController = Ember.ObjectController.extend({
+        types: ['other', 'assignment', 'midterm', 'final', 'textbook'],
         difficulties: [1, 2, 3, 4, 5],
         subjects: (function() {
           var school;
