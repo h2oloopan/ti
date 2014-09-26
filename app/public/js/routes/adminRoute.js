@@ -46,6 +46,13 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
         itemController: 'user'
       });
       return App.UserController = Ember.ObjectController.extend({
+        isAdmin: (function() {
+          if (this.get('model.power') >= 999) {
+            return true;
+          } else {
+            return false;
+          }
+        }).property('role'),
         type: (function() {}).property('role')
       });
     }

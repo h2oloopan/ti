@@ -40,6 +40,9 @@ define ['jquery', 'me', 'utils',
 				itemController: 'user'
 
 			App.UserController = Ember.ObjectController.extend
+				isAdmin: ( ->
+					return if @get('model.power') >= 999 then true else false
+				).property 'role'
 				type: ( ->
 				).property 'role'
 

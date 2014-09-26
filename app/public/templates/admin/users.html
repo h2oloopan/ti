@@ -1,10 +1,13 @@
 <div class="admin-users">
-	<table class="table">
+	<table class="table table-bordered">
 		<thead>
 			<tr>
-				<th>ID</th>
+				<th style="width:20%;">ID</th>
+				<th style="width:6%;">Type</th>
+				<th style="width:6%;">Power</th>
 				<th>Username</th>
 				<th>Email</th>
+				<th>Actions</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -12,11 +15,22 @@
 				{{#unless user.isNew}}
 					<tr>
 						<td>{{user.id}}</td>
+						<td>{{user.role.name}}</td>
+						<td>{{user.power}}</td>
 						<td>{{user.username}}</td>
 						<td>{{user.email}}</td>
+						<td>
+							{{#unless user.isAdmin}}
+								<a title="Edit User" href=""><span class="glyphicon glyphicon-pencil"></span></a>
+								<a title="Delete User" href=""><span class="glyphicon glyphicon-remove"></span></a>
+							{{/unless}}
+						</td>
 					</tr>
 				{{/unless}}
 			{{/each}}
 		</tbody>
 	</table>
+	<button class="btn btn-success">Add User</button>
+	<br/>
+	<br/>
 </div>
