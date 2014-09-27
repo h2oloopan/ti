@@ -12,25 +12,41 @@
 		</thead>
 		<tbody>
 			{{#each user in controller}}
-				{{#unless user.isNew}}
-					<tr>
-						<td>{{user.id}}</td>
-						<td>{{user.role.name}}</td>
-						<td>{{user.power}}</td>
-						<td>{{user.username}}</td>
-						<td>{{user.email}}</td>
-						<td>
-							{{#unless user.isAdmin}}
-								<a title="Edit User" href=""><span class="glyphicon glyphicon-pencil"></span></a>
-								<a title="Delete User" href=""><span class="glyphicon glyphicon-remove"></span></a>
-							{{/unless}}
-						</td>
-					</tr>
-				{{/unless}}
+			{{#unless user.isNew}}
+			<tr>
+				<td>{{user.id}}</td>
+				<td>{{user.role.name}}</td>
+				<td>{{user.power}}</td>
+				<td>{{user.username}}</td>
+				<td>{{user.email}}</td>
+				<td>
+					{{#unless user.isAdmin}}
+					<a title="Edit User" href=""><span class="glyphicon glyphicon-pencil"></span></a>
+					<a title="Delete User" href=""><span class="glyphicon glyphicon-remove"></span></a>
+					{{/unless}}
+				</td>
+			</tr>
+			{{/unless}}
 			{{/each}}
 		</tbody>
 	</table>
-	<button class="btn btn-success">Add User</button>
+	<button class="btn btn-success" {{action "add"}}>Add User</button>
 	<br/>
 	<br/>
 </div>
+<!-- ADD/EDIT USER -->
+<div class="modal fade modal-admin-user">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title">Create New User</h4>
+			</div>
+			<div class="modal-body">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

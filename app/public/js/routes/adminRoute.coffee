@@ -38,6 +38,9 @@ define ['jquery', 'me', 'utils',
 
 			App.UsersController = Ember.ArrayController.extend
 				itemController: 'user'
+				actions:
+					add: ->
+						$('.modal').modal()
 
 			App.UserController = Ember.ObjectController.extend
 				isAdmin: ( ->
@@ -45,6 +48,7 @@ define ['jquery', 'me', 'utils',
 				).property 'role'
 				type: ( ->
 				).property 'role'
+
 
 
 

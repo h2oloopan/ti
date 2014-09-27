@@ -43,7 +43,12 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
         }
       });
       App.UsersController = Ember.ArrayController.extend({
-        itemController: 'user'
+        itemController: 'user',
+        actions: {
+          add: function() {
+            return $('.modal').modal();
+          }
+        }
       });
       return App.UserController = Ember.ObjectController.extend({
         isAdmin: (function() {
