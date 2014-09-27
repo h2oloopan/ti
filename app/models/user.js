@@ -42,6 +42,9 @@ module.exports = {
         match: 'Invalid email address'
       }
     },
+    api: {
+      c: function(req, res, model) {}
+    },
     auth: {
       c: function(req, user, power, cb) {
         if (power >= 999) {

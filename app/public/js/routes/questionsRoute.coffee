@@ -107,7 +107,6 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 					summaryEditor.update()
 					
 
-
 			App.QuestionEditController = Ember.ObjectController.extend
 				types: ['other', 'assignment', 'midterm', 'final', 'textbook']
 				difficulties: [1, 2, 3, 4, 5]

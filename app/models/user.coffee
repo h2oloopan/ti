@@ -29,6 +29,9 @@ module.exports =
 			email:
 				required: 'Email cannot be empty'
 				match: 'Invalid email address'
+		api:
+			c: (req, res, model) ->
+				
 		auth:
 			#c
 			c: (req, user, power, cb) ->
