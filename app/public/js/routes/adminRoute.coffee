@@ -52,7 +52,14 @@ define ['jquery', 'me', 'utils',
 
 
 			App.UsersNewController = Ember.ObjectController.extend
+				user:
+					role: {}
 				roles: ['editor', 'instructor']
+				prepare: (user) ->
+					return user
+				actions:
+					add: ->
+						alert JSON.stringify @get('user')
 
 
 

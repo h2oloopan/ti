@@ -61,7 +61,18 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
         type: (function() {}).property('power')
       });
       return App.UsersNewController = Ember.ObjectController.extend({
-        roles: ['editor', 'instructor']
+        user: {
+          role: {}
+        },
+        roles: ['editor', 'instructor'],
+        prepare: function(user) {
+          return user;
+        },
+        actions: {
+          add: function() {
+            return alert(JSON.stringify(this.get('user')));
+          }
+        }
       });
     }
   };
