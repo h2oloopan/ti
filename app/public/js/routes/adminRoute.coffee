@@ -1,6 +1,7 @@
 define ['jquery', 'me', 'utils',
 'ehbs!templates/admin/admin',
 'ehbs!templates/admin/users',
+'ehbs!templates/admin/users.new',
 'ehbs!templates/admin/schools'
 ], ($, me, utils) ->
 	AdminRoute = 
@@ -40,15 +41,18 @@ define ['jquery', 'me', 'utils',
 				itemController: 'user'
 				actions:
 					add: ->
-						$('.modal').modal()
+						$('.modal-admin-user').modal()
 
 			App.UserController = Ember.ObjectController.extend
 				isAdmin: ( ->
 					return if @get('model.power') >= 999 then true else false
-				).property 'role'
+				).property 'power'
 				type: ( ->
-				).property 'role'
+				).property 'power'
 
+
+			App.UsersNewController = Ember.ObjectController.extend
+				roles: ['editor', 'instructor']
 
 
 

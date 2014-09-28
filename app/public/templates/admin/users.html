@@ -3,7 +3,7 @@
 		<thead>
 			<tr>
 				<th style="width:20%;">ID</th>
-				<th style="width:6%;">Type</th>
+				<th style="width:6%;">Role</th>
 				<th style="width:6%;">Power</th>
 				<th>Username</th>
 				<th>Email</th>
@@ -34,19 +34,7 @@
 	<br/>
 	<br/>
 </div>
-<!-- ADD/EDIT USER -->
+<!-- ADD USER -->
 <div class="modal fade modal-admin-user">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-				<h4 class="modal-title">Create New User</h4>
-			</div>
-			<div class="modal-body">
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
+	{{render "users.new"}}
 </div><!-- /.modal -->

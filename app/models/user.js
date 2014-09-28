@@ -22,7 +22,7 @@ module.exports = {
       },
       power: {
         type: Number,
-        "default": 1
+        "default": 10
       },
       role: {
         type: Schema.Types.Mixed,
