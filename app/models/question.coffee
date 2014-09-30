@@ -42,9 +42,30 @@ module.exports =
 			question:
 				required: 'Question cannot be empty'
 		auth:
-			c: (user, power, cb) ->
-				cb null
+			#c
+			c: (req, user, power, cb) ->
+				if power >= 999 || user.role.name == 'editor'
+					cb null
+				else
+					cb new Error 'You do not have the permission to access this'
 
+			#r
+			#this is a TODO: at the moment
+
+			#u
+			u: (req, user, power, cb) ->
+				if power >= 999 || user.role.name == 'editor'
+					cb null
+				else
+					cb new Error 'You do not have the permission to access this'
+
+			#d
+			d: (req, user, power, cb) ->
+				#only admin can delete a question
+				if power >= 999
+					cb null
+				else
+					cb new Error 'You do not have the permission to access this'
 
 
 
