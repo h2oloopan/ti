@@ -37,7 +37,9 @@ mailer = module.exports = {
       content = template.replace('{{username}}', user.username).replace('{{password}}', user.password).replace('{{url}}', config.url);
       return content;
     };
-    return fs.readFile(template_registration, function(err, template) {
+    return fs.readFile(template_registration, {
+      encoding: 'utf8'
+    }, function(err, template) {
       var content;
       if (err) {
         return cb(err);

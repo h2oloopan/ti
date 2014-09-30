@@ -28,7 +28,9 @@ mailer = module.exports =
 				.replace '{{url}}', config.url
 			return content
 
-		fs.readFile template_registration, (err, template) ->
+		fs.readFile template_registration,
+			encoding: 'utf8'
+		, (err, template) ->
 			if err
 				cb err
 			else
