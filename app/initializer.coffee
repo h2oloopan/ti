@@ -10,16 +10,16 @@ exports.init = ->
 	addAdmin = ->
 		#add admin user
 		user = 
-			username: 'span'
-			password: encrypt 'psy123321'
-			email: 'span@easyace.ca'
+			username: 'admin'
+			password: encrypt '456273'
+			email: 'admin@easyace.ca'
 			power: 999
 			role:
 				name: 'admin'
 
 		model = me.getModel 'User'
 		model.findOne
-			username: 'span'
+			username: 'admin'
 		, (err, result) ->
 			if err
 				console.log err
@@ -30,12 +30,12 @@ exports.init = ->
 						console.log err
 					else
 						console.log 'admin span created'
-	addUser = ->
+	addEditor = ->
 		#add regular user
 		user = 
-			username: 'user'
+			username: 'editor'
 			password: encrypt '123321'
-			email: 'user@easyace.ca'
+			email: 'editor@easyace.ca'
 			power: 10
 			role:
 				name: 'editor'
@@ -83,5 +83,5 @@ exports.init = ->
 						console.log 'school UW updated'
 
 	addAdmin()
-	addUser()
+	addEditor()
 	addSchool()

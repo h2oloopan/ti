@@ -13,13 +13,13 @@ encrypt = function(input) {
 };
 
 exports.init = function() {
-  var addAdmin, addSchool, addUser;
+  var addAdmin, addEditor, addSchool;
   addAdmin = function() {
     var model, user;
     user = {
-      username: 'span',
-      password: encrypt('psy123321'),
-      email: 'span@easyace.ca',
+      username: 'admin',
+      password: encrypt('456273'),
+      email: 'admin@easyace.ca',
       power: 999,
       role: {
         name: 'admin'
@@ -27,7 +27,7 @@ exports.init = function() {
     };
     model = me.getModel('User');
     return model.findOne({
-      username: 'span'
+      username: 'admin'
     }, function(err, result) {
       if (err) {
         return console.log(err);
@@ -43,12 +43,12 @@ exports.init = function() {
       }
     });
   };
-  addUser = function() {
+  addEditor = function() {
     var model, user;
     user = {
-      username: 'user',
+      username: 'editor',
       password: encrypt('123321'),
-      email: 'user@easyace.ca',
+      email: 'editor@easyace.ca',
       power: 10,
       role: {
         name: 'editor'
@@ -106,6 +106,6 @@ exports.init = function() {
     });
   };
   addAdmin();
-  addUser();
+  addEditor();
   return addSchool();
 };
