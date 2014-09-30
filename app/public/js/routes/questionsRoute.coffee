@@ -184,16 +184,22 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 				itemController: 'questionItem'
 
 			App.QuestionItemController = Ember.ObjectController.extend
+				isHidden: ( ->
+					if @get('flag') > 0 then return false
+					return true
+				).property 'flag'
 				needs: 'questionsIndex'
 				actions:
 					delete: (question) ->
-						ans = confirm 'Do you want to delete question ' + question.id + '?'
+						#this is not a real delete
+						name = question.get('school.name') + ' ' + question.get('term') + ' ' + question.get('subject') + ' ' + question.get('course')
+						ans = confirm 'Do you want to delete question ' + question.get('id') + ' of ' + name + '?'
 						if ans
-							question.destroyRecord().then ->
+							question.set 'flag', 0
+							question.save().then ->
 								#done
 								return true
 							, (errors) ->
-								#fail
 								question.rollback()
 								alert errors.responseText
 						return false

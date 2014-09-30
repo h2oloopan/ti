@@ -23,6 +23,7 @@
 		<tbody>
 			{{#each question in controller}}
 			{{#unless question.isNew}}
+			{{#unless question.isHidden}}
 			<tr>
 				<td>
 					{{question.school.name}}
@@ -50,12 +51,14 @@
 					
 					<a title="View Question" href="" {{action "view" question}}><span class="glyphicon glyphicon-search"></span></a>
 					{{#link-to "question.edit" question title="Edit Question"}}<span class="glyphicon glyphicon-pencil"></span>{{/link-to}}
-					<!-- CANNOt DELETE FOR NOW -->
-					<!--
-					<a title="Delete Question" href="" {{action "delete" question}}><span class="glyphicon glyphicon-remove"></span></a>
-					-->
+					<!-- This is not a real delete, it only changes the flag of question, the question will still persist in the database -->
+					<a title="Delete Question" href="" {{action "delete" question}}>
+						<span class="glyphicon glyphicon-remove"></span>
+					</a>
+					
 				</td>
 			</tr>
+			{{/unless}}
 			{{/unless}}
 			{{/each}}
 		</tbody>
