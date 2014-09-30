@@ -1,3 +1,5 @@
+mailer = require '../helpers/mailer'
+
 Schema = require('mongo-ember').Schema
 
 module.exports =
@@ -30,7 +32,7 @@ module.exports =
 				required: 'Email cannot be empty'
 				match: 'Invalid email address'
 		api:
-			c: (req, res, model) ->
+			c: (req, res, model, form, cb) ->
 				
 		auth:
 			#c
