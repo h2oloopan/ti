@@ -70,7 +70,21 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
         },
         actions: {
           add: function() {
-            return alert(JSON.stringify(this.get('user')));
+            var result, user;
+            this.set('user.errors', null);
+            user = this.store.createRecord('user', this.get('user'));
+            result = user.validate();
+            if (!result) {
+              this.set('user.errors', user.errors);
+              return false;
+            }
+            user.save().then(function() {
+              return $('.modal-admin-user').modal('hide');
+            }, function(errors) {
+              user.rollback();
+              return alert(errors);
+            });
+            return false;
           }
         }
       });

@@ -59,7 +59,20 @@ define ['jquery', 'me', 'utils',
 					return user
 				actions:
 					add: ->
-						alert JSON.stringify @get('user')
+						@set 'user.errors', null
+						user = @store.createRecord 'user', @get 'user'
+						result = user.validate()
+						if !result
+							@set 'user.errors', user.errors
+							return false
+						user.save().then ->
+							#done
+							$('.modal-admin-user').modal 'hide'
+						, (errors) ->
+							#fail
+							user.rollback()
+							alert errors
+						return false
 
 
 
