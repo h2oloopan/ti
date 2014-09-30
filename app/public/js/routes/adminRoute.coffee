@@ -35,9 +35,24 @@ define ['jquery', 'me', 'utils',
 			App.AdminView = Ember.View.extend
 				didInsertElement: ->
 					@_super()
-					$('.nav-tabs a:first').click() #click the first tab by default
+					$('.nav-tabs a').each (index) ->
+						$(@).click (e) ->
+							target = e.currentTarget
+							option = $(target).attr('href').substr 1
+							href = window.location.href
+							if href.indexOf('?') >= 0 then href = href.substr 0, href.indexOf '?'
+							window.location.href = href + '?' + option
+
+					href = window.location.href
+					href = if href.indexOf('?') >= 0 then '#' + href.substr(href.indexOf('?') + 1) else null
+					if href?
+						$('.nav-tabs a[href="' + href + '"]').click()
+					else
+						$('.nav-tabs a:first').click()
 
 			App.UsersController = Ember.ArrayController.extend
+				sortProperties: ['power']
+				sortAscending: false
 				itemController: 'user'
 				actions:
 					add: ->
@@ -88,6 +103,13 @@ define ['jquery', 'me', 'utils',
 							alert errors.responseText
 						return false
 
+			#schools
+			App.SchoolsController = Ember.ArrayController.extend
+				itemController: 'school'
+
+			App.SchoolController = Ember.ObjectController.extend
+				actions:
+					add: ->
 
 
 

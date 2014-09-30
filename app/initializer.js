@@ -94,6 +94,7 @@ exports.init = function() {
           }
         });
       } else {
+        return false;
         result.info = school.info;
         return result.save(function(err, result) {
           if (err) {

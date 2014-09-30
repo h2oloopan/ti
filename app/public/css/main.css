@@ -3,6 +3,10 @@ body {
 	padding-bottom: 20px;
 }
 
+.container {
+	width: 970px !important;
+}
+
 .nav-tabs {
 	margin-bottom: 15px;
 }

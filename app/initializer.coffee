@@ -74,6 +74,7 @@ exports.init = ->
 					else
 						console.log 'school UW created'
 			else
+				return false
 				#update
 				result.info = school.info
 				result.save (err, result) ->

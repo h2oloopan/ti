@@ -38,11 +38,32 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
       });
       App.AdminView = Ember.View.extend({
         didInsertElement: function() {
+          var href;
           this._super();
-          return $('.nav-tabs a:first').click();
+          $('.nav-tabs a').each(function(index) {
+            return $(this).click(function(e) {
+              var href, option, target;
+              target = e.currentTarget;
+              option = $(target).attr('href').substr(1);
+              href = window.location.href;
+              if (href.indexOf('?') >= 0) {
+                href = href.substr(0, href.indexOf('?'));
+              }
+              return window.location.href = href + '?' + option;
+            });
+          });
+          href = window.location.href;
+          href = href.indexOf('?') >= 0 ? '#' + href.substr(href.indexOf('?') + 1) : null;
+          if (href != null) {
+            return $('.nav-tabs a[href="' + href + '"]').click();
+          } else {
+            return $('.nav-tabs a:first').click();
+          }
         }
       });
       App.UsersController = Ember.ArrayController.extend({
+        sortProperties: ['power'],
+        sortAscending: false,
         itemController: 'user',
         actions: {
           add: function() {
@@ -75,7 +96,7 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
           }
         }
       });
-      return App.UsersNewController = Ember.ObjectController.extend({
+      App.UsersNewController = Ember.ObjectController.extend({
         user: {
           role: {}
         },
@@ -101,6 +122,14 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
             });
             return false;
           }
+        }
+      });
+      App.SchoolsController = Ember.ArrayController.extend({
+        itemController: 'school'
+      });
+      return App.SchoolController = Ember.ObjectController.extend({
+        actions: {
+          add: function() {}
         }
       });
     }
