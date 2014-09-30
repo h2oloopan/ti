@@ -71,7 +71,7 @@ define ['me', 'routes/questionsRoute', 'routes/adminRoute',
 						me.auth.login(@get('model')).then (user) ->
 							#done
 							thiz.set 'controllers.application.model', user
-							thiz.transitionTo 'questions'
+							thiz.transitionToRoute 'questions'
 						, (errors) ->
 							#fail
 							thiz.set 'error', errors

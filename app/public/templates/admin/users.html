@@ -22,7 +22,7 @@
 				<td>
 					{{#unless user.isAdmin}}
 					<a title="Edit User" href=""><span class="glyphicon glyphicon-pencil"></span></a>
-					<a title="Delete User" href=""><span class="glyphicon glyphicon-remove"></span></a>
+					<a title="Delete User" href="" {{action "delete" user}}><span class="glyphicon glyphicon-remove"></span></a>
 					{{/unless}}
 				</td>
 			</tr>

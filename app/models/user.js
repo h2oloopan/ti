@@ -78,7 +78,10 @@ module.exports = {
                         return console.log(err);
                       }
                     });
-                    return cb(null, result);
+                    return cb(null, {
+                      code: 201,
+                      data: result
+                    });
                   }
                 });
               }

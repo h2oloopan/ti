@@ -49,6 +49,20 @@ define ['jquery', 'me', 'utils',
 				).property 'power'
 				type: ( ->
 				).property 'power'
+				actions:
+					delete: (user) ->
+						ans = confirm 'Do you want to delete user ' + user.get('username') + '?'
+						if ans
+							#do something
+							user.destroyRecord().then ->
+								#done
+								return true
+							, (errors) ->
+								#fail
+								user.rollback()
+								alert errors.responseText
+
+						return false
 
 
 			App.UsersNewController = Ember.ObjectController.extend
@@ -71,8 +85,9 @@ define ['jquery', 'me', 'utils',
 						, (errors) ->
 							#fail
 							user.rollback()
-							alert errors
+							alert errors.responseText
 						return false
+
 
 
 

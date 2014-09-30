@@ -78,7 +78,7 @@ define(['me', 'routes/questionsRoute', 'routes/adminRoute', 'ehbs!templates/head
             }
             me.auth.login(this.get('model')).then(function(user) {
               thiz.set('controllers.application.model', user);
-              return thiz.transitionTo('questions');
+              return thiz.transitionToRoute('questions');
             }, function(errors) {
               thiz.set('error', errors);
               return false;

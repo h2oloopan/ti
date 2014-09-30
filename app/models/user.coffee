@@ -58,7 +58,9 @@ module.exports =
 
 										mailer.sendRegistrationMail originalUser, (err) ->
 											if err then console.log err
-										cb null, result
+										cb null, 
+											code: 201
+											data: result
 
 		auth:
 			#c

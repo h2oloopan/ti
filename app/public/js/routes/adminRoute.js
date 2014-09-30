@@ -58,7 +58,22 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
             return false;
           }
         }).property('power'),
-        type: (function() {}).property('power')
+        type: (function() {}).property('power'),
+        actions: {
+          "delete": function(user) {
+            var ans;
+            ans = confirm('Do you want to delete user ' + user.get('username') + '?');
+            if (ans) {
+              user.destroyRecord().then(function() {
+                return true;
+              }, function(errors) {
+                user.rollback();
+                return alert(errors.responseText);
+              });
+            }
+            return false;
+          }
+        }
       });
       return App.UsersNewController = Ember.ObjectController.extend({
         user: {
@@ -82,7 +97,7 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
               return $('.modal-admin-user').modal('hide');
             }, function(errors) {
               user.rollback();
-              return alert(errors);
+              return alert(errors.responseText);
             });
             return false;
           }
