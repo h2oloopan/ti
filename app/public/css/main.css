@@ -94,3 +94,7 @@ body {
 .error-page {
 	text-align: center;
 }
+
+.admin-schools .text-danger {
+	font-size: 0.85em;
+}

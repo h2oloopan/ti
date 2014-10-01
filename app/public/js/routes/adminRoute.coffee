@@ -105,15 +105,30 @@ define ['jquery', 'me', 'utils',
 
 			#schools
 			App.SchoolsController = Ember.ArrayController.extend
+				school: {}
 				itemController: 'school'
 				actions:
-					add: ->
+					add: (school) ->
+						@set 'school.errors', null
 						@set 'isAdding', true
 						return false
-					save: ->
-						@set 'isAdding', false
+					save: (school) ->
+						school = @store.createRecord 'school', school
+						result = school.validate()
+						if !result
+							@set 'school.errors', school.errors
+							return false
+						school.save().then ->
+							#done
+							@set 'school.name', null
+							@set 'isAdding', false
+						, (errors) ->
+							#fail
+							school.rollback()
+							alert errors.responseText
 						return false
 					cancel: ->
+						@set 'school.name', null
 						@set 'isAdding', false
 						return false
 

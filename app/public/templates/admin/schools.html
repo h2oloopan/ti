@@ -8,11 +8,12 @@
 			{{/each}}
 		</ul>
 		{{#if isAdding}}
+		<p class="text-danger">{{school.errors.name}}</p>
 		<div class="input-group">
-			{{input class="form-control" placeholder="School Name"}}
+			{{input class="form-control" placeholder="School Name" value=school.name}}
 			<span class="input-group-btn">
 				<button class="btn btn-default" {{action "cancel"}}>Cancel</button>
-				<button class="btn btn-default" {{action "save"}}>Save</button>
+				<button class="btn btn-default" {{action "save" school}}>Save</button>
 			</span>
 		</div>
 		{{/if}}

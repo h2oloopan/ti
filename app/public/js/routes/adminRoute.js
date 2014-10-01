@@ -125,17 +125,33 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
         }
       });
       App.SchoolsController = Ember.ArrayController.extend({
+        school: {},
         itemController: 'school',
         actions: {
-          add: function() {
+          add: function(school) {
+            this.set('school.errors', null);
             this.set('isAdding', true);
             return false;
           },
-          save: function() {
-            this.set('isAdding', false);
+          save: function(school) {
+            var result;
+            school = this.store.createRecord('school', school);
+            result = school.validate();
+            if (!result) {
+              this.set('school.errors', school.errors);
+              return false;
+            }
+            school.save().then(function() {
+              this.set('school.name', null);
+              return this.set('isAdding', false);
+            }, function(errors) {
+              school.rollback();
+              return alert(errors.responseText);
+            });
             return false;
           },
           cancel: function() {
+            this.set('school.name', null);
             this.set('isAdding', false);
             return false;
           }

@@ -25,11 +25,13 @@ module.exports = {
         var school;
         school = new model(form);
         return school.validate(function(err) {
+          var pattern;
           if (err) {
             return cb(err);
           } else {
+            pattern = new RegExp('^' + school.name + '$', 'i');
             return model.findOne({
-              name: school.name
+              name: pattern
             }, function(err, result) {
               if (err) {
                 return cb(err);

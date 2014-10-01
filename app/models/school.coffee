@@ -20,7 +20,8 @@ module.exports =
 					if err
 						cb err
 					else
-						model.findOne {name: school.name}, (err, result) ->
+						pattern = new RegExp '^' + school.name + '$', 'i'
+						model.findOne {name: pattern}, (err, result) ->
 							if err
 								cb err
 							else if result?
