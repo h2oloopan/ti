@@ -179,10 +179,11 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
         }
       });
       return App.SchoolEditController = Ember.ObjectController.extend({
-        isAddingSubject: false,
         actions: {
           update: function(school) {
-            return this.set('model', school);
+            this.set('model', school);
+            this.set('selectedSubject', this.get('info.subjects')[0]);
+            return this.set('selectedTerm', this.get('selectedSubject.terms')[0]);
           },
           selectSubject: function() {
             return false;
@@ -192,6 +193,18 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
             return false;
           },
           cancelSubject: function() {
+            this.set('isAddingSubject', false);
+            return false;
+          },
+          saveSubject: function(subject) {
+            var info;
+            info = this.get('info');
+            info.subjects.pushObject({
+              name: subject,
+              code: subject,
+              terms: []
+            });
+            this.set('info', info);
             this.set('isAddingSubject', false);
             return false;
           },

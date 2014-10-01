@@ -152,16 +152,28 @@ define ['jquery', 'me', 'utils',
 						@get('schoolEdit').send 'update', school
 
 			App.SchoolEditController = Ember.ObjectController.extend
-				isAddingSubject: false
 				actions:
 					update: (school) ->
 						@set 'model', school
+						@set 'selectedSubject', @get('info.subjects')[0]
+						@set 'selectedTerm', @get('selectedSubject.terms')[0]
 					selectSubject: ->
+
 						return false
 					addSubject: ->
 						@set 'isAddingSubject', true
 						return false
 					cancelSubject: ->
+						@set 'isAddingSubject', false
+						return false
+					saveSubject: (subject) ->
+						info = @get 'info'
+						info.subjects.pushObject
+							name: subject
+							code: subject
+							terms: []
+						@set 'info', info
+						#@notifyPropertyChange 'model.info'
 						@set 'isAddingSubject', false
 						return false
 					save: (school) ->
