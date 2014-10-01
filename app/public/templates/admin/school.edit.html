@@ -4,14 +4,43 @@
 			<label>Name</label>
 			<p class="form-control-static">{{name}}</p>
 		</div>
-		<div class="form-group">
-			<label>Subjects</label>
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group">
+					<label>Subjects</label>
+					<select size="6" class="form-control">
+						{{#each subject in info.subjects}}
+							<option>{{subject.code}}</option>
+						{{/each}}
+					</select>
+					{{#if isAddingSubject}}
+						{{input class="form-control" value=subject}}
+					{{else}}
+						<button class="btn btn-xs btn-default" {{action "addSubject"}}>Add Subject</button>
+					{{/if}}
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group">
+					<label>Terms</label>
+					<select size="6" class="form-control">
+						<option>Fall 2014</option>
+						<option>Spring 2014</option>
+					</select>
+					<button class="btn btn-xs btn-default">Add Term</button>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group">
+					<label>Courses</label>
+					<select size="6" class="form-control">
+						<option>136</option>
+						<option>137</option>
+					</select>
+					<button class="btn btn-xs btn-default">Add Course</button>
+				</div>
+			</div>
 		</div>
-		<div class="form-group">
-			<label>Terms</label>
-		</div>
-		<div class="form-group">
-			<label>Courses</label>
-		</div>
+		<button type="buttn" class="btn btn-success">Save</button>
 	</form>
 </div>

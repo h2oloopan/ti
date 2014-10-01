@@ -108,3 +108,6 @@ body {
 	background-color: #428bca;
 }
 
+.admin-schools select {
+	margin-bottom: 10px;
+}

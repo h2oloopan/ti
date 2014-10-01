@@ -179,9 +179,18 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
         }
       });
       return App.SchoolEditController = Ember.ObjectController.extend({
+        isAddingSubject: false,
         actions: {
           update: function(school) {
             return this.set('model', school);
+          },
+          addSubject: function() {
+            this.set('isAddingSubject', true);
+            return false;
+          },
+          cancelSubject: function() {
+            this.set('isAddingSubject', false);
+            return false;
           },
           save: function(school) {}
         }
