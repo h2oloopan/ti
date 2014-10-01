@@ -12,6 +12,28 @@ module.exports =
 		validationMessages:
 			name:
 				required: 'School name cannot be empty'
+		api:
+			c: (req, res, model, form, cb) ->
+				#just to make sure there is no duplicate
+				school = new model form
+				school.validate (err) ->
+					if err
+						cb err
+					else
+						model.findOne {name: school.name}, (err, result) ->
+							if err
+								cb err
+							else if result?
+								cb new Error 'School ' + school.name + ' was already in the database'
+							else
+								school.save (err, result) ->
+									if err
+										cb err
+									else
+										cb null,
+											code: 201
+											data: result
+
 		auth:
 			#c
 			c: (req, user, power, cb) ->

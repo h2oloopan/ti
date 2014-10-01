@@ -20,6 +20,38 @@ module.exports = {
         required: 'School name cannot be empty'
       }
     },
+    api: {
+      c: function(req, res, model, form, cb) {
+        var school;
+        school = new model(form);
+        return school.validate(function(err) {
+          if (err) {
+            return cb(err);
+          } else {
+            return model.findOne({
+              name: school.name
+            }, function(err, result) {
+              if (err) {
+                return cb(err);
+              } else if (result != null) {
+                return cb(new Error('School ' + school.name + ' was already in the database'));
+              } else {
+                return school.save(function(err, result) {
+                  if (err) {
+                    return cb(err);
+                  } else {
+                    return cb(null, {
+                      code: 201,
+                      data: result
+                    });
+                  }
+                });
+              }
+            });
+          }
+        });
+      }
+    },
     auth: {
       c: function(req, user, power, cb) {
         if (power >= 999) {
