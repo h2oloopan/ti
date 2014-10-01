@@ -1,1 +1,28 @@
-S
+<div class="admin-schools row">
+	<div class="col-md-4">
+		<ul class="list-group">
+			{{#each school in controller}}
+			{{#unless school.isNew}}
+			<li class="list-group-item"><a href="" {{action "select"}}>&middot; {{school.name}}</a></li>
+			{{/unless}}
+			{{/each}}
+		</ul>
+		{{#if isAdding}}
+		<div class="input-group">
+			{{input class="form-control" placeholder="School Name"}}
+			<span class="input-group-btn">
+				<button class="btn btn-default" {{action "cancel"}}>Cancel</button>
+				<button class="btn btn-default" {{action "save"}}>Save</button>
+			</span>
+		</div>
+		{{/if}}
+		{{#unless isAdding}}
+		<button type="button" class="btn btn-success" {{action "add"}}>Add School</button>
+		{{/unless}}
+		<br/>
+		<br/>
+	</div>
+	<div class="col-md-8">
+		R
+	</div>
+</div>

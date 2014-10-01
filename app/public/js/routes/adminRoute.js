@@ -125,11 +125,27 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
         }
       });
       App.SchoolsController = Ember.ArrayController.extend({
-        itemController: 'school'
+        itemController: 'school',
+        actions: {
+          add: function() {
+            this.set('isAdding', true);
+            return false;
+          },
+          save: function() {
+            this.set('isAdding', false);
+            return false;
+          },
+          cancel: function() {
+            this.set('isAdding', false);
+            return false;
+          }
+        }
       });
       return App.SchoolController = Ember.ObjectController.extend({
         actions: {
-          add: function() {}
+          edit: function() {
+            return false;
+          }
         }
       });
     }

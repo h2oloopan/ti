@@ -106,11 +106,21 @@ define ['jquery', 'me', 'utils',
 			#schools
 			App.SchoolsController = Ember.ArrayController.extend
 				itemController: 'school'
+				actions:
+					add: ->
+						@set 'isAdding', true
+						return false
+					save: ->
+						@set 'isAdding', false
+						return false
+					cancel: ->
+						@set 'isAdding', false
+						return false
 
 			App.SchoolController = Ember.ObjectController.extend
 				actions:
-					add: ->
-
+					edit: ->
+						return false
 
 
 

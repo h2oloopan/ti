@@ -19,6 +19,29 @@ module.exports = {
       name: {
         required: 'School name cannot be empty'
       }
+    },
+    auth: {
+      c: function(req, user, power, cb) {
+        if (power >= 999) {
+          return cb(null);
+        } else {
+          return cb(new Error('You do not have the permission to access this'));
+        }
+      },
+      u: function(req, user, power, cb) {
+        if (power >= 999) {
+          return cb(null);
+        } else {
+          return cb(new Error('You do not have the permission to access this'));
+        }
+      },
+      d: function(req, user, power, cb) {
+        if (power >= 999) {
+          return cb(null);
+        } else {
+          return cb(new Error('You do not have the permission to access this'));
+        }
+      }
     }
   }
 };
