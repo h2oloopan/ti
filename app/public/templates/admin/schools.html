@@ -1,19 +1,27 @@
 <div class="admin-schools row">
-	<div class="col-md-4">
-		<ul class="list-group">
+	<div class="col-md-3">
+		<div class="panel panel-default">
+		<ul class="nav nav-sidebar">
 			{{#each school in controller}}
 			{{#unless school.isNew}}
-			<li class="list-group-item"><a href="" {{action "select"}}>&middot; {{school.name}}</a></li>
+			<li {{bind-attr data-id=school.id}}>
+				<a href="" {{action "select" school}}>{{school.name}}</a>
+			</li>
 			{{/unless}}
 			{{/each}}
 		</ul>
+		</div>
 		{{#if isAdding}}
 		<p class="text-danger">{{school.errors.name}}</p>
 		<div class="input-group">
 			{{input class="form-control" placeholder="School Name" value=school.name}}
 			<span class="input-group-btn">
-				<button class="btn btn-default" {{action "cancel"}}>Cancel</button>
-				<button class="btn btn-default" {{action "save" school}}>Save</button>
+				<a title="Cancel" class="btn btn-default" {{action "cancel"}}>
+					<span class="glyphicon glyphicon-remove"></span>
+				</a>
+				<a title="Save" class="btn btn-default" {{action "save" school}}>
+					<span class="glyphicon glyphicon-ok"></span>
+				</a>
 			</span>
 		</div>
 		{{/if}}
@@ -23,7 +31,11 @@
 		<br/>
 		<br/>
 	</div>
-	<div class="col-md-8">
-		R
+	<div class="col-md-9">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				{{render "school.edit"}}
+			</div>
+		</div>
 	</div>
 </div>

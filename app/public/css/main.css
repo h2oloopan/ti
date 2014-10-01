@@ -98,3 +98,13 @@ body {
 .admin-schools .text-danger {
 	font-size: 0.85em;
 }
+
+.admin-schools .nav-sidebar {
+	font-size: 0.9em;
+}
+
+.admin-schools .nav-sidebar > .active > a {
+	color: #fff;
+	background-color: #428bca;
+}
+

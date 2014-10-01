@@ -2,7 +2,8 @@ define ['jquery', 'me', 'utils',
 'ehbs!templates/admin/admin',
 'ehbs!templates/admin/users',
 'ehbs!templates/admin/users.new',
-'ehbs!templates/admin/schools'
+'ehbs!templates/admin/schools',
+'ehbs!templates/admin/school.edit'
 ], ($, me, utils) ->
 	AdminRoute = 
 		setup: (App) ->
@@ -104,6 +105,11 @@ define ['jquery', 'me', 'utils',
 						return false
 
 			#schools
+			App.SchoolsView = Ember.View.extend
+				didInsertElement: ->
+					@_super()
+					$('.nav-sidebar a:first').click()
+
 			App.SchoolsController = Ember.ArrayController.extend
 				school: {}
 				itemController: 'school'
@@ -113,6 +119,7 @@ define ['jquery', 'me', 'utils',
 						@set 'isAdding', true
 						return false
 					save: (school) ->
+						thiz = @
 						school = @store.createRecord 'school', school
 						result = school.validate()
 						if !result
@@ -120,8 +127,8 @@ define ['jquery', 'me', 'utils',
 							return false
 						school.save().then ->
 							#done
-							@set 'school.name', null
-							@set 'isAdding', false
+							thiz.set 'school.name', null
+							thiz.set 'isAdding', false
 						, (errors) ->
 							#fail
 							school.rollback()
@@ -133,9 +140,23 @@ define ['jquery', 'me', 'utils',
 						return false
 
 			App.SchoolController = Ember.ObjectController.extend
+				needs: 'schools'
+				needs: 'schoolEdit'
+				schoolEdit: Ember.computed.alias 'controllers.schoolEdit' 
 				actions:
-					edit: ->
-						return false
+					select: (school) ->
+						#ui
+						id = school.get 'id'
+						$('.nav-sidebar li').removeClass 'active'
+						$('.nav-sidebar li[data-id="' + id + '"]').addClass 'active'
+						@get('schoolEdit').send 'update', school
+
+			App.SchoolEditController = Ember.ObjectController.extend
+				actions:
+					update: (school) ->
+						@set 'model', school
+					save: (school) ->
+
 
 
 
