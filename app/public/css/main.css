@@ -111,3 +111,13 @@ body {
 .admin-schools select {
 	margin-bottom: 10px;
 }
+
+.admin-schools .info-input .form-control {
+	font-size: 12px;
+	height: 22px;
+	padding: 2px 4px;
+}
+
+.admin-schools .info-input a.btn {
+	padding: 0;
+}

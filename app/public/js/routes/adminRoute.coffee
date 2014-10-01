@@ -156,6 +156,8 @@ define ['jquery', 'me', 'utils',
 				actions:
 					update: (school) ->
 						@set 'model', school
+					selectSubject: ->
+						return false
 					addSubject: ->
 						@set 'isAddingSubject', true
 						return false

@@ -8,13 +8,19 @@
 			<div class="col-md-4">
 				<div class="form-group">
 					<label>Subjects</label>
-					<select size="6" class="form-control">
-						{{#each subject in info.subjects}}
-							<option>{{subject.code}}</option>
-						{{/each}}
-					</select>
+					{{view Ember.Select classNames="form-control" size="6" content=info.subjects optionLabelPath="content.code" selection=selectedSubject}}
 					{{#if isAddingSubject}}
-						{{input class="form-control" value=subject}}
+						<div class="input-group info-input">
+							{{input class="form-control" placeholder="Subject Code" value=subject}}
+							<span class="input-group-btn">
+								<a title="Cancel" class="btn btn-default" {{action "cancelSubject"}}>
+									<span class="glyphicon glyphicon-remove"></span>
+								</a>
+								<a title="Save" class="btn btn-default" {{action "saveSubject"}}>
+									<span class="glyphicon glyphicon-ok"></span>
+								</a>
+							</span>
+						</div>
 					{{else}}
 						<button class="btn btn-xs btn-default" {{action "addSubject"}}>Add Subject</button>
 					{{/if}}
@@ -23,20 +29,14 @@
 			<div class="col-md-4">
 				<div class="form-group">
 					<label>Terms</label>
-					<select size="6" class="form-control">
-						<option>Fall 2014</option>
-						<option>Spring 2014</option>
-					</select>
+					{{view Ember.Select classNames="form-control" size="6" content=selectedSubject.terms optionLabelPath="content.name" selection=selectedTerm}}
 					<button class="btn btn-xs btn-default">Add Term</button>
 				</div>
 			</div>
 			<div class="col-md-4">
 				<div class="form-group">
 					<label>Courses</label>
-					<select size="6" class="form-control">
-						<option>136</option>
-						<option>137</option>
-					</select>
+					{{view Ember.Select classNames="form-control" size="6" content=selectedTerm.courses optionLabelPath="content.number" selection=selectedCourse}}
 					<button class="btn btn-xs btn-default">Add Course</button>
 				</div>
 			</div>

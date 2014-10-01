@@ -184,6 +184,9 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
           update: function(school) {
             return this.set('model', school);
           },
+          selectSubject: function() {
+            return false;
+          },
           addSubject: function() {
             this.set('isAddingSubject', true);
             return false;
