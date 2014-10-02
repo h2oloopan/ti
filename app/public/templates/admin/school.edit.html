@@ -1,8 +1,11 @@
 <div class="school-edit">
 	<form role="form">
-		<div class="form-group">
+		<div class="input-group">
 			<label>Name</label>
-			<p class="form-control-static">{{name}}</p>
+			<p class="form-control-static">{{name}}
+				<a title="Delete School" href="" class="btn btn-danger btn-xs">Delete School</a>
+			</p>
+			<br/>
 		</div>
 		<div class="row">
 			<div class="col-md-4">
@@ -22,8 +25,8 @@
 							</span>
 						</div>
 					{{else}}
-						<button class="btn btn-xs btn-default" {{action "addSubject"}}>Add Subject</button>
-						<button class="btn btn-xs btn-default" {{action "deleteSubject" selectedSubject}}>Delete Subject</button>
+						<button class="btn btn-xs btn-success" {{action "addSubject"}}>Add Subject</button>
+						<button class="btn btn-xs btn-danger" {{action "deleteSubject" selectedSubject}}>Delete Subject</button>
 					{{/if}}
 				</div>
 			</div>

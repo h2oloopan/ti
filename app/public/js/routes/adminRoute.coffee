@@ -176,7 +176,7 @@ define ['jquery', 'me', 'utils',
 							name: subject
 							code: subject
 							terms: []
-						@set 'info', info
+						#@set 'info', info
 						@set 'subject', null
 						@set 'isAddingSubject', false
 
@@ -188,6 +188,20 @@ define ['jquery', 'me', 'utils',
 						, (errors) ->
 							alert errors.responseText
 
+						return false
+					deleteSubject: (subject) ->
+						ans = confirm 'Are you sure you want to delete subject ' + subject.code + '?'
+						if !ans then return false
+						info = @get 'info'
+						info.subjects.removeObject subject
+						
+						#async updating
+						school = @get 'model'
+						school.save().then ->
+							#done
+							return false
+						, (errors) ->
+							alert errors.responseText
 						return false
 
 

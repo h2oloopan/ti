@@ -209,9 +209,24 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
               code: subject,
               terms: []
             });
-            this.set('info', info);
             this.set('subject', null);
             this.set('isAddingSubject', false);
+            school = this.get('model');
+            school.save().then(function() {
+              return false;
+            }, function(errors) {
+              return alert(errors.responseText);
+            });
+            return false;
+          },
+          deleteSubject: function(subject) {
+            var ans, info, school;
+            ans = confirm('Are you sure you want to delete subject ' + subject.code + '?');
+            if (!ans) {
+              return false;
+            }
+            info = this.get('info');
+            info.subjects.removeObject(subject);
             school = this.get('model');
             school.save().then(function() {
               return false;
