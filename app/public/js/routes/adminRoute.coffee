@@ -206,6 +206,7 @@ define ['jquery', 'me', 'utils',
 						
 						return false
 					deleteTerm: (term) ->
+						thiz = @
 						ans = confirm 'Are you sure you want to delete term ' + term.name + '?'
 						if !ans then return false
 						selectedSubject = @get 'selectedSubject'
@@ -214,6 +215,11 @@ define ['jquery', 'me', 'utils',
 						school = @get 'model'
 						school.save().then ->
 							#done
+							found = school.get('info.subjects').find (item) ->
+								if item.code == selectedSubject.code then return true
+								return false
+							if found?
+								thiz.set 'selectedSubject', found
 							return true
 						, (errors) ->
 							#fail

@@ -247,7 +247,8 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
             return false;
           },
           deleteTerm: function(term) {
-            var ans, school, selectedSubject;
+            var ans, school, selectedSubject, thiz;
+            thiz = this;
             ans = confirm('Are you sure you want to delete term ' + term.name + '?');
             if (!ans) {
               return false;
@@ -256,6 +257,16 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
             selectedSubject.terms.removeObject(term);
             school = this.get('model');
             school.save().then(function() {
+              var found;
+              found = school.get('info.subjects').find(function(item) {
+                if (item.code === selectedSubject.code) {
+                  return true;
+                }
+                return false;
+              });
+              if (found != null) {
+                thiz.set('selectedSubject', found);
+              }
               return true;
             }, function(errors) {
               school.rollback();
