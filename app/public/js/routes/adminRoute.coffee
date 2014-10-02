@@ -156,6 +156,7 @@ define ['jquery', 'me', 'utils',
 				actions:
 					update: (school) ->
 						@set 'model', school
+						@set 'isEditing', true
 						if @get('info.subjects').length > 0
 							@set 'selectedSubject', @get('info.subjects')[0]
 							if @get('selectedSubject.terms').length > 0

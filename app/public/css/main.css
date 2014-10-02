@@ -121,3 +121,7 @@ body {
 .admin-schools .info-input a.btn {
 	padding: 0;
 }
+
+.admin-schools .right .panel-body {
+	min-height: 306px;
+}

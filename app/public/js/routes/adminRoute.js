@@ -183,6 +183,7 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
         actions: {
           update: function(school) {
             this.set('model', school);
+            this.set('isEditing', true);
             if (this.get('info.subjects').length > 0) {
               this.set('selectedSubject', this.get('info.subjects')[0]);
               if (this.get('selectedSubject.terms').length > 0) {
