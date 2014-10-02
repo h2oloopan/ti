@@ -182,6 +182,8 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
         selectedSubjectChanged: (function() {
           if ((this.get('selectedSubject.terms') != null) && this.get('selectedSubject.terms').length > 0) {
             return this.set('selectedTerm', this.get('selectedSubject.terms')[0]);
+          } else {
+            return this.set('selectedTerm', null);
           }
         }).observes('selectedSubject'),
         actions: {
@@ -200,7 +202,7 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
             return false;
           },
           saveSubject: function(subject) {
-            var info;
+            var info, school;
             info = this.get('info');
             info.subjects.pushObject({
               name: subject,
@@ -210,6 +212,12 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
             this.set('info', info);
             this.set('subject', null);
             this.set('isAddingSubject', false);
+            school = this.get('model');
+            school.save().then(function() {
+              return false;
+            }, function(errors) {
+              return alert(errors.responseText);
+            });
             return false;
           }
         }

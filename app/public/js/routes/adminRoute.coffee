@@ -155,6 +155,8 @@ define ['jquery', 'me', 'utils',
 				selectedSubjectChanged: ( ->
 					if @get('selectedSubject.terms')? && @get('selectedSubject.terms').length > 0
 						@set 'selectedTerm', @get('selectedSubject.terms')[0]
+					else
+						@set 'selectedTerm', null
 				).observes 'selectedSubject'
 				actions:
 					update: (school) ->
@@ -177,6 +179,15 @@ define ['jquery', 'me', 'utils',
 						@set 'info', info
 						@set 'subject', null
 						@set 'isAddingSubject', false
+
+						#async updating to server
+						school = @get 'model'
+						school.save().then ->
+							#done
+							return false
+						, (errors) ->
+							alert errors.responseText
+
 						return false
 
 
