@@ -124,12 +124,6 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
           }
         }
       });
-      App.SchoolsView = Ember.View.extend({
-        didInsertElement: function() {
-          this._super();
-          return $('.nav-sidebar a:first').click();
-        }
-      });
       App.SchoolsController = Ember.ArrayController.extend({
         school: {},
         itemController: 'school',
@@ -189,11 +183,115 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
         actions: {
           update: function(school) {
             this.set('model', school);
-            this.set('selectedSubject', this.get('info.subjects')[0]);
-            return this.set('selectedTerm', this.get('selectedSubject.terms')[0]);
+            if (this.get('info.subjects').length > 0) {
+              this.set('selectedSubject', this.get('info.subjects')[0]);
+              if (this.get('selectedSubject.terms').length > 0) {
+                return this.set('selectedTerm', this.get('selectedSubject.terms')[0]);
+              }
+            }
           },
           deleteSchool: function(school) {
             alert('We are not allowed to delete school at the moment');
+            return false;
+          },
+          addCourse: function() {
+            this.set('isAddingCourse', true);
+            return false;
+          },
+          cancelCourse: function() {
+            this.set('course', null);
+            this.set('isAddingCourse', false);
+            return false;
+          },
+          saveCourse: function(course) {
+            var match, school, selectedSubject, selectedTerm, thiz;
+            thiz = this;
+            selectedSubject = this.get('selectedSubject');
+            selectedTerm = this.get('selectedTerm');
+            match = function(item) {
+              if (item.number.toLowerCase() === course.toLowerCase()) {
+                return true;
+              } else {
+                return false;
+              }
+            };
+            if (selectedTerm.courses.any(match)) {
+              alert('You cannot add course with same name/number');
+              return false;
+            }
+            selectedTerm.courses.pushObject({
+              number: course,
+              name: ''
+            });
+            this.set('course', null);
+            this.set('isAddingCourse', false);
+            school = this.get('model');
+            school.save().then(function() {
+              var found;
+              found = school.get('info.subjects').find(function(item) {
+                if (item.code === selectedSubject.code) {
+                  return true;
+                }
+                return false;
+              });
+              if (found == null) {
+                return false;
+              }
+              found = found.terms.find(function(item) {
+                if (item.name === selectedTerm.name) {
+                  return true;
+                }
+                return false;
+              });
+              if (found == null) {
+                return false;
+              }
+              thiz.set('selectedTerm', found);
+              return true;
+            }, function(errors) {
+              school.rollback();
+              return alert(errors.responseText);
+            });
+            return false;
+          },
+          deleteCourse: function(course) {
+            var ans, school, selectedSubject, selectedTerm, thiz;
+            thiz = this;
+            ans = confirm('Are you sure you want to delete course ' + course.number + '?');
+            if (!ans) {
+              return false;
+            }
+            selectedSubject = this.get('selectedSubject');
+            selectedTerm = this.get('selectedTerm');
+            selectedTerm.courses.removeObject(course);
+            school = this.get('model');
+            school.save().then(function() {
+              var found;
+              found = school.get('info.subjects').find(function(item) {
+                if (item.code === selectedSubject.code) {
+                  return true;
+                }
+                return false;
+              });
+              if (found == null) {
+                return false;
+              }
+              found = found.terms.find(function(item) {
+                if (item.name === selectedTerm.name) {
+                  return true;
+                }
+                return false;
+              });
+              if (found == null) {
+                return false;
+              }
+              thiz.set('selectedTerm', found);
+              return true;
+              return true;
+            }, function(errors) {
+              school.rollback();
+              return alert(errors.responseText);
+            });
             return false;
           },
           addTerm: function() {
@@ -236,9 +334,10 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
                 }
                 return false;
               });
-              if (found != null) {
-                thiz.set('selectedSubject', found);
+              if (found == null) {
+                return false;
               }
+              thiz.set('selectedSubject', found);
               return true;
             }, function(errors) {
               school.rollback();
@@ -264,9 +363,10 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
                 }
                 return false;
               });
-              if (found != null) {
-                thiz.set('selectedSubject', found);
+              if (found == null) {
+                return false;
               }
+              thiz.set('selectedSubject', found);
               return true;
             }, function(errors) {
               school.rollback();
@@ -284,7 +384,8 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
             return false;
           },
           saveSubject: function(subject) {
-            var info, match, school;
+            var info, match, school, thiz;
+            thiz = this;
             info = this.get('info');
             match = function(item) {
               if (item.code.toLowerCase() === subject.toLowerCase()) {
@@ -306,6 +407,7 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
             this.set('isAddingSubject', false);
             school = this.get('model');
             school.save().then(function() {
+              thiz.set('selectedSubject', thiz.get('info.subjects')[thiz.get('info.subjects').length - 1]);
               return true;
             }, function(errors) {
               school.rollback();

@@ -7,7 +7,7 @@ module.exports =
 				required: true
 			info:
 				type: Schema.Types.Mixed
-				default: {}
+				default: {subjects: []}
 
 		validationMessages:
 			name:

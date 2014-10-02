@@ -105,11 +105,6 @@ define ['jquery', 'me', 'utils',
 						return false
 
 			#schools
-			App.SchoolsView = Ember.View.extend
-				didInsertElement: ->
-					@_super()
-					$('.nav-sidebar a:first').click()
-
 			App.SchoolsController = Ember.ArrayController.extend
 				school: {}
 				itemController: 'school'
@@ -161,11 +156,84 @@ define ['jquery', 'me', 'utils',
 				actions:
 					update: (school) ->
 						@set 'model', school
-						@set 'selectedSubject', @get('info.subjects')[0]
-						@set 'selectedTerm', @get('selectedSubject.terms')[0]
+						if @get('info.subjects').length > 0
+							@set 'selectedSubject', @get('info.subjects')[0]
+							if @get('selectedSubject.terms').length > 0
+								@set 'selectedTerm', @get('selectedSubject.terms')[0]
 					deleteSchool: (school) ->
 						alert 'We are not allowed to delete school at the moment'
 						return false
+					addCourse: ->
+						@set 'isAddingCourse', true
+						return false
+					cancelCourse: ->
+						@set 'course', null
+						@set 'isAddingCourse', false
+						return false
+					saveCourse: (course) ->
+						thiz = @
+						selectedSubject = @get 'selectedSubject'
+						selectedTerm = @get 'selectedTerm'
+						match = (item) ->
+							if item.number.toLowerCase() == course.toLowerCase()
+								return true
+							else
+								return false
+						if selectedTerm.courses.any match
+							alert 'You cannot add course with same name/number'
+							return false
+						selectedTerm.courses.pushObject
+							number: course
+							name: ''
+						@set 'course', null
+						@set 'isAddingCourse', false
+						#async
+						school = @get 'model'
+						school.save().then ->
+							#done
+							found = school.get('info.subjects').find (item) ->
+								if item.code == selectedSubject.code then return true
+								return false
+							if !found? then return false
+							found = found.terms.find (item) ->
+								if item.name == selectedTerm.name then return true
+								return false
+							if !found? then return false
+							thiz.set 'selectedTerm', found
+							return true
+						, (errors) ->
+							#fail
+							school.rollback()
+							alert errors.responseText
+						return false
+					deleteCourse: (course) ->
+						thiz = @
+						ans = confirm 'Are you sure you want to delete course ' + course.number + '?'
+						if !ans then return false
+						selectedSubject = @get 'selectedSubject'
+						selectedTerm = @get 'selectedTerm'
+						selectedTerm.courses.removeObject course
+						#async
+						school = @get 'model'
+						school.save().then ->
+							#done
+							found = school.get('info.subjects').find (item) ->
+								if item.code == selectedSubject.code then return true
+								return false
+							if !found? then return false
+							found = found.terms.find (item) ->
+								if item.name == selectedTerm.name then return true
+								return false
+							if !found? then return false
+							thiz.set 'selectedTerm', found
+							return true
+							return true
+						, (errors) ->
+							#fail
+							school.rollback()
+							alert errors.responseText
+						return false
+
 					addTerm: ->
 						@set 'isAddingTerm', true
 						return false
@@ -197,13 +265,12 @@ define ['jquery', 'me', 'utils',
 							found = school.get('info.subjects').find (item) ->
 								if item.code == selectedSubject.code then return true
 								return false
-							if found?
-								thiz.set 'selectedSubject', found
+							if !found? then return false
+							thiz.set 'selectedSubject', found
 							return true
 						, (errors) ->
 							school.rollback()
 							alert errors.responseText
-						
 						return false
 					deleteTerm: (term) ->
 						thiz = @
@@ -218,8 +285,8 @@ define ['jquery', 'me', 'utils',
 							found = school.get('info.subjects').find (item) ->
 								if item.code == selectedSubject.code then return true
 								return false
-							if found?
-								thiz.set 'selectedSubject', found
+							if !found? then return false
+							thiz.set 'selectedSubject', found
 							return true
 						, (errors) ->
 							#fail
@@ -234,6 +301,7 @@ define ['jquery', 'me', 'utils',
 						@set 'isAddingSubject', false
 						return false
 					saveSubject: (subject) ->
+						thiz = @
 						info = @get 'info'
 						match = (item) ->
 							if item.code.toLowerCase() == subject.toLowerCase()
@@ -253,6 +321,7 @@ define ['jquery', 'me', 'utils',
 						school = @get 'model'
 						school.save().then ->
 							#done
+							thiz.set 'selectedSubject', thiz.get('info.subjects')[thiz.get('info.subjects').length - 1]
 							return true
 						, (errors) ->
 							school.rollback()
@@ -276,7 +345,8 @@ define ['jquery', 'me', 'utils',
 
 
 
-
-
-
 	return AdminRoute
+
+
+
+

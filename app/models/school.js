@@ -12,7 +12,9 @@ module.exports = {
       },
       info: {
         type: Schema.Types.Mixed,
-        "default": {}
+        "default": {
+          subjects: []
+        }
       }
     },
     validationMessages: {

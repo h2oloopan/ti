@@ -8,7 +8,7 @@
 			<br/>
 		</div>
 		<div class="row">
-			<div class="col-md-4">
+			<div class="col-md-4 col-subjects">
 				<div class="form-group">
 					<label>Subjects</label>
 					{{view Ember.Select classNames="form-control" size="6" content=info.subjects optionLabelPath="content.code" selection=selectedSubject}}
@@ -25,12 +25,12 @@
 							</span>
 						</div>
 					{{else}}
-						<button class="btn btn-xs btn-success" {{action "addSubject"}}>Add Subject</button>
-						<button class="btn btn-xs btn-danger" {{action "deleteSubject" selectedSubject}}>Delete Subject</button>
+						<button class="btn btn-xs btn-success" {{action "addSubject"}}>Add</button>
+						<button class="btn btn-xs btn-danger" {{action "deleteSubject" selectedSubject}}>Delete</button>
 					{{/if}}
 				</div>
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-4 col-terms">
 				<div class="form-group">
 					<label>Terms</label>
 					{{view Ember.Select classNames="form-control" size="6" content=selectedSubject.terms optionLabelPath="content.name" selection=selectedTerm}}
@@ -46,12 +46,12 @@
 								</a>
 						</div>
 					{{else}}
-						<button class="btn btn-xs btn-success" {{action "addTerm"}}>Add Term</button>
-						<button class="btn btn-xs btn-danger" {{action "deleteTerm" selectedTerm}}>Delete Term</button>
+						<button class="btn btn-xs btn-success" {{action "addTerm"}}>Add</button>
+						<button class="btn btn-xs btn-danger" {{action "deleteTerm" selectedTerm}}>Delete</button>
 					{{/if}}
 				</div>
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-4 col-courses">
 				<div class="form-group">
 					<label>Courses</label>
 					{{view Ember.Select classNames="form-control" size="6" content=selectedTerm.courses optionLabelPath="content.number" selection=selectedCourse}}
@@ -67,8 +67,8 @@
 								</a>
 						</div>
 					{{else}}
-						<button class="btn btn-xs btn-success" {{action "addCourse"}}>Add Course</button>
-						<button class="btn btn-xs btn-danger" {{action "deleteCourse" selectedCourse}}>Delete Course</button>
+						<button class="btn btn-xs btn-success" {{action "addCourse"}}>Add</button>
+						<button class="btn btn-xs btn-danger" {{action "deleteCourse" selectedCourse}}>Delete</button>
 					{{/if}}
 				</div>
 			</div>
