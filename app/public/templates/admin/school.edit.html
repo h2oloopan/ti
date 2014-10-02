@@ -34,14 +34,42 @@
 				<div class="form-group">
 					<label>Terms</label>
 					{{view Ember.Select classNames="form-control" size="6" content=selectedSubject.terms optionLabelPath="content.name" selection=selectedTerm}}
-					<button class="btn btn-xs btn-default">Add Term</button>
+					{{#if isAddingTerm}}
+						<div class="input-group info-input">
+							{{input class="form-control" placeholder="Term Name" value=term}}
+							<span class="input-group-btn">
+								<a title="Cancel" class="btn btn-default" {{action "cancelTerm"}}>
+									<span class="glyphicon glyphicon-remove"></span>
+								</a>
+								<a title="Save" class="btn btn-default" {{action "saveTerm" term}}>
+									<span class="glyphicon glyphicon-ok"></span>
+								</a>
+						</div>
+					{{else}}
+						<button class="btn btn-xs btn-success" {{action "addTerm"}}>Add Term</button>
+						<button class="btn btn-xs btn-danger" {{action "deleteTerm" selectedTerm}}>Delete Term</button>
+					{{/if}}
 				</div>
 			</div>
 			<div class="col-md-4">
 				<div class="form-group">
 					<label>Courses</label>
 					{{view Ember.Select classNames="form-control" size="6" content=selectedTerm.courses optionLabelPath="content.number" selection=selectedCourse}}
-					<button class="btn btn-xs btn-default">Add Course</button>
+					{{#if isAddingCourse}}
+						<div class="input-group info-input">
+							{{input class="form-control" placeholder="Course Number" value=course}}
+							<span class="input-group-btn">
+								<a title="Cancel" class="btn btn-default" {{action "cancelCourse"}}>
+									<span class="glyphicon glyphicon-remove"></span>
+								</a>
+								<a title="Save" class="btn btn-default" {{action "saveCourse" course}}>
+									<span class="glyphicon glyphicon-ok"></span>
+								</a>
+						</div>
+					{{else}}
+						<button class="btn btn-xs btn-success" {{action "addCourse"}}>Add Course</button>
+						<button class="btn btn-xs btn-danger" {{action "deleteCourse" selectedCourse}}>Delete Course</button>
+					{{/if}}
 				</div>
 			</div>
 		</div>
