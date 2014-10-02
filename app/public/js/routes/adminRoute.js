@@ -242,6 +242,8 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
               if (found == null) {
                 return false;
               }
+              thiz.set('isReset', true);
+              thiz.set('selectedSubject', found);
               found = found.terms.find(function(item) {
                 if (item.name === selectedTerm.name) {
                   return true;

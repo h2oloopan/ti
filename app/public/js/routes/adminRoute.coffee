@@ -199,6 +199,8 @@ define ['jquery', 'me', 'utils',
 								if item.code == selectedSubject.code then return true
 								return false
 							if !found? then return false
+							thiz.set 'isReset', true
+							thiz.set 'selectedSubject', found
 							found = found.terms.find (item) ->
 								if item.name == selectedTerm.name then return true
 								return false
