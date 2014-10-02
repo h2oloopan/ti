@@ -34,7 +34,13 @@ me.setup({
     mePath: '/js/libs/me.js',
     meOutputPath: path.join(__dirname, 'public/js/libs/me.js'),
     primaryKey: '_id',
-    userModel: 'User'
+    userModel: 'User',
+    optimize: {
+        minifyJS: true,
+        compileHandlebars: true,
+        publicFolder: path.join(__dirname, 'public'),
+        excludePath: 'libs'
+    }
 }).init(app, initializer.init);
 
 
