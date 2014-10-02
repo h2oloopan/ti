@@ -23,6 +23,7 @@
 						</div>
 					{{else}}
 						<button class="btn btn-xs btn-default" {{action "addSubject"}}>Add Subject</button>
+						<button class="btn btn-xs btn-default" {{action "deleteSubject" selectedSubject}}>Delete Subject</button>
 					{{/if}}
 				</div>
 			</div>
@@ -41,6 +42,5 @@
 				</div>
 			</div>
 		</div>
-		<button type="buttn" class="btn btn-success">Save</button>
 	</form>
 </div>
