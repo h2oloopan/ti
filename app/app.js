@@ -39,7 +39,7 @@ me.setup({
         minifyJS: true,
         compileHandlebars: true,
         publicFolder: path.join(__dirname, 'public'),
-        excludePath: 'libs',
+        excludePath: ['libs', 'templates', 'MathJax'],
         templatePath: 'templates',
         templateExtension: '.html'
     }
