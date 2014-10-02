@@ -148,6 +148,9 @@ define ['jquery', 'me', 'utils',
 
 			App.SchoolEditController = Ember.ObjectController.extend
 				selectedSubjectChanged: ( ->
+					if @get 'isReset'
+						@set 'isReset', false
+						return false
 					if @get('selectedSubject.terms')? && @get('selectedSubject.terms').length > 0
 						@set 'selectedTerm', @get('selectedSubject.terms')[0]
 					else
@@ -267,7 +270,9 @@ define ['jquery', 'me', 'utils',
 								if item.code == selectedSubject.code then return true
 								return false
 							if !found? then return false
+							thiz.set 'isReset', true
 							thiz.set 'selectedSubject', found
+							thiz.set 'selectedTerm', found.terms[found.terms.length - 1]
 							return true
 						, (errors) ->
 							school.rollback()

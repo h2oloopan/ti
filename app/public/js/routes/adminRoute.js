@@ -174,6 +174,10 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
       });
       return App.SchoolEditController = Ember.ObjectController.extend({
         selectedSubjectChanged: (function() {
+          if (this.get('isReset')) {
+            this.set('isReset', false);
+            return false;
+          }
           if ((this.get('selectedSubject.terms') != null) && this.get('selectedSubject.terms').length > 0) {
             return this.set('selectedTerm', this.get('selectedSubject.terms')[0]);
           } else {
@@ -338,7 +342,9 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
               if (found == null) {
                 return false;
               }
+              thiz.set('isReset', true);
               thiz.set('selectedSubject', found);
+              thiz.set('selectedTerm', found.terms[found.terms.length - 1]);
               return true;
             }, function(errors) {
               school.rollback();
