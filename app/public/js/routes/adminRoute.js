@@ -192,6 +192,10 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
             this.set('selectedSubject', this.get('info.subjects')[0]);
             return this.set('selectedTerm', this.get('selectedSubject.terms')[0]);
           },
+          deleteSchool: function(school) {
+            alert('We are not allowed to delete school at the moment');
+            return false;
+          },
           addSubject: function() {
             this.set('isAddingSubject', true);
             return false;

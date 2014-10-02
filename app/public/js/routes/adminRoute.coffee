@@ -163,6 +163,9 @@ define ['jquery', 'me', 'utils',
 						@set 'model', school
 						@set 'selectedSubject', @get('info.subjects')[0]
 						@set 'selectedTerm', @get('selectedSubject.terms')[0]
+					deleteSchool: (school) ->
+						alert 'We are not allowed to delete school at the moment'
+						return false
 					addSubject: ->
 						@set 'isAddingSubject', true
 						return false
