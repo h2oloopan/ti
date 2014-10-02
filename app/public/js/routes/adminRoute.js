@@ -196,6 +196,73 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
             alert('We are not allowed to delete school at the moment');
             return false;
           },
+          addTerm: function() {
+            this.set('isAddingTerm', true);
+            return false;
+          },
+          cancelTerm: function() {
+            this.set('term', null);
+            this.set('isAddingTerm', false);
+            return false;
+          },
+          saveTerm: function(term) {
+            var match, school, selectedSubject, thiz;
+            thiz = this;
+            selectedSubject = this.get('selectedSubject');
+            match = function(item) {
+              if (item.name.toLowerCase() === term.toLowerCase()) {
+                return true;
+              } else {
+                return false;
+              }
+            };
+            if (selectedSubject.terms.any(match)) {
+              alert('You cannot add term with same name');
+              return false;
+            }
+            selectedSubject.terms.pushObject({
+              name: term,
+              code: '',
+              courses: []
+            });
+            this.set('term', null);
+            this.set('isAddingTerm', false);
+            school = this.get('model');
+            school.save().then(function() {
+              var found;
+              found = school.get('info.subjects').find(function(item) {
+                if (item.code === selectedSubject.code) {
+                  return true;
+                }
+                return false;
+              });
+              if (found != null) {
+                thiz.set('selectedSubject', found);
+              }
+              return true;
+            }, function(errors) {
+              school.rollback();
+              return alert(errors.responseText);
+            });
+            return false;
+          },
+          deleteTerm: function(term) {
+            var ans, school, selectedSubject;
+            ans = confirm('Are you sure you want to delete term ' + term.name + '?');
+            if (!ans) {
+              return false;
+            }
+            selectedSubject = this.get('selectedSubject');
+            selectedSubject.terms.removeObject(term);
+            school = this.get('model');
+            school.save().then(function() {
+              return true;
+            }, function(errors) {
+              school.rollback();
+              return alert(errors.responseText);
+            });
+            return false;
+          },
           addSubject: function() {
             this.set('isAddingSubject', true);
             return false;
@@ -228,8 +295,9 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
             this.set('isAddingSubject', false);
             school = this.get('model');
             school.save().then(function() {
-              return false;
+              return true;
             }, function(errors) {
+              school.rollback();
               return alert(errors.responseText);
             });
             return false;
@@ -242,10 +310,12 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
             }
             info = this.get('info');
             info.subjects.removeObject(subject);
+            this.set('selectedSubject', null);
             school = this.get('model');
             school.save().then(function() {
-              return false;
+              return true;
             }, function(errors) {
+              school.rollback();
               return alert(errors.responseText);
             });
             return false;

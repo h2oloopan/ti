@@ -166,6 +166,60 @@ define ['jquery', 'me', 'utils',
 					deleteSchool: (school) ->
 						alert 'We are not allowed to delete school at the moment'
 						return false
+					addTerm: ->
+						@set 'isAddingTerm', true
+						return false
+					cancelTerm: ->
+						@set 'term', null
+						@set 'isAddingTerm', false
+						return false
+					saveTerm: (term) ->
+						thiz = @
+						selectedSubject = @get 'selectedSubject'
+						match = (item) ->
+							if item.name.toLowerCase() == term.toLowerCase()
+								return true
+							else
+								return false
+						if selectedSubject.terms.any match
+							alert 'You cannot add term with same name'
+							return false
+						selectedSubject.terms.pushObject
+							name: term
+							code: ''
+							courses: []
+						@set 'term', null
+						@set 'isAddingTerm', false
+						#async
+						school = @get 'model'
+						school.save().then ->
+							#done
+							found = school.get('info.subjects').find (item) ->
+								if item.code == selectedSubject.code then return true
+								return false
+							if found?
+								thiz.set 'selectedSubject', found
+							return true
+						, (errors) ->
+							school.rollback()
+							alert errors.responseText
+						
+						return false
+					deleteTerm: (term) ->
+						ans = confirm 'Are you sure you want to delete term ' + term.name + '?'
+						if !ans then return false
+						selectedSubject = @get 'selectedSubject'
+						selectedSubject.terms.removeObject term
+						#async
+						school = @get 'model'
+						school.save().then ->
+							#done
+							return true
+						, (errors) ->
+							#fail
+							school.rollback()
+							alert errors.responseText
+						return false
 					addSubject: ->
 						@set 'isAddingSubject', true
 						return false
@@ -175,46 +229,42 @@ define ['jquery', 'me', 'utils',
 						return false
 					saveSubject: (subject) ->
 						info = @get 'info'
-
 						match = (item) ->
 							if item.code.toLowerCase() == subject.toLowerCase()
 								return true
 							else
 								return false
-
 						if info.subjects.any match
 							alert 'You cannot add subject with same name'
 							return false
-
 						info.subjects.pushObject
 							name: subject
 							code: subject
 							terms: []
-						#@set 'info', info
 						@set 'subject', null
 						@set 'isAddingSubject', false
-
 						#async updating to server
 						school = @get 'model'
 						school.save().then ->
 							#done
-							return false
+							return true
 						, (errors) ->
+							school.rollback()
 							alert errors.responseText
-
 						return false
 					deleteSubject: (subject) ->
 						ans = confirm 'Are you sure you want to delete subject ' + subject.code + '?'
 						if !ans then return false
 						info = @get 'info'
 						info.subjects.removeObject subject
-						
+						@set 'selectedSubject', null
 						#async updating
 						school = @get 'model'
 						school.save().then ->
 							#done
-							return false
+							return true
 						, (errors) ->
+							school.rollback()
 							alert errors.responseText
 						return false
 
