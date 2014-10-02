@@ -39,7 +39,9 @@ me.setup({
         minifyJS: true,
         compileHandlebars: true,
         publicFolder: path.join(__dirname, 'public'),
-        excludePath: 'libs'
+        excludePath: 'libs',
+        templatePath: 'templates',
+        templateExtension: '.html'
     }
 }).init(app, initializer.init);
 

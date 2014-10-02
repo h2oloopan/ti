@@ -1,0 +1,1 @@
+Ember.TEMPLATES.footer=Ember.Handlebars.template(function(e,r,n,o,s){this.compilerInfo=[4,">= 1.0.0"],n=this.merge(n,Ember.Handlebars.helpers),s=s||{},s.buffer.push('<div class="footer container">\n	<p>© TI 2014</p>\n</div>')});

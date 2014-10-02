@@ -1,0 +1,1 @@
+Ember.TEMPLATES.index=Ember.Handlebars.template(function(e,n,r,i,s){this.compilerInfo=[4,">= 1.0.0"],r=this.merge(r,Ember.Handlebars.helpers),s=s||{},s.buffer.push('<div class="jumbotron">\n	<div class="container">\n	\n	</div>\n</div>')});

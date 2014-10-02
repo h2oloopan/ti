@@ -1,7 +1,7 @@
 require.config
 	baseUrl: '/js/libs'
 	ehbs:
-		compile: true
+		compile: false
 		extension: '.html'
 	paths:
 		templates: '/templates'
