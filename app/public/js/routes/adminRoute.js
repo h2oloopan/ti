@@ -202,8 +202,19 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
             return false;
           },
           saveSubject: function(subject) {
-            var info, school;
+            var info, match, school;
             info = this.get('info');
+            match = function(item) {
+              if (item.code.toLowerCase() === subject.toLowerCase()) {
+                return true;
+              } else {
+                return false;
+              }
+            };
+            if (info.subjects.any(match)) {
+              alert('You cannot add subject with same name');
+              return false;
+            }
             info.subjects.pushObject({
               name: subject,
               code: subject,

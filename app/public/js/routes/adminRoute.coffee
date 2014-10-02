@@ -172,6 +172,17 @@ define ['jquery', 'me', 'utils',
 						return false
 					saveSubject: (subject) ->
 						info = @get 'info'
+
+						match = (item) ->
+							if item.code.toLowerCase() == subject.toLowerCase()
+								return true
+							else
+								return false
+
+						if info.subjects.any match
+							alert 'You cannot add subject with same name'
+							return false
+
 						info.subjects.pushObject
 							name: subject
 							code: subject
