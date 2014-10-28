@@ -80,6 +80,24 @@ module.exports = {
           return cb(new Error('You do not have the permission to access this'));
         }
       }
+    },
+    manipulate: {
+      c: function(obj, user, cb) {
+        if (user == null) {
+          return cb(new Error('No user is present'));
+        } else {
+          obj.editor = user._id;
+          return cb(null, obj);
+        }
+      },
+      u: function(obj, user, cb) {
+        if (user == null) {
+          return cb(new Error('No user is present'));
+        } else {
+          obj.editor = user._id;
+          return cb(null, obj);
+        }
+      }
     }
   }
 };

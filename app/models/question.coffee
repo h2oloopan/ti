@@ -70,6 +70,23 @@ module.exports =
 				else
 					cb new Error 'You do not have the permission to access this'
 
+		manipulate:
+			#c
+			c: (obj, user, cb) ->
+				if !user?
+					cb new Error 'No user is present'
+				else
+					obj.editor = user._id
+					cb null, obj
+
+			#u
+			u: (obj, user, cb) ->
+				if !user?
+					cb new Error 'No user is present'
+				else
+					obj.editor = user._id
+					cb null, obj
+
 
 
 
