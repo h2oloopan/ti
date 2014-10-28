@@ -37,6 +37,9 @@ module.exports =
 				type: String
 			course:
 				type: String
+			editor:
+				type: Schema.Types.ObjectId
+				ref: 'User'
 
 		validationMessages:
 			question:
