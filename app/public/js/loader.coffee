@@ -11,10 +11,11 @@ require.config
 	shim:
 		'bootstrap': ['jquery']
 		'jquery.hotkeys': ['jquery']
+		'jquery.cookie': ['jquery']
 		'bootstrap-wysiwyg': ['bootstrap', 'jquery', 'jquery.hotkeys']
 		'ember': ['handlebars', 'jquery']
 		'ember-data': ['ember']
-		'app': ['ember', 'ember-data', 'bootstrap']
+		'app': ['ember', 'ember-data', 'bootstrap', 'jquery.cookie']
 
 require ['app'], (app) ->
 	app.start()

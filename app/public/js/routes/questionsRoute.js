@@ -285,6 +285,8 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
         }
       });
       return App.QuestionsNewController = Ember.ObjectController.extend({
+        initialize: true,
+        needs: 'application',
         types: ['other', 'assignment', 'midterm', 'final', 'textbook'],
         difficulties: [1, 2, 3, 4, 5],
         terms: (function() {
@@ -293,7 +295,11 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
           if (school == null) {
             return [];
           }
-          this.set('question.term', school.toJSON().info.terms[0]);
+          if (this.get('initialize')) {
+            this.set('initialize', false);
+          } else {
+            this.set('question.term', school.toJSON().info.terms[0]);
+          }
           return school.toJSON().info.terms;
         }).property('question.school'),
         subjects: (function() {
@@ -331,6 +337,20 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
           another.set('school', question.get('school'));
           return another;
         },
+        saveSettings: function() {
+          var settings;
+          settings = {
+            uid: this.get('controllers.application.model._id'),
+            school: this.get('question.school.name'),
+            term: this.get('question.term.name'),
+            subject: this.get('question.subject.name'),
+            course: this.get('question.course.number'),
+            type: this.get('question.type')
+          };
+          return $.cookie('settings', JSON.stringify(settings), {
+            expires: 7
+          });
+        },
         actions: {
           add: function() {
             var question, result, thiz;
@@ -342,6 +362,7 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
               return false;
             }
             question.save().then(function() {
+              thiz.saveSettings();
               return thiz.transitionToRoute('questions');
             }, function(errors) {
               question.rollback();

@@ -240,12 +240,18 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 
 			#c
 			App.QuestionsNewController = Ember.ObjectController.extend
+				initialize: true
+				needs: 'application'
 				types: ['other', 'assignment', 'midterm', 'final', 'textbook']
 				difficulties: [1, 2, 3, 4, 5]
 				terms: ( ->
 					school = @get 'question.school'
 					if !school? then return []
-					@set 'question.term', school.toJSON().info.terms[0]
+					if @get('initialize')
+						
+						@set 'initialize', false
+					else
+						@set 'question.term', school.toJSON().info.terms[0]
 					return school.toJSON().info.terms
 				).property 'question.school'
 				subjects: ( ->
@@ -273,6 +279,15 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 					another = @store.createRecord 'Question', another
 					another.set 'school', question.get('school')
 					return another
+				saveSettings: ->
+					settings = 
+						uid: @get 'controllers.application.model._id'
+						school: @get 'question.school.name'
+						term: @get 'question.term.name'
+						subject: @get 'question.subject.name'
+						course: @get 'question.course.number'
+						type: @get 'question.type'
+					$.cookie 'settings', JSON.stringify(settings), { expires: 7 }
 				actions:
 					add: ->
 						thiz = @
@@ -282,6 +297,8 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 						if !result then return false
 						question.save().then ->
 							#done
+							#record setting
+							thiz.saveSettings()
 							thiz.transitionToRoute 'questions'
 						, (errors) ->
 							#fail
