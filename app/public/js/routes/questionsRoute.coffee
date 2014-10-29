@@ -68,25 +68,25 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 						term: true
 						course: true
 
-					#subject
-					subject = school.info.subjects[0]
-					for s in school.info.subjects
-						if s.code == real.get 'subject'
-							subject = s
-							break
-					fake.set 'subject', subject
-
 					#term
-					term = subject.terms[0]
-					for t in subject.terms
+					term = school.info.terms[0]
+					for t in school.info.terms
 						if t.name == real.get 'term'
 							term = t
 							break
 					fake.set 'term', term
 
+					#subject
+					subject = term.subjects[0]
+					for s in term.subjects
+						if s.name == real.get 'subject'
+							subject = s
+							break
+					fake.set 'subject', subject
+
 					#course
-					course = term.courses[0]
-					for c in term.courses
+					course = subject.courses[0]
+					for c in subject.courses
 						if c.number == real.get 'course'
 							course = c
 							break
@@ -106,40 +106,39 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 					solutionEditor.update()
 					summaryEditor.update()
 					
-
 			App.QuestionEditController = Ember.ObjectController.extend
 				types: ['other', 'assignment', 'midterm', 'final', 'textbook']
 				difficulties: [1, 2, 3, 4, 5]
-				subjects: ( ->
+				terms: ( ->
 					school = @get 'question_fake.school'
 					if !school? then return []
-					if @get 'question_fake.initialize.subject'
-						@set 'question_fake.initialize.subject', false
-					else
-						@set 'question_fake.subject', school.toJSON().info.subjects[0]
-					return school.toJSON().info.subjects
-				).property 'question_fake.school'
-				terms: ( ->
-					subject = @get 'question_fake.subject'
-					if !subject? then return []
 					if @get 'question_fake.initialize.term'
 						@set 'question_fake.initialize.term', false
 					else
-						@set 'question_fake.term', subject.terms[0]
-					return subject.terms
-				).property 'question_fake.subject'
-				courses: ( ->
+						@set 'question_fake.term', school.toJSON().info.terms[0]
+					return school.toJSON().info.terms
+				).property 'question_fake.school'
+				subjects: ( ->
 					term = @get 'question_fake.term'
 					if !term? then return []
+					if @get 'question_fake.initialize.subject'
+						@set 'question_fake.initialize.subject', false
+					else
+						@set 'question_fake.subject', term.subjects[0]
+					return term.subjects
+				).property 'question_fake.term'
+				courses: ( ->
+					subject = @get 'question_fake.subject'
+					if !subject? then return []
 					if @get 'question_fake.initialize.course'
 						@set 'question_fake.initialize.course', false
 					else
-						@set 'question_fake.course', term.courses[0]
-					return term.courses
-				).property 'question_fake.term'
+						@set 'question_fake.course', subject.courses[0]
+					return subject.courses
+				).property 'question_fake.subject'
 				prepare: (question) ->
 					another = question.toJSON()
-					another.subject = question.get('subject.code')
+					another.subject = question.get('subject.name')
 					another.term = question.get('term.name')
 					another.course = question.get('course.number')
 					another.question = $('#question-input').html()
@@ -243,28 +242,28 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 			App.QuestionsNewController = Ember.ObjectController.extend
 				types: ['other', 'assignment', 'midterm', 'final', 'textbook']
 				difficulties: [1, 2, 3, 4, 5]
-				subjects: ( ->
+				terms: ( ->
 					school = @get 'question.school'
 					if !school? then return []
-					@set 'question.subject', school.toJSON().info.subjects[0]
-					return school.toJSON().info.subjects
+					@set 'question.term', school.toJSON().info.terms[0]
+					return school.toJSON().info.terms
 				).property 'question.school'
-				terms: ( ->
-					subject = @get 'question.subject'
-					if !subject? then return []
-					@set 'question.term', subject.terms[0]
-					return subject.terms
-				).property 'question.subject'
-				courses: ( ->
+				subjects: ( ->
 					term = @get 'question.term'
 					if !term? then return []
-					@set 'question.course', term.courses[0]
-					return term.courses
+					@set 'question.subject', term.subjects[0]
+					return term.subjects
 				).property 'question.term'
+				courses: ( ->
+					subject = @get 'question.subject'
+					if !subject? then return []
+					@set 'question.course', subject.courses[0]
+					return subject.courses
+				).property 'question.subject'
 				prepare: (question) ->
 					another = question.toJSON()
-					another.subject = question.get('subject.code')
 					another.term = question.get('term.name')
+					another.subject = question.get('subject.name')
 					another.course = question.get('course.number')
 					another.question = $('#question-input').html()
 					another.hint = $('#hint-input').html()

@@ -17,13 +17,14 @@
 					{{view Ember.Select classNames="form-control" content=schools optionLabelPath="content.name" selection=question_fake.school}}
 				</div>
 				<div class="form-group">
-					<label>Subject</label>
-					{{view Ember.Select classNames="form-control" content=subjects optionLabelPath="content.code" selection=question_fake.subject}}
-				</div>
-				<div class="form-group">
 					<label>Term</label>
 					{{view Ember.Select classNames="form-control" content=terms optionLabelPath="content.name" selection=question_fake.term}}
 				</div>
+				<div class="form-group">
+					<label>Subject</label>
+					{{view Ember.Select classNames="form-control" content=subjects optionLabelPath="content.name" selection=question_fake.subject}}
+				</div>
+
 				<div class="form-group">
 					<label>Course</label>
 					{{view Ember.Select classNames="form-control" content=courses optionLabelPath="content.number" selection=question_fake.course}}
