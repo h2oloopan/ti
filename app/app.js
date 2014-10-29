@@ -37,7 +37,7 @@ me.setup({
     userModel: 'User',
     optimize: {
         minifyJS: true,
-        compileHandlebars: true,
+        compileHandlebars: false,
         publicFolder: path.join(__dirname, 'public'),
         excludePath: ['libs', 'templates', 'MathJax'],
         templatePath: 'templates',

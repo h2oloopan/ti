@@ -9,13 +9,35 @@
 			<br/>
 		</div>
 		<div class="row">
+			<div class="col-md-4 col-terms">
+				<div class="form-group">
+					<label>Terms</label>
+					{{view Ember.Select classNames="form-control" size="6" content=info.terms optionLabelPath="content.name" selection=selectedTerm}}
+					{{#if isAddingTerm}}
+						<div class="input-group info-input">
+							{{input class="form-control" placeholder="Term Name" value=term}}
+							<span class="input-group-btn">
+								<a title="Cancel" class="btn btn-default" {{action "cancelTerm"}}>
+									<span class="glyphicon glyphicon-remove"></span>
+								</a>
+								<a title="Save" class="btn btn-default" {{action "saveTerm" term}}>
+									<span class="glyphicon glyphicon-ok"></span>
+								</a>
+							</span>
+						</div>
+					{{else}}
+						<button class="btn btn-xs btn-success" {{action "addTerm"}}>Add</button>
+						<button class="btn btn-xs btn-danger" {{action "deleteTerm" selectedTerm}}>Delete</button>
+					{{/if}}
+				</div>
+			</div>
 			<div class="col-md-4 col-subjects">
 				<div class="form-group">
 					<label>Subjects</label>
-					{{view Ember.Select classNames="form-control" size="6" content=info.subjects optionLabelPath="content.code" selection=selectedSubject}}
+					{{view Ember.Select classNames="form-control" size="6" content=selectedTerm.subjects optionLabelPath="content.name" selection=selectedSubject}}
 					{{#if isAddingSubject}}
 						<div class="input-group info-input">
-							{{input class="form-control" placeholder="Subject Code" value=subject}}
+							{{input class="form-control" placeholder="Subject Name" value=subject}}
 							<span class="input-group-btn">
 								<a title="Cancel" class="btn btn-default" {{action "cancelSubject"}}>
 									<span class="glyphicon glyphicon-remove"></span>
@@ -31,31 +53,10 @@
 					{{/if}}
 				</div>
 			</div>
-			<div class="col-md-4 col-terms">
-				<div class="form-group">
-					<label>Terms</label>
-					{{view Ember.Select classNames="form-control" size="6" content=selectedSubject.terms optionLabelPath="content.name" selection=selectedTerm}}
-					{{#if isAddingTerm}}
-						<div class="input-group info-input">
-							{{input class="form-control" placeholder="Term Name" value=term}}
-							<span class="input-group-btn">
-								<a title="Cancel" class="btn btn-default" {{action "cancelTerm"}}>
-									<span class="glyphicon glyphicon-remove"></span>
-								</a>
-								<a title="Save" class="btn btn-default" {{action "saveTerm" term}}>
-									<span class="glyphicon glyphicon-ok"></span>
-								</a>
-						</div>
-					{{else}}
-						<button class="btn btn-xs btn-success" {{action "addTerm"}}>Add</button>
-						<button class="btn btn-xs btn-danger" {{action "deleteTerm" selectedTerm}}>Delete</button>
-					{{/if}}
-				</div>
-			</div>
 			<div class="col-md-4 col-courses">
 				<div class="form-group">
 					<label>Courses</label>
-					{{view Ember.Select classNames="form-control" size="6" content=selectedTerm.courses optionLabelPath="content.number" selection=selectedCourse}}
+					{{view Ember.Select classNames="form-control" size="6" content=selectedSubject.courses optionLabelPath="content.number" selection=selectedCourse}}
 					{{#if isAddingCourse}}
 						<div class="input-group info-input">
 							{{input class="form-control" placeholder="Course Number" value=course}}
@@ -66,6 +67,7 @@
 								<a title="Save" class="btn btn-default" {{action "saveCourse" course}}>
 									<span class="glyphicon glyphicon-ok"></span>
 								</a>
+							</span>
 						</div>
 					{{else}}
 						<button class="btn btn-xs btn-success" {{action "addCourse"}}>Add</button>
