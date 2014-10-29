@@ -190,7 +190,7 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
             this.set('isEditing', true);
             if (this.get('info.terms').length > 0) {
               this.set('selectedTerm', this.get('info.terms')[0]);
-              if (this.get('selectedTerm.subjectss').length > 0) {
+              if (this.get('selectedTerm.subjects').length > 0) {
                 return this.set('selectedSubject', this.get('selectedTerms.subjects')[0]);
               }
             }
@@ -390,9 +390,9 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
             return false;
           },
           saveTerm: function(term) {
-            var match, school, selectedTerm, thiz;
+            var info, match, school, thiz;
             thiz = this;
-            selectedTerm = this.get('selectedTerm');
+            info = this.get('info');
             match = function(item) {
               if (item.name.toLowerCase() === term.toLowerCase()) {
                 return true;

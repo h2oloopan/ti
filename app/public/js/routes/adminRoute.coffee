@@ -162,7 +162,7 @@ define ['jquery', 'me', 'utils',
 						@set 'isEditing', true
 						if @get('info.terms').length > 0
 							@set 'selectedTerm', @get('info.terms')[0]
-							if @get('selectedTerm.subjectss').length > 0
+							if @get('selectedTerm.subjects').length > 0
 								@set 'selectedSubject', @get('selectedTerms.subjects')[0]
 					deleteSchool: (school) ->
 						alert 'We are not allowed to delete school at the moment'
@@ -305,7 +305,7 @@ define ['jquery', 'me', 'utils',
 						return false
 					saveTerm: (term) ->
 						thiz = @
-						selectedTerm = @get 'selectedTerm'
+						info = @get 'info'
 						match = (item) ->
 							if item.name.toLowerCase() == term.toLowerCase()
 								return true
