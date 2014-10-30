@@ -285,7 +285,7 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
         }
       });
       return App.QuestionsNewController = Ember.ObjectController.extend({
-        initialize: 3,
+        initialize: 5,
         needs: 'application',
         types: ['other', 'assignment', 'midterm', 'final', 'textbook'],
         difficulties: [1, 2, 3, 4, 5],
@@ -306,29 +306,117 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
           var school;
           school = this.get('question.school');
           if (school == null) {
+            this.set('question.term', null);
             return [];
           }
-          this.set('question.term', school.toJSON().info.terms[0]);
+          if (school.toJSON().info.terms.length > 0) {
+            this.set('question.term', school.toJSON().info.terms[0]);
+          } else {
+            this.set('question.term', null);
+          }
           return school.toJSON().info.terms;
         }).property('question.school'),
         subjects: (function() {
           var term;
           term = this.get('question.term');
           if (term == null) {
+            this.set('question.subject', null);
             return [];
           }
-          this.set('question.subject', term.subjects[0]);
+          if ((term.subjects != null) && term.subjects.length > 0) {
+            this.set('question.subject', term.subjects[0]);
+          } else {
+            this.set('question.subject', null);
+          }
           return term.subjects;
         }).property('question.term'),
         courses: (function() {
           var subject;
           subject = this.get('question.subject');
           if (subject == null) {
+            this.set('question.course', null);
             return [];
           }
-          this.set('question.course', subject.courses[0]);
+          if ((subject.courses != null) && subject.courses.length > 0) {
+            this.set('question.course', subject.courses[0]);
+          } else {
+            this.set('question.course', null);
+          }
           return subject.courses;
         }).property('question.subject'),
+        schoolsChanged: (function() {
+          var found, settings;
+          if (this.get('initialize')) {
+            settings = this.get('settings');
+            found = this.get('schools').find(function(item) {
+              if (item.name === settings.school) {
+                return true;
+              }
+              return false;
+            });
+            if (found != null) {
+              this.set('question.school', found);
+            }
+            return this.set('initialize', this.get('initialize') - 1);
+          }
+        }).observes('schools'),
+        termsChanged: (function() {
+          var found, settings;
+          if (this.get('initialize')) {
+            settings = this.get('settings');
+            found = this.get('terms').find(function(item) {
+              if (item.name === settings.term) {
+                return true;
+              }
+              return false;
+            });
+            if (found != null) {
+              this.set('question.term', found);
+            }
+            return this.set('initialize', this.get('initialize') - 1);
+          }
+        }).observes('terms'),
+        subjectsChanged: (function() {
+          var found, settings;
+          if (this.get('initialize')) {
+            settings = this.get('settings');
+            found = this.get('subjects').find(function(item) {
+              if (item.name === settings.subject) {
+                return true;
+              }
+              return false;
+            });
+            if (found != null) {
+              this.set('question.subject', found);
+            }
+            return this.set('initialize', this.get('initialize') - 1);
+          }
+        }).observes('subjects'),
+        coursesChanged: (function() {
+          var found, settings;
+          if (this.get('initialize')) {
+            settings = this.get('settings');
+            found = this.get('courses').find(function(item) {
+              if (item.number === settings.course) {
+                return true;
+              }
+              return false;
+            });
+            if (found != null) {
+              this.set('question.course', found);
+            }
+            found = this.get('types').find(function(item) {
+              if (item === settings.type) {
+                return true;
+              }
+              return false;
+            });
+            if (found != null) {
+              this.set('question.type', found);
+            }
+            return this.set('initialize', this.get('initialize') - 2);
+          }
+        }).observes('courses'),
         prepare: function(question) {
           var another;
           another = question.toJSON();
