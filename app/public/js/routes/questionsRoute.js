@@ -457,6 +457,7 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
             question = this.prepare(this.get('question'));
             result = question.validate();
             this.set('question.errors', question.errors);
+            console.log(question.errors);
             if (!result) {
               return false;
             }
