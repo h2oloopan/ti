@@ -272,6 +272,11 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
               return reject(errors);
             });
           });
+        },
+        afterModel: function(model, transition) {
+          return this.controllerFor('questionsNew').set('initialize', {
+            school: true
+          });
         }
       });
       App.QuestionsNewView = Ember.View.extend({
@@ -285,7 +290,7 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
         }
       });
       return App.QuestionsNewController = Ember.ObjectController.extend({
-        initialize: 5,
+        initialize: null,
         needs: 'application',
         types: ['other', 'assignment', 'midterm', 'final', 'textbook'],
         difficulties: [1, 2, 3, 4, 5],
@@ -303,42 +308,95 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
           }
         }).property('initialize'),
         terms: (function() {
-          var school;
+          var found, school, settings;
           school = this.get('question.school');
           if (school == null) {
             this.set('question.term', null);
             return [];
           }
           if (school.toJSON().info.terms.length > 0) {
-            this.set('question.term', school.toJSON().info.terms[0]);
+            if (this.get('initialize.term')) {
+              settings = this.get('settings');
+              found = school.toJSON().info.terms.find(function(item) {
+                if (item.name === settings.term) {
+                  return true;
+                }
+                return false;
+              });
+              if (found != null) {
+                this.set('question.term', found);
+                this.set('initialize.subject', true);
+              }
+              this.set('initialize.term', false);
+            } else {
+              this.set('question.term', school.toJSON().info.terms[0]);
+            }
           } else {
             this.set('question.term', null);
           }
           return school.toJSON().info.terms;
         }).property('question.school'),
         subjects: (function() {
-          var term;
+          var found, settings, term;
           term = this.get('question.term');
           if (term == null) {
             this.set('question.subject', null);
             return [];
           }
           if ((term.subjects != null) && term.subjects.length > 0) {
-            this.set('question.subject', term.subjects[0]);
+            if (this.get('initialize.subject')) {
+              settings = this.get('settings');
+              found = term.subjects.find(function(item) {
+                if (item.name === settings.subject) {
+                  return true;
+                }
+                return false;
+              });
+              if (found != null) {
+                this.set('question.subject', found);
+                this.set('initialize.course', true);
+              }
+              this.set('initialize.subject', false);
+            } else {
+              this.set('question.subject', term.subjects[0]);
+            }
           } else {
             this.set('question.subject', null);
           }
           return term.subjects;
         }).property('question.term'),
         courses: (function() {
-          var subject;
+          var found, settings, subject;
           subject = this.get('question.subject');
           if (subject == null) {
             this.set('question.course', null);
             return [];
           }
           if ((subject.courses != null) && subject.courses.length > 0) {
-            this.set('question.course', subject.courses[0]);
+            if (this.get('initialize.course')) {
+              settings = this.get('settings');
+              found = subject.courses.find(function(item) {
+                if (item.number === settings.course) {
+                  return true;
+                }
+                return false;
+              });
+              if (found != null) {
+                this.set('question.course', found);
+                found = this.get('types').find(function(item) {
+                  if (item === settings.type) {
+                    return true;
+                  }
+                  return false;
+                });
+                if (found != null) {
+                  this.set('question.type', found);
+                }
+              }
+              this.set('initialize.course', false);
+            } else {
+              this.set('question.course', subject.courses[0]);
+            }
           } else {
             this.set('question.course', null);
           }
@@ -346,77 +404,21 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
         }).property('question.subject'),
         schoolsChanged: (function() {
           var found, settings;
-          if (this.get('initialize')) {
+          if (this.get('initialize.school')) {
             settings = this.get('settings');
             found = this.get('schools').find(function(item) {
-              if (item.name === settings.school) {
+              if (item.get('name') === settings.school) {
                 return true;
               }
               return false;
             });
             if (found != null) {
               this.set('question.school', found);
+              this.set('initialize.term', true);
             }
-            return this.set('initialize', this.get('initialize') - 1);
+            return this.set('initialize.school', false);
           }
         }).observes('schools'),
-        termsChanged: (function() {
-          var found, settings;
-          if (this.get('initialize')) {
-            settings = this.get('settings');
-            found = this.get('terms').find(function(item) {
-              if (item.name === settings.term) {
-                return true;
-              }
-              return false;
-            });
-            if (found != null) {
-              this.set('question.term', found);
-            }
-            return this.set('initialize', this.get('initialize') - 1);
-          }
-        }).observes('terms'),
-        subjectsChanged: (function() {
-          var found, settings;
-          if (this.get('initialize')) {
-            settings = this.get('settings');
-            found = this.get('subjects').find(function(item) {
-              if (item.name === settings.subject) {
-                return true;
-              }
-              return false;
-            });
-            if (found != null) {
-              this.set('question.subject', found);
-            }
-            return this.set('initialize', this.get('initialize') - 1);
-          }
-        }).observes('subjects'),
-        coursesChanged: (function() {
-          var found, settings;
-          if (this.get('initialize')) {
-            settings = this.get('settings');
-            found = this.get('courses').find(function(item) {
-              if (item.number === settings.course) {
-                return true;
-              }
-              return false;
-            });
-            if (found != null) {
-              this.set('question.course', found);
-            }
-            found = this.get('types').find(function(item) {
-              if (item === settings.type) {
-                return true;
-              }
-              return false;
-            });
-            if (found != null) {
-              this.set('question.type', found);
-            }
-            return this.set('initialize', this.get('initialize') - 2);
-          }
-        }).observes('courses'),
         prepare: function(question) {
           var another;
           another = question.toJSON();

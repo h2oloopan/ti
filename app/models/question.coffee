@@ -31,12 +31,16 @@ module.exports =
 			school:
 				type: Schema.Types.ObjectId
 				ref: 'School'
-			subject:
-				type: String
+				required: true
 			term:
 				type: String
+				required: true
+			subject:
+				type: String
+				required: true
 			course:
 				type: String
+				required: true
 			editor:
 				type: Schema.Types.ObjectId
 				ref: 'User'
@@ -44,6 +48,14 @@ module.exports =
 		validationMessages:
 			question:
 				required: 'Question cannot be empty'
+			school:
+				required: 'School cannot be empty'
+			term:
+				required: 'Term cannot be empty'
+			subject:
+				required: 'Subject cannot be empty'
+			course:
+				required: 'Course cannot be empty'
 		auth:
 			#c
 			c: (req, user, power, cb) ->

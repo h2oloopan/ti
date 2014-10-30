@@ -228,6 +228,8 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 								schools: result.schools
 						, (errors) ->
 							reject errors
+				afterModel: (model, transition) ->
+					@controllerFor('questionsNew').set 'initialize', {school: true}
 			
 			#v
 			App.QuestionsNewView = Ember.View.extend
@@ -240,7 +242,7 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 
 			#c
 			App.QuestionsNewController = Ember.ObjectController.extend
-				initialize: 5
+				initialize: null
 				needs: 'application'
 				types: ['other', 'assignment', 'midterm', 'final', 'textbook']
 				difficulties: [1, 2, 3, 4, 5]
@@ -259,7 +261,17 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 						@set 'question.term', null
 						return []
 					if school.toJSON().info.terms.length > 0
-						@set 'question.term', school.toJSON().info.terms[0]
+						if @get('initialize.term')
+							settings = @get 'settings'
+							found = school.toJSON().info.terms.find (item) ->
+								if item.name == settings.term then return true
+								return false
+							if found?
+								@set 'question.term', found
+								@set 'initialize.subject', true
+							@set 'initialize.term', false
+						else
+							@set 'question.term', school.toJSON().info.terms[0]
 					else
 						@set 'question.term', null
 					return school.toJSON().info.terms
@@ -270,7 +282,17 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 						@set 'question.subject', null
 						return []
 					if term.subjects? && term.subjects.length > 0
-						@set 'question.subject', term.subjects[0]
+						if @get('initialize.subject')
+							settings = @get 'settings'
+							found = term.subjects.find (item) ->
+								if item.name == settings.subject then return true
+								return false
+							if found?
+								@set 'question.subject', found
+								@set 'initialize.course', true
+							@set 'initialize.subject', false
+						else
+							@set 'question.subject', term.subjects[0]
 					else
 						@set 'question.subject', null
 					return term.subjects
@@ -281,51 +303,36 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 						@set 'question.course', null
 						return []
 					if subject.courses? && subject.courses.length > 0
-						@set 'question.course', subject.courses[0]
+						if @get('initialize.course')
+							settings = @get 'settings'
+							found = subject.courses.find (item) ->
+								if item.number == settings.course then return true
+								return false
+							if found?
+								@set 'question.course', found
+								found = @get('types').find (item) ->
+									if item == settings.type then return true
+									return false
+								if found?
+									@set 'question.type', found
+							@set 'initialize.course', false
+						else
+							@set 'question.course', subject.courses[0]
 					else
 						@set 'question.course', null
 					return subject.courses
 				).property 'question.subject'
 				schoolsChanged: ( ->
-					if @get('initialize')
+					if @get('initialize.school')
 						settings = @get 'settings'
 						found = @get('schools').find (item) ->
-							if item.name == settings.school then return true
+							if item.get('name') == settings.school then return true
 							return false
-						if found? then @set 'question.school', found
-						@set 'initialize', @get('initialize') - 1
-				).observes('schools')#.on 'init'
-				termsChanged: ( ->
-					if @get('initialize')
-						settings = @get 'settings'
-						found = @get('terms').find (item) ->
-							if item.name == settings.term then return true
-							return false
-						if found? then @set 'question.term', found
-						@set 'initialize', @get('initialize') - 1
-				).observes('terms')#.on 'init'
-				subjectsChanged: ( ->
-					if @get('initialize')
-						settings = @get 'settings'
-						found = @get('subjects').find (item) ->
-							if item.name == settings.subject then return true
-							return false
-						if found? then @set 'question.subject', found
-						@set 'initialize', @get('initialize') - 1
-				).observes('subjects')#.on 'init'
-				coursesChanged: ( ->
-					if @get('initialize')
-						settings = @get 'settings'
-						found = @get('courses').find (item) ->
-							if item.number == settings.course then return true
-							return false
-						if found? then @set 'question.course', found
-						found = @get('types').find (item) ->
-							if item == settings.type then return true
-							return false
-						if found? then @set 'question.type', found
-						@set 'initialize', @get('initialize') - 2
-				).observes('courses')#.on 'init'
+						if found?
+							@set 'question.school', found
+							@set 'initialize.term', true
+						@set 'initialize.school', false
+				).observes('schools')
 				prepare: (question) ->
 					another = question.toJSON()
 					another.term = question.get('term.name')
