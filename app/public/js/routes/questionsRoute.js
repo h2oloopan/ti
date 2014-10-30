@@ -285,21 +285,30 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
         }
       });
       return App.QuestionsNewController = Ember.ObjectController.extend({
-        initialize: true,
+        initialize: 3,
         needs: 'application',
         types: ['other', 'assignment', 'midterm', 'final', 'textbook'],
         difficulties: [1, 2, 3, 4, 5],
+        settings: (function() {
+          var cookie, data;
+          cookie = $.cookie('settings');
+          if (cookie == null) {
+            return null;
+          }
+          data = JSON.parse(cookie);
+          if ((data != null) && data.uid === this.get('controllers.application.model._id')) {
+            return data;
+          } else {
+            return null;
+          }
+        }).property('initialize'),
         terms: (function() {
           var school;
           school = this.get('question.school');
           if (school == null) {
             return [];
           }
-          if (this.get('initialize')) {
-            this.set('initialize', false);
-          } else {
-            this.set('question.term', school.toJSON().info.terms[0]);
-          }
+          this.set('question.term', school.toJSON().info.terms[0]);
           return school.toJSON().info.terms;
         }).property('question.school'),
         subjects: (function() {

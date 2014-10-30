@@ -240,18 +240,23 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 
 			#c
 			App.QuestionsNewController = Ember.ObjectController.extend
-				initialize: true
+				initialize: 3
 				needs: 'application'
 				types: ['other', 'assignment', 'midterm', 'final', 'textbook']
 				difficulties: [1, 2, 3, 4, 5]
+				settings: ( ->
+					cookie = $.cookie 'settings'
+					if !cookie? then return null
+					data = JSON.parse cookie
+					if data? && data.uid == @get 'controllers.application.model._id'
+						return data
+					else
+						return null
+				).property 'initialize'
 				terms: ( ->
 					school = @get 'question.school'
 					if !school? then return []
-					if @get('initialize')
-						
-						@set 'initialize', false
-					else
-						@set 'question.term', school.toJSON().info.terms[0]
+					@set 'question.term', school.toJSON().info.terms[0]
 					return school.toJSON().info.terms
 				).property 'question.school'
 				subjects: ( ->
