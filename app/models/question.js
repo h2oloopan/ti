@@ -97,20 +97,20 @@ module.exports = {
         }
       }
     },
-    manipulate: {
-      c: function(obj, user, cb) {
+    before: {
+      c: function(question, user, cb) {
         if (user == null) {
           return cb(new Error('No user is present'));
         } else {
-          obj.editor = user._id;
+          question.editor = user._id;
           return cb(null, obj);
         }
       },
-      u: function(obj, user, cb) {
+      u: function(question, user, cb) {
         if (user == null) {
           return cb(new Error('No user is present'));
         } else {
-          obj.editor = user._id;
+          question.editor = user._id;
           return cb(null, obj);
         }
       }
