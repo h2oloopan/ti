@@ -183,11 +183,16 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
         },
         actions: {
           save: function() {
-            var question, question_fake, result, thiz;
+            var key, keys, question, question_fake, result, thiz, _i, _len;
             thiz = this;
             question_fake = this.prepare(this.get('question_fake'));
             result = question_fake.validate();
             this.set('question_fake.errors', question_fake.errors);
+            keys = me.keys(question_fake.errors);
+            for (_i = 0, _len = keys.length; _i < _len; _i++) {
+              key = keys[_i];
+              alert(question_fake.errors[key]);
+            }
             if (!result) {
               return false;
             }

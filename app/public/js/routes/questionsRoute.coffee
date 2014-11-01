@@ -154,6 +154,9 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 						question_fake = @prepare(@get 'question_fake')
 						result = question_fake.validate()
 						@set 'question_fake.errors', question_fake.errors
+						keys = me.keys question_fake.errors
+						for key in keys
+							alert question_fake.errors[key]
 						if !result then return false
 
 						question = @get 'question_real'
