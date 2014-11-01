@@ -320,7 +320,7 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
             return [];
           }
           if (school.toJSON().info.terms.length > 0) {
-            if (this.get('initialize.term')) {
+            if (this.get('initialize.term') && this.get('settings')) {
               settings = this.get('settings');
               found = school.toJSON().info.terms.find(function(item) {
                 if (item.name === settings.term) {
@@ -349,7 +349,7 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
             return [];
           }
           if ((term.subjects != null) && term.subjects.length > 0) {
-            if (this.get('initialize.subject')) {
+            if (this.get('initialize.subject') && this.get('settings')) {
               settings = this.get('settings');
               found = term.subjects.find(function(item) {
                 if (item.name === settings.subject) {
@@ -378,7 +378,7 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
             return [];
           }
           if ((subject.courses != null) && subject.courses.length > 0) {
-            if (this.get('initialize.course')) {
+            if (this.get('initialize.course') && this.get('settings')) {
               settings = this.get('settings');
               found = subject.courses.find(function(item) {
                 if (item.number === settings.course) {
@@ -409,7 +409,7 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
         }).property('question.subject'),
         schoolsChanged: (function() {
           var found, settings;
-          if (this.get('initialize.school')) {
+          if (this.get('initialize.school') && this.get('settings')) {
             settings = this.get('settings');
             found = this.get('schools').find(function(item) {
               if (item.get('name') === settings.school) {

@@ -251,7 +251,8 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 				difficulties: [1, 2, 3, 4, 5]
 				settings: ( ->
 					cookie = $.cookie 'settings'
-					if !cookie? then return null
+					if !cookie?
+						return null
 					data = JSON.parse cookie
 					if data? && data.uid == @get 'controllers.application.model._id'
 						return data
@@ -264,7 +265,7 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 						@set 'question.term', null
 						return []
 					if school.toJSON().info.terms.length > 0
-						if @get('initialize.term')
+						if @get('initialize.term') && @get('settings')
 							settings = @get 'settings'
 							found = school.toJSON().info.terms.find (item) ->
 								if item.name == settings.term then return true
@@ -285,7 +286,7 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 						@set 'question.subject', null
 						return []
 					if term.subjects? && term.subjects.length > 0
-						if @get('initialize.subject')
+						if @get('initialize.subject') && @get('settings')
 							settings = @get 'settings'
 							found = term.subjects.find (item) ->
 								if item.name == settings.subject then return true
@@ -306,7 +307,7 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 						@set 'question.course', null
 						return []
 					if subject.courses? && subject.courses.length > 0
-						if @get('initialize.course')
+						if @get('initialize.course') && @get('settings')
 							settings = @get 'settings'
 							found = subject.courses.find (item) ->
 								if item.number == settings.course then return true
@@ -326,7 +327,7 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 					return subject.courses
 				).property 'question.subject'
 				schoolsChanged: ( ->
-					if @get('initialize.school')
+					if @get('initialize.school') && @get('settings')
 						settings = @get 'settings'
 						found = @get('schools').find (item) ->
 							if item.get('name') == settings.school then return true
