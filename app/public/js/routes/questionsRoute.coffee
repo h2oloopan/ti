@@ -362,7 +362,9 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 						result = question.validate()
 						@set 'question.errors', question.errors
 						#TODO: display errors in a better way!
-						console.log question.errors
+						keys = me.keys question.errors
+						for key in keys
+							alert question.errors[key]
 						if !result then return false
 						question.save().then ->
 							#done

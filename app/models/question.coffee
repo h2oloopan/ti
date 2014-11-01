@@ -1,4 +1,5 @@
-Schema = require('mongo-ember').Schema
+me = require 'mongo-ember'
+Schema = me.Schema
 
 module.exports = 
 	Question:
@@ -90,7 +91,7 @@ module.exports =
 				else
 					question.editor = user._id
 					#add to log
-					cb null, obj
+					cb null, question
 
 			#u
 			u: (question, user, cb) ->
@@ -98,9 +99,34 @@ module.exports =
 					cb new Error 'No user is present'
 				else
 					question.editor = user._id
-					cb null, obj
+					cb null, question
 
+		after:
+			#c
+			c: (question, user) ->
+				if !user? then return console.log 'Something is wrong, question created without user'
+				Log = me.getModel 'Log'
+				log = new Log
+					user: user._id
+					target: 'question'
+					operation: 'create'
+					data: 
+						question: question.toObject()
+				log.save (err) ->
+					if err then console.log err
 
+			#u
+			u: (question, user) ->
+				if !user? then return console.log 'Something is wrong, question updated without user'
+				Log = me.getModel 'Log'
+				log = new Log
+					user: user._id
+					target: 'question'
+					operation: 'update'
+					data:
+						question: question.toObject()
+				log.save (err) ->
+					if err then console.log err
 
 
 

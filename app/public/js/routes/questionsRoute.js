@@ -452,12 +452,16 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
         },
         actions: {
           add: function() {
-            var question, result, thiz;
+            var key, keys, question, result, thiz, _i, _len;
             thiz = this;
             question = this.prepare(this.get('question'));
             result = question.validate();
             this.set('question.errors', question.errors);
-            console.log(question.errors);
+            keys = me.keys(question.errors);
+            for (_i = 0, _len = keys.length; _i < _len; _i++) {
+              key = keys[_i];
+              alert(question.errors[key]);
+            }
             if (!result) {
               return false;
             }
