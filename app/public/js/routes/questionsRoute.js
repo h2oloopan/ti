@@ -306,11 +306,7 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
             return null;
           }
           data = JSON.parse(cookie);
-          if ((data != null) && data.uid === this.get('controllers.application.model._id')) {
-            return data;
-          } else {
-            return null;
-          }
+          return data[this.get('controllers.application.model._id')];
         }).property('initialize'),
         terms: (function() {
           var found, school, settings;
@@ -442,16 +438,23 @@ define(['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
           return another;
         },
         saveSettings: function() {
-          var settings;
+          var settings, storage, uid;
+          uid = this.get('controllers.application.model._id');
           settings = {
-            uid: this.get('controllers.application.model._id'),
             school: this.get('question.school.name'),
             term: this.get('question.term.name'),
             subject: this.get('question.subject.name'),
             course: this.get('question.course.number'),
             type: this.get('question.type')
           };
-          return $.cookie('settings', JSON.stringify(settings), {
+          storage = $.cookie('settings');
+          if (storage == null) {
+            storage = {};
+          } else {
+            storage = JSON.parse(storage);
+          }
+          storage[uid] = settings;
+          return $.cookie('settings', JSON.stringify(storage), {
             expires: 7
           });
         },

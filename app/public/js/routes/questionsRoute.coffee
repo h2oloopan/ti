@@ -254,10 +254,7 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 					if !cookie?
 						return null
 					data = JSON.parse cookie
-					if data? && data.uid == @get 'controllers.application.model._id'
-						return data
-					else
-						return null
+					return data[@get 'controllers.application.model._id']
 				).property 'initialize'
 				terms: ( ->
 					school = @get 'question.school'
@@ -351,14 +348,22 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 					another.set 'school', question.get('school')
 					return another
 				saveSettings: ->
+					uid = @get 'controllers.application.model._id'
 					settings = 
-						uid: @get 'controllers.application.model._id'
 						school: @get 'question.school.name'
 						term: @get 'question.term.name'
 						subject: @get 'question.subject.name'
 						course: @get 'question.course.number'
 						type: @get 'question.type'
-					$.cookie 'settings', JSON.stringify(settings), { expires: 7 }
+
+					storage = $.cookie 'settings'
+					if !storage?
+						storage = {}
+					else
+						storage = JSON.parse storage
+
+					storage[uid] = settings
+					$.cookie 'settings', JSON.stringify(storage), { expires: 7 }
 				actions:
 					add: ->
 						thiz = @

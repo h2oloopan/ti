@@ -163,7 +163,7 @@ define ['jquery', 'me', 'utils',
 						if @get('info.terms').length > 0
 							@set 'selectedTerm', @get('info.terms')[0]
 							if @get('selectedTerm.subjects').length > 0
-								@set 'selectedSubject', @get('selectedTerms.subjects')[0]
+								@set 'selectedSubject', @get('selectedTerm.subjects')[0]
 					deleteSchool: (school) ->
 						alert 'We are not allowed to delete school at the moment'
 						return false
