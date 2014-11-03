@@ -22,6 +22,9 @@ module.exports =
 			role:
 				type: Schema.Types.Mixed
 				default: {}
+			privileges:
+				type: [Schema.Types.Mixed]
+				default: []
 		validationMessages:
 			username:
 				required: 'Username cannot be empty'
