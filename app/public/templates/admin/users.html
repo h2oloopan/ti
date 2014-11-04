@@ -21,7 +21,7 @@
 				<td>{{user.email}}</td>
 				<td>
 					{{#unless user.isAdmin}}
-					<a title="Edit User" href=""><span class="glyphicon glyphicon-pencil"></span></a>
+					<a title="Edit User" href="" {{action "edit" user}}><span class="glyphicon glyphicon-pencil"></span></a>
 					<a title="Delete User" href="" {{action "delete" user}}><span class="glyphicon glyphicon-remove"></span></a>
 					{{/unless}}
 				</td>
@@ -37,4 +37,8 @@
 <!-- ADD USER -->
 <div class="modal fade modal-admin-user">
 	{{render "users.new"}}
-</div><!-- /.modal -->
+</div>
+<div class="modal fade modal-admin-user-edit">
+	{{render "users.edit"}}
+</div>
+<!-- /.modal -->

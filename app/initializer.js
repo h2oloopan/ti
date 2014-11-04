@@ -56,7 +56,7 @@ exports.init = function() {
     };
     model = me.getModel('User');
     return model.findOne({
-      username: 'user'
+      username: 'editor'
     }, function(err, result) {
       if (err) {
         return console.log(err);

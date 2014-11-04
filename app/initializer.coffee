@@ -42,7 +42,7 @@ exports.init = ->
 
 		model = me.getModel 'User'
 		model.findOne
-			username: 'user'
+			username: 'editor'
 		, (err, result) ->
 			if err
 				console.log err

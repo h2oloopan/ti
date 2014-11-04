@@ -2,6 +2,7 @@ define ['jquery', 'me', 'utils',
 'ehbs!templates/admin/admin',
 'ehbs!templates/admin/users',
 'ehbs!templates/admin/users.new',
+'ehbs!templates/admin/users.edit',
 'ehbs!templates/admin/schools',
 'ehbs!templates/admin/school.edit'
 ], ($, me, utils) ->
@@ -60,12 +61,17 @@ define ['jquery', 'me', 'utils',
 						$('.modal-admin-user').modal()
 
 			App.UserController = Ember.ObjectController.extend
+				needs: 'usersEdit'
 				isAdmin: ( ->
 					return if @get('model.power') >= 999 then true else false
 				).property 'power'
 				type: ( ->
 				).property 'power'
 				actions:
+					edit: (user) ->
+						@set 'controllers.usersEdit.model', user
+						$('.modal-admin-user-edit').modal()
+						return false
 					delete: (user) ->
 						ans = confirm 'Do you want to delete user ' + user.get('username') + '?'
 						if ans
@@ -80,6 +86,10 @@ define ['jquery', 'me', 'utils',
 
 						return false
 
+			App.UsersEditController = Ember.ObjectController.extend
+				actions:
+					save: (user) ->
+						return false
 
 			App.UsersNewController = Ember.ObjectController.extend
 				user:
