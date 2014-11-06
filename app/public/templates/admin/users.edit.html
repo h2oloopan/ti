@@ -31,16 +31,36 @@
 				<div class="form-group">
 					<label>Privileges</label>
 					<table class="table">
+						{{#if isAddingPrivilege}}
+							<tr>
+								<td>
+									{{input name="term" class="form-control" value=term placeholder="Enter Term"}}
+								</td>
+								<td>
+									{{input name="subject" class="form-control" value=subject placeholder="Enter Subject"}}
+								</td>
+								<td>
+									{{input name="course" class="form-control" value=course placeholder="Enter Course Number"}}
+								</td>
+								<td>
+									<button class="btn btn-default">Save</button>
+								</td>
+							</tr>
+						{{/if}}
 						{{#each privileges}}
 							<tr>
 								<td>{term}</td>
 								<td>{subject}</td>
 								<td>{course}</td>
-								<td></td>
+								<td>
+									<button class="btn btn-error">Delete</button>
+								</td>
 							</tr>
 						{{/each}}
 					</table>
-					<button type="button" class="btn btn-success btn-sm" {{action "add"}}>Add</button>
+					{{#unless isAddingPrivilege}}
+						<button type="button" class="btn btn-success btn-sm" {{action "addPrivilege"}}>Add</button>
+					{{/unless}}
 				</div>
 			</form>
 		</div>
