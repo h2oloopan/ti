@@ -90,7 +90,16 @@ define ['jquery', 'me', 'utils',
 			App.UsersEditController = Ember.ObjectController.extend
 				roles: ['editor', 'instructor']
 				errors: {}
+				isAddingPrivilege: false
 				actions:
+					addPrivilege: ->
+						@set 'isAddingPrivilege', true 
+						return false
+					savePrivilege: ->
+						@set 'isAddingPrivilege', false
+					cancelPrivilege: ->
+						@set 'isAddingPrivilege', false
+						return false
 					save: (user) ->
 						result = user.validate()
 						keys = me.keys user.errors
