@@ -65,6 +65,16 @@ module.exports =
 											code: 201
 											data: result
 
+			u: (req, res, model, form, cb) ->
+				if form.password? then form.password = me.encrypt form.password
+				model.findByIdAndUpdate req.params.id, form, (err, result) ->
+					if err
+						cb err
+					else
+						cb null,
+							code: 200
+							data: result
+
 		auth:
 			#c
 			c: (req, user, power, cb) ->

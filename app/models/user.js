@@ -92,6 +92,21 @@ module.exports = {
             });
           }
         });
+      },
+      u: function(req, res, model, form, cb) {
+        if (form.password != null) {
+          form.password = me.encrypt(form.password);
+        }
+        return model.findByIdAndUpdate(req.params.id, form, function(err, result) {
+          if (err) {
+            return cb(err);
+          } else {
+            return cb(null, {
+              code: 200,
+              data: result
+            });
+          }
+        });
       }
     },
     auth: {

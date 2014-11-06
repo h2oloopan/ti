@@ -69,6 +69,7 @@ define ['jquery', 'me', 'utils',
 				).property 'power'
 				actions:
 					edit: (user) ->
+						user.set 'password', null
 						@set 'controllers.usersEdit.model', user
 						$('.modal-admin-user-edit').modal()
 						return false
@@ -87,8 +88,23 @@ define ['jquery', 'me', 'utils',
 						return false
 
 			App.UsersEditController = Ember.ObjectController.extend
+				roles: ['editor', 'instructor']
+				errors: {}
 				actions:
 					save: (user) ->
+						result = user.validate()
+						keys = me.keys user.errors
+						for key in keys
+							if key != 'password'
+								set 'errors.' + key, errors[key]
+								return false
+						user.save().then ->
+							#done
+							$('.modal-admin-user-edit').modal 'hide'
+						, (errors) ->
+							#fail
+							user.rollback()
+							alert errors.responseText
 						return false
 
 			App.UsersNewController = Ember.ObjectController.extend
