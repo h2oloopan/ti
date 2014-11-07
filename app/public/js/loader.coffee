@@ -15,7 +15,7 @@ require.config
 		'bootstrap-wysiwyg': ['bootstrap', 'jquery', 'jquery.hotkeys']
 		'ember': ['handlebars', 'jquery']
 		'ember-data': ['ember']
-		'app': ['ember', 'ember-data', 'bootstrap', 'jquery.cookie']
+		'app': ['ember', 'ember-data', 'bootstrap', 'jquery.cookie', 'moment']
 
 require ['app'], (app) ->
 	app.start()

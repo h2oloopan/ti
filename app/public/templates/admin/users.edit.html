@@ -30,7 +30,26 @@
 				</div>
 				<div class="form-group">
 					<label>Privileges</label>
+					<p class="help-block">Note: unless you save the user, changes made to the privilege will not be synced to server.</p>
 					<table class="table">
+						{{#if privileges.length}}
+							<tr>
+								<td style="width:25%;"><b>Term</b></td>
+								<td style="width:25%;"><b>Subject</b></td>
+								<td style="width:25%;"><b>Course</b></td>
+								<td><b>Actions</b></td>
+							</tr>
+						{{/if}}
+						{{#each privilege in privileges}}
+							<tr>
+								<td style="width:25%;">{{privilege.term}}</td>
+								<td style="width:25%;">{{privilege.subject}}</td>
+								<td style="width:25%;">{{privilege.course}}</td>
+								<td>
+									<button class="btn btn-danger btn-sm" {{action "deletePrivilege" privilege}}>Remove Rule</button>
+								</td>
+							</tr>
+						{{/each}}
 						{{#if isAddingPrivilege}}
 							<tr>
 								<td>
@@ -43,32 +62,14 @@
 									{{input name="course" class="form-control" value=course placeholder="Enter Course Number"}}
 								</td>
 								<td>
-									<button class="btn btn-default" {{action "savePrivilege"}}>Save</button>
-									<button class="btn btn-default" {{action "cancelPrivilege"}}>Cancel</button>
+									<button class="btn btn-info btn-sm" {{action "savePrivilege"}}>Save Rule</button>
+									<button class="btn btn-default btn-sm" {{action "cancelPrivilege"}}>Cancel</button>
 								</td>
 							</tr>
 						{{/if}}
-						{{#if privileges.length}}
-							<tr>
-								<td><b>Term</b></td>
-								<td><b>Subject</b></td>
-								<td><b>Course</b></td>
-								<td><b>Actions</b></td>
-							</tr>
-						{{/if}}
-						{{#each privileges}}
-							<tr>
-								<td>{{term}}</td>
-								<td>{{subject}}</td>
-								<td>{{course}}</td>
-								<td>
-									<button class="btn btn-danger" {{action "deletePrivilege" _view.contentIndex}}>Delete</button>
-								</td>
-							</tr>
-						{{/each}}
 					</table>
 					{{#unless isAddingPrivilege}}
-						<button type="button" class="btn btn-success btn-sm" {{action "addPrivilege"}}>Add</button>
+						<button type="button" class="btn btn-success btn-sm" {{action "addPrivilege"}}>Add Rule</button>
 					{{/unless}}
 				</div>
 			</form>

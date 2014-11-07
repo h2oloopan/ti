@@ -123,6 +123,14 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
               alert('Cannot enter an empty row of privilege');
               return false;
             }
+            if (me.isEmptyString(this.get('subject')) && !me.isEmptyString(this.get('course'))) {
+              alert('Course must be coupled with subject');
+              return false;
+            }
+            if (me.isEmptyString(this.get('course')) && !me.isEmptyString(this.get('subject'))) {
+              alert('Subject must be coupled with course');
+              return false;
+            }
             user = this.get('model');
             privileges = user.get('privileges');
             privileges.pushObject({
@@ -140,8 +148,11 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
             this.set('isAddingPrivilege', false);
             return false;
           },
-          deletePrivilege: function(index) {
-            alert(index);
+          deletePrivilege: function(privilege) {
+            var privileges;
+            privileges = this.get('model.privileges');
+            privileges.removeObject(privilege);
+            this.set('model.privileges', privileges);
             return false;
           },
           save: function(user) {

@@ -105,6 +105,15 @@ define ['jquery', 'me', 'utils',
 						   me.isEmptyString(@get('course'))
 							alert 'Cannot enter an empty row of privilege'
 							return false
+						if me.isEmptyString(@get('subject')) and
+						   !me.isEmptyString(@get('course'))
+							alert 'Course must be coupled with subject'
+							return false
+						if me.isEmptyString(@get('course')) and
+						   !me.isEmptyString(@get('subject'))
+							alert 'Subject must be coupled with course'
+							return false
+
 						user = @get 'model'
 						privileges = user.get 'privileges'
 						privileges.pushObject
@@ -119,8 +128,10 @@ define ['jquery', 'me', 'utils',
 						@cleanPrivilege()
 						@set 'isAddingPrivilege', false
 						return false
-					deletePrivilege: (index) ->
-						alert index
+					deletePrivilege: (privilege) ->
+						privileges = @get 'model.privileges'
+						privileges.removeObject privilege
+						@set 'model.privileges', privileges
 						return false
 					save: (user) ->
 						result = user.validate()

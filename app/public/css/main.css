@@ -74,9 +74,15 @@ body {
 	margin-top: 20px;
 }
 
+
+
 .modal-dialog {
 	margin-top: 100px;
 	width: 800px;
+}
+
+.modal .table td {
+	vertical-align: middle;
 }
 
 .modal-admin-user .modal-dialog {
