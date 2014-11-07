@@ -43,15 +43,16 @@
 									{{input name="course" class="form-control" value=course placeholder="Enter Course Number"}}
 								</td>
 								<td>
-									<button class="btn btn-default">Save</button>
+									<button class="btn btn-default" {{action "savePrivilege"}}>Save</button>
+									<button class="btn btn-default" {{action "cancelPrivilege"}}>Cancel</button>
 								</td>
 							</tr>
 						{{/if}}
 						{{#each privileges}}
 							<tr>
-								<td>{term}</td>
-								<td>{subject}</td>
-								<td>{course}</td>
+								<td>{{term}}</td>
+								<td>{{subject}}</td>
+								<td>{{course}}</td>
 								<td>
 									<button class="btn btn-error">Delete</button>
 								</td>
