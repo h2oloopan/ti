@@ -48,13 +48,21 @@
 								</td>
 							</tr>
 						{{/if}}
+						{{#if privileges.length}}
+							<tr>
+								<td><b>Term</b></td>
+								<td><b>Subject</b></td>
+								<td><b>Course</b></td>
+								<td><b>Actions</b></td>
+							</tr>
+						{{/if}}
 						{{#each privileges}}
 							<tr>
 								<td>{{term}}</td>
 								<td>{{subject}}</td>
 								<td>{{course}}</td>
 								<td>
-									<button class="btn btn-error">Delete</button>
+									<button class="btn btn-danger" {{action "deletePrivilege" _view.contentIndex}}>Delete</button>
 								</td>
 							</tr>
 						{{/each}}

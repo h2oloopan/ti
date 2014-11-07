@@ -91,12 +91,18 @@ define ['jquery', 'me', 'utils',
 				roles: ['editor', 'instructor']
 				errors: {}
 				isAddingPrivilege: false
+				cleanPrivilege: ->
+					@set 'term', null
+					@set 'subject', null
+					@set 'course', null
 				actions:
 					addPrivilege: ->
 						@set 'isAddingPrivilege', true 
 						return false
 					savePrivilege: ->
-						if me.isEmptyString(@get('term')) && me.isEmptyString(@get('subject')) && me.isEmptyString(@get('course'))
+						if me.isEmptyString(@get('term')) and 
+						   me.isEmptyString(@get('subject')) and 
+						   me.isEmptyString(@get('course'))
 							alert 'Cannot enter an empty row of privilege'
 							return false
 						user = @get 'model'
@@ -106,10 +112,15 @@ define ['jquery', 'me', 'utils',
 							subject: @get 'subject'
 							course: @get 'course'
 						user.set 'privileges', privileges
+						@cleanPrivilege()
 						@set 'isAddingPrivilege', false
 						return false
 					cancelPrivilege: ->
+						@cleanPrivilege()
 						@set 'isAddingPrivilege', false
+						return false
+					deletePrivilege: (index) ->
+						alert index
 						return false
 					save: (user) ->
 						result = user.validate()
