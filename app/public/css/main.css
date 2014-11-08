@@ -97,6 +97,10 @@ body {
 	font-size: 0.85em;
 }
 
+.modal-admin-user-edit .modal-dialog {
+	width: 800px;
+}
+
 .error-page {
 	text-align: center;
 }
