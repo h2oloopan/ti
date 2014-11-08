@@ -84,6 +84,16 @@ module.exports = {
           return cb(new Error('You do not have the permission to access this'));
         }
       },
+      ro: function(req, user, power, cb) {
+        if (power >= 999) {
+          return cb(null);
+        }
+      },
+      ra: function(req, user, power, cb) {
+        if (power >= 999) {
+          return cb(null);
+        }
+      },
       u: function(req, user, power, cb) {
         if (power >= 999 || user.role.name === 'editor') {
           return cb(null);

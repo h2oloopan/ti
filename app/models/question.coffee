@@ -67,6 +67,12 @@ module.exports =
 
 			#r
 			#this is a TODO: at the moment
+			ro: (req, user, power, cb) ->
+				if power >= 999 then return cb null
+
+
+			ra: (req, user, power, cb) ->
+				if power >= 999 then return cb null
 
 			#u
 			u: (req, user, power, cb) ->
