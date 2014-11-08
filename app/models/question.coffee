@@ -109,8 +109,10 @@ module.exports =
 
 		after:
 			#c
-			c: (question, user) ->
-				if !user? then return console.log 'Something is wrong, question created without user'
+			c: (question, user, cb) ->
+				if !user?
+					console.log 'Something is wrong, question created without user'
+					return cb new Error 'Question created without user'
 				Log = me.getModel 'Log'
 				log = new Log
 					user: user._id
@@ -119,11 +121,17 @@ module.exports =
 					data: 
 						question: question.toObject()
 				log.save (err) ->
-					if err then console.log err
+					if err
+						console.log err
+						cb err
+					else
+						cb null, user
 
 			#u
-			u: (question, user) ->
-				if !user? then return console.log 'Something is wrong, question updated without user'
+			u: (question, user, cb) ->
+				if !user?
+					console.log 'Something is wrong, question updated without user'
+					return cb new Error 'Question updated without user'
 				Log = me.getModel 'Log'
 				log = new Log
 					user: user._id
@@ -132,8 +140,11 @@ module.exports =
 					data:
 						question: question.toObject()
 				log.save (err) ->
-					if err then console.log err
-
+					if err
+						console.log err
+						cb err
+					else
+						cb null, user
 
 
 

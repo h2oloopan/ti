@@ -128,10 +128,11 @@ module.exports = {
       }
     },
     after: {
-      c: function(question, user) {
+      c: function(question, user, cb) {
         var Log, log;
         if (user == null) {
-          return console.log('Something is wrong, question created without user');
+          console.log('Something is wrong, question created without user');
+          return cb(new Error('Question created without user'));
         }
         Log = me.getModel('Log');
         log = new Log({
@@ -144,14 +145,18 @@ module.exports = {
         });
         return log.save(function(err) {
           if (err) {
-            return console.log(err);
+            console.log(err);
+            return cb(err);
+          } else {
+            return cb(null, user);
           }
         });
       },
-      u: function(question, user) {
+      u: function(question, user, cb) {
         var Log, log;
         if (user == null) {
-          return console.log('Something is wrong, question updated without user');
+          console.log('Something is wrong, question updated without user');
+          return cb(new Error('Question updated without user'));
         }
         Log = me.getModel('Log');
         log = new Log({
@@ -164,7 +169,10 @@ module.exports = {
         });
         return log.save(function(err) {
           if (err) {
-            return console.log(err);
+            console.log(err);
+            return cb(err);
+          } else {
+            return cb(null, user);
           }
         });
       }
