@@ -119,7 +119,7 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
           },
           savePrivilege: function() {
             var privileges, user;
-            if (me.isEmptyString(this.get('term')) && me.isEmptyString(this.get('subject')) && me.isEmptyString(this.get('course'))) {
+            if (me.isEmptyString(this.get('school')) && me.isEmptyString(this.get('term')) && me.isEmptyString(this.get('subject')) && me.isEmptyString(this.get('course'))) {
               alert('Cannot enter an empty row of privilege');
               return false;
             }
@@ -134,6 +134,7 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
             user = this.get('model');
             privileges = user.get('privileges');
             privileges.pushObject({
+              school: this.get('school'),
               term: this.get('term'),
               subject: this.get('subject'),
               course: this.get('course')

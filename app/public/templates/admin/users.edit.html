@@ -34,17 +34,19 @@
 					<table class="table">
 						{{#if privileges.length}}
 							<tr>
-								<td style="width:25%;"><b>Term</b></td>
-								<td style="width:25%;"><b>Subject</b></td>
-								<td style="width:25%;"><b>Course</b></td>
+								<td style="width:20%;"><b>School</b></td>
+								<td style="width:20%;"><b>Term</b></td>
+								<td style="width:20%;"><b>Subject</b></td>
+								<td style="width:20%;"><b>Course</b></td>
 								<td><b>Actions</b></td>
 							</tr>
 						{{/if}}
 						{{#each privilege in privileges}}
 							<tr>
-								<td style="width:25%;">{{privilege.term}}</td>
-								<td style="width:25%;">{{privilege.subject}}</td>
-								<td style="width:25%;">{{privilege.course}}</td>
+								<td style="width:20%;">{{privilege.school}}</td>
+								<td style="width:20%;">{{privilege.term}}</td>
+								<td style="width:20%;">{{privilege.subject}}</td>
+								<td style="width:20%;">{{privilege.course}}</td>
 								<td>
 									<button class="btn btn-danger btn-sm" {{action "deletePrivilege" privilege}}>Remove Rule</button>
 								</td>
@@ -52,6 +54,9 @@
 						{{/each}}
 						{{#if isAddingPrivilege}}
 							<tr>
+								<td>
+									{{input name="school" class="form-control" value=school placeholder="Enter School"}}
+								</td>
 								<td>
 									{{input name="term" class="form-control" value=term placeholder="Enter Term"}}
 								</td>

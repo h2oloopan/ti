@@ -1,5 +1,6 @@
 me = require 'mongo-ember'
 Schema = me.Schema
+authorizer = require '../helpers/authorizer'
 
 module.exports = 
 	Question:
@@ -66,13 +67,6 @@ module.exports =
 					cb new Error 'You do not have the permission to access this'
 
 			#r
-			#this is a TODO: at the moment
-			ro: (req, user, power, cb) ->
-				if power >= 999 then return cb null
-
-
-			ra: (req, user, power, cb) ->
-				if power >= 999 then return cb null
 
 			#u
 			u: (req, user, power, cb) ->

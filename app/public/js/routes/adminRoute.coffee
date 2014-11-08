@@ -100,7 +100,8 @@ define ['jquery', 'me', 'utils',
 						@set 'isAddingPrivilege', true 
 						return false
 					savePrivilege: ->
-						if me.isEmptyString(@get('term')) and 
+						if me.isEmptyString(@get('school')) and
+						   me.isEmptyString(@get('term')) and 
 						   me.isEmptyString(@get('subject')) and 
 						   me.isEmptyString(@get('course'))
 							alert 'Cannot enter an empty row of privilege'
@@ -117,6 +118,7 @@ define ['jquery', 'me', 'utils',
 						user = @get 'model'
 						privileges = user.get 'privileges'
 						privileges.pushObject
+							school: @get 'school'
 							term: @get 'term'
 							subject: @get 'subject'
 							course: @get 'course'
