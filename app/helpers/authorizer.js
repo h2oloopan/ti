@@ -3,6 +3,24 @@ var authorizer;
 
 authorizer = module.exports = {
   canAccessQuestion: function(user, question) {
-    return true;
+    var privilege, _i, _len, _ref;
+    _ref = user.privileges;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      privilege = _ref[_i];
+      if ((privilege.school != null) && privilege.school !== question.school) {
+        continue;
+      }
+      if ((privilege.term != null) && privilege.term !== question.term) {
+        continue;
+      }
+      if ((privilege.subject != null) && privilege.subject !== question.subject) {
+        continue;
+      }
+      if ((privilege.course != null) && privilege.course !== question.course) {
+        continue;
+      }
+      return true;
+    }
+    return false;
   }
 };
