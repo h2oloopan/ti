@@ -62,16 +62,26 @@ module.exports =
 			#c
 			c: (req, user, power, cb) ->
 				if power >= 999 || user.role.name == 'editor'
-					cb null
+					question = req.body
+					if authorizer.canAccessQuestion user, question
+						cb null
+					else
+						cb new Error 'You do not have the permission to access this'
 				else
 					cb new Error 'You do not have the permission to access this'
 
 			#r
+			#read realted authorization has to be done in after to filter
+			#out questions that cannot be accessed
 
 			#u
 			u: (req, user, power, cb) ->
 				if power >= 999 || user.role.name == 'editor'
-					cb null
+					question = req.body
+					if authorizer.canAccessQuestion user, question
+						cb null
+					else
+						cb new Error 'You do not have the permission to access this'
 				else
 					cb new Error 'You do not have the permission to access this'
 
@@ -90,7 +100,6 @@ module.exports =
 					cb new Error 'No user is present'
 				else
 					question.editor = user._id
-					#add to log
 					cb null, question
 
 			#u
@@ -120,6 +129,9 @@ module.exports =
 						cb err
 					else
 						cb null, user
+
+			#r - this is for authorization purposes
+			
 
 			#u
 			u: (question, user, cb) ->

@@ -80,15 +80,27 @@ module.exports = {
     },
     auth: {
       c: function(req, user, power, cb) {
+        var question;
         if (power >= 999 || user.role.name === 'editor') {
-          return cb(null);
+          question = req.body;
+          if (authorizer.canAccessQuestion(user, question)) {
+            return cb(null);
+          } else {
+            return cb(new Error('You do not have the permission to access this'));
+          }
         } else {
           return cb(new Error('You do not have the permission to access this'));
         }
       },
       u: function(req, user, power, cb) {
+        var question;
         if (power >= 999 || user.role.name === 'editor') {
-          return cb(null);
+          question = req.body;
+          if (authorizer.canAccessQuestion(user, question)) {
+            return cb(null);
+          } else {
+            return cb(new Error('You do not have the permission to access this'));
+          }
         } else {
           return cb(new Error('You do not have the permission to access this'));
         }
