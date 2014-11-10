@@ -128,10 +128,20 @@ module.exports =
 						console.log err
 						cb err
 					else
-						cb null, user
+						cb null, question
 
 			#r - this is for authorization purposes
-			
+			ra: (questions, user, cb) ->
+				for question in questions
+					if !authorizer.canAccessQuestion user, question
+						questions
+
+
+			ro: (question, user, cb) ->
+				if !authorizer.canAccessQuestion user, question
+					cb new Error 'You do not have the permission to access this'
+				else
+					cb null, question
 
 			#u
 			u: (question, user, cb) ->
@@ -150,7 +160,7 @@ module.exports =
 						console.log err
 						cb err
 					else
-						cb null, user
+						cb null, question
 
 
 

@@ -152,9 +152,29 @@ module.exports = {
             console.log(err);
             return cb(err);
           } else {
-            return cb(null, user);
+            return cb(null, question);
           }
         });
+      },
+      ra: function(questions, user, cb) {
+        var question, _i, _len, _results;
+        _results = [];
+        for (_i = 0, _len = questions.length; _i < _len; _i++) {
+          question = questions[_i];
+          if (!authorizer.canAccessQuestion(user, question)) {
+            _results.push(questions);
+          } else {
+            _results.push(void 0);
+          }
+        }
+        return _results;
+      },
+      ro: function(question, user, cb) {
+        if (!authorizer.canAccessQuestion(user, question)) {
+          return cb(new Error('You do not have the permission to access this'));
+        } else {
+          return cb(null, question);
+        }
       },
       u: function(question, user, cb) {
         var Log, log;
@@ -176,7 +196,7 @@ module.exports = {
             console.log(err);
             return cb(err);
           } else {
-            return cb(null, user);
+            return cb(null, question);
           }
         });
       }
