@@ -157,17 +157,14 @@ module.exports = {
         });
       },
       ra: function(questions, user, cb) {
-        var question, _i, _len, _results;
-        _results = [];
+        var question, _i, _len;
         for (_i = 0, _len = questions.length; _i < _len; _i++) {
           question = questions[_i];
           if (!authorizer.canAccessQuestion(user, question)) {
-            _results.push(questions);
-          } else {
-            _results.push(void 0);
+            questions.removeObject(question);
           }
         }
-        return _results;
+        return cb(null, questions);
       },
       ro: function(question, user, cb) {
         if (!authorizer.canAccessQuestion(user, question)) {

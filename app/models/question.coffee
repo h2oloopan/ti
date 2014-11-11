@@ -134,7 +134,8 @@ module.exports =
 			ra: (questions, user, cb) ->
 				for question in questions
 					if !authorizer.canAccessQuestion user, question
-						questions
+						questions.removeObject question
+				cb null, questions
 
 
 			ro: (question, user, cb) ->
