@@ -58,3 +58,9 @@ module.exports =
 					cb null
 				else
 					cb new Error 'You do not have the permission to access this'
+
+		after:
+			#r
+			ra: (schools, user, cb) ->
+				#filter out information that shall not be accessed by users
+				#TODO

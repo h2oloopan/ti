@@ -78,6 +78,9 @@ module.exports = {
           return cb(new Error('You do not have the permission to access this'));
         }
       }
+    },
+    after: {
+      ra: function(schools, user, cb) {}
     }
   }
 };
