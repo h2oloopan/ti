@@ -132,9 +132,12 @@ module.exports =
 
 			#r - this is for authorization purposes
 			ra: (questions, user, cb) ->
-				for question in questions
-					if !authorizer.canAccessQuestion user, question
-						questions.removeObject question
+				filter = (question, index) ->
+					if authorizer.canAccessQuestion user, question
+						return true
+					else
+						return false
+				questions = questions.filter filter
 				cb null, questions
 
 
