@@ -64,7 +64,7 @@ module.exports =
 			ra: (schools, user, cb) ->
 				#filter out information that shall not be accessed by users
 				#TODO
-				if power >= 999
+				if user.power >= 999
 					cb null, schools #admins can see everything
 				else
 					cb null, schools # do this for now, and fix ui first
