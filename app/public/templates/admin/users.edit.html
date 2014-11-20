@@ -28,7 +28,7 @@
 					<label>Role</label>
 					{{view Ember.Select classNames="form-control" content=roles selection=role.name}}
 				</div>
-				<div class="form-group">
+				<div class="form-group user-privileges">
 					<label>Privileges</label>
 					<p class="help-block">Note: unless you save the user, changes made to the privilege will not be synced to server.</p>
 					<table class="table">
@@ -48,7 +48,7 @@
 								<td style="width:20%;">{{privilege.subject}}</td>
 								<td style="width:20%;">{{privilege.course}}</td>
 								<td>
-									<button class="btn btn-danger btn-sm" {{action "deletePrivilege" privilege}}>Remove Rule</button>
+									<button class="btn btn-danger btn-xs" {{action "deletePrivilege" privilege}}>Remove Rule</button>
 								</td>
 							</tr>
 						{{/each}}
@@ -67,8 +67,8 @@
 									{{input name="course" class="form-control" value=course placeholder="Enter Course Number"}}
 								</td>
 								<td>
-									<button class="btn btn-info btn-sm" {{action "savePrivilege"}}>Save Rule</button>
-									<button class="btn btn-default btn-sm" {{action "cancelPrivilege"}}>Cancel</button>
+									<button class="btn btn-info btn-xs" {{action "savePrivilege"}}>Save Rule</button>
+									<button class="btn btn-default btn-xs" {{action "cancelPrivilege"}}>Cancel</button>
 								</td>
 							</tr>
 						{{/if}}

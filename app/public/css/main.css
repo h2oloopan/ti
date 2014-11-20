@@ -98,7 +98,7 @@ body {
 }
 
 .modal-admin-user-edit .modal-dialog {
-	width: 900px;
+	width: 800px;
 }
 
 .error-page {
@@ -124,7 +124,7 @@ body {
 
 .admin-schools .info-input .form-control {
 	font-size: 12px;
-	height: 22px;
+	height: 18px;
 	padding: 2px 4px;
 }
 
@@ -135,3 +135,18 @@ body {
 .admin-schools .right .panel-body {
 	min-height: 306px;
 }
+
+.user-privileges table .form-control {
+	padding: 2px 4px;
+	height: 28px;
+	font-size: 0.9em;
+}
+
+.user-privileges table td {
+	font-size: 0.9em;
+}
+
+
+
+
+
