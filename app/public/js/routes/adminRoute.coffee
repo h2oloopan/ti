@@ -140,7 +140,7 @@ define ['jquery', 'me', 'utils',
 						@set 'isAddingPrivilege', false
 						return false
 					deletePrivilege: (privilege) ->
-						privileges = @get 'model.privileges'
+						privileges = @get 'user.privileges'
 						privileges.removeObject privilege
 						@set 'model.privileges', privileges
 						return false
@@ -149,7 +149,7 @@ define ['jquery', 'me', 'utils',
 						keys = me.keys user.errors
 						for key in keys
 							if key != 'password'
-								set 'errors.' + key, errors[key]
+								@set 'errors.' + key, errors[key]
 								return false
 						user.save().then ->
 							#done

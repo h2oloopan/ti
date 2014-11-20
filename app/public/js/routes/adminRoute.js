@@ -161,7 +161,7 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
           },
           deletePrivilege: function(privilege) {
             var privileges;
-            privileges = this.get('model.privileges');
+            privileges = this.get('user.privileges');
             privileges.removeObject(privilege);
             this.set('model.privileges', privileges);
             return false;
@@ -173,7 +173,7 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
             for (_i = 0, _len = keys.length; _i < _len; _i++) {
               key = keys[_i];
               if (key !== 'password') {
-                set('errors.' + key, errors[key]);
+                this.set('errors.' + key, errors[key]);
                 return false;
               }
             }
