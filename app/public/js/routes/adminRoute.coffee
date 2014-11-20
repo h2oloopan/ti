@@ -69,9 +69,18 @@ define ['jquery', 'me', 'utils',
 				).property 'power'
 				actions:
 					edit: (user) ->
+						thiz = @
 						user.set 'password', null
-						@set 'controllers.usersEdit.model', user
-						$('.modal-admin-user-edit').modal()
+						@store.find('school').then (schools) ->
+							#done
+							thiz.set 'controllers.usersEdit.model',
+								user: user
+								schools: schools
+							$('.modal-admin-user-edit').modal()
+							return true
+						, (errors) ->
+							#fail
+							return false
 						return false
 					delete: (user) ->
 						ans = confirm 'Do you want to delete user ' + user.get('username') + '?'
