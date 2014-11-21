@@ -43,7 +43,9 @@
 						{{/if}}
 						{{#each privilege in user.privileges}}
 							<tr>
-								<td style="width:20%;">{{privilege.school}}</td>
+								<td style="width:20%;">
+									{{privilege.schoolDisplay}}
+								</td>
 								<td style="width:20%;">{{privilege.term}}</td>
 								<td style="width:20%;">{{privilege.subject}}</td>
 								<td style="width:20%;">{{privilege.course}}</td>

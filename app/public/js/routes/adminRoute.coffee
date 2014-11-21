@@ -96,10 +96,28 @@ define ['jquery', 'me', 'utils',
 
 						return false
 
+
+			Ember.Handlebars.helper 'school', (value, options) ->
+				return new Ember.Handlebars
+
 			App.UsersEditController = Ember.ObjectController.extend
 				roles: ['editor', 'instructor']
 				errors: {}
 				isAddingPrivilege: false
+				schoolChanged: ( -> 
+					if @get('user')
+						privileges = @get 'user.privileges'
+						for privilege in privileges
+							@store.find 'school', privilege.school
+							.then (result) ->
+								#done
+								privilege.schoolDisplay = result.get 'name'
+								return true
+							, (errors) ->
+								#fail
+								return false
+				).observes 'user'
+
 				cleanPrivilege: ->
 					@set 'term', null
 					@set 'subject', null
