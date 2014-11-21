@@ -86,55 +86,42 @@ module.exports = {
           return cb(null, schools);
         } else {
           return filter = function(school, index) {
-            var course, info, privilege, subject, term, _i, _len, _ref, _results;
+            var ans, course, info, privilege, subject, term, _i, _j, _k, _l, _len, _len1, _len2, _len3, _ref, _ref1, _ref2, _ref3;
+            ans = false;
             _ref = user.privileges;
-            _results = [];
             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
               privilege = _ref[_i];
               if ((privilege.school != null) && privilege.school !== school) {
                 continue;
               }
-              info = school.info;
-              _results.push((function() {
-                var _j, _len1, _ref1, _results1;
-                _ref1 = info.terms;
-                _results1 = [];
-                for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-                  term = _ref1[_j];
-                  if ((privilege.term != null) && privilege.term !== term) {
+              ans = true;
+              info = {};
+              _ref1 = info.terms;
+              for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+                term = _ref1[_j];
+                if ((privilege.term != null) && privilege.term !== term) {
+                  continue;
+                }
+                _ref2 = term.subjects;
+                for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
+                  subject = _ref2[_k];
+                  if ((privilege.subject != null) && privilege.subject !== subject) {
                     continue;
                   }
-                  _results1.push((function() {
-                    var _k, _len2, _ref2, _results2;
-                    _ref2 = term.subjects;
-                    _results2 = [];
-                    for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
-                      subject = _ref2[_k];
-                      if ((privilege.subject != null) && privilege.subject !== subject) {
-                        continue;
-                      }
-                      _results2.push((function() {
-                        var _l, _len3, _ref3, _results3;
-                        _ref3 = subject.courses;
-                        _results3 = [];
-                        for (_l = 0, _len3 = _ref3.length; _l < _len3; _l++) {
-                          course = _ref3[_l];
-                          if ((privilege.course != null) && privilege.course !== course) {
-                            continue;
-                          } else {
-                            _results3.push(void 0);
-                          }
-                        }
-                        return _results3;
-                      })());
+                  _ref3 = subject.courses;
+                  for (_l = 0, _len3 = _ref3.length; _l < _len3; _l++) {
+                    course = _ref3[_l];
+                    if ((privilege.course != null) && privilege.course !== course) {
+                      continue;
                     }
-                    return _results2;
-                  })());
+                  }
                 }
-                return _results1;
-              })());
+              }
             }
-            return _results;
+            if (ans) {
+              school.info = info;
+            }
+            return ans;
           };
         }
       }

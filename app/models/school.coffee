@@ -70,16 +70,20 @@ module.exports =
 					#cb null, schools # do this for now, and fix ui first
 					
 					filter = (school, index) ->
+						ans = false
 						for privilege in user.privileges
 							if privilege.school? and privilege.school != school then continue
-							info = school.info
+							ans = true
+							info = {}
 							for term in info.terms
 								if privilege.term? and privilege.term != term then continue
 								for subject in term.subjects
 									if privilege.subject? and privilege.subject != subject then continue
 									for course in subject.courses
 										if privilege.course? and privilege.course != course then continue
-					
+						
+						if ans then school.info = info
+						return ans
 
 
 
