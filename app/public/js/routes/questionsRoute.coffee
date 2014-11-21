@@ -247,7 +247,7 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 			App.QuestionsNewController = Ember.ObjectController.extend
 				initialize: null
 				needs: 'application'
-				types: ['other', 'assignment', 'midterm', 'final', 'textbook']
+				types: ['other', 'quiz', 'assignment', 'midterm', 'final', 'textbook']
 				difficulties: [1, 2, 3, 4, 5]
 				settings: ( ->
 					cookie = $.cookie 'settings'

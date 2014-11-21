@@ -67,8 +67,8 @@ module.exports =
 				if user.power >= 999
 					cb null, schools #admins can see everything
 				else
-					cb null, schools # do this for now, and fix ui first
-					###
+					#cb null, schools # do this for now, and fix ui first
+					
 					filter = (school, index) ->
 						for privilege in user.privileges
 							if privilege.school? and privilege.school != school then continue
@@ -79,7 +79,7 @@ module.exports =
 									if privilege.subject? and privilege.subject != subject then continue
 									for course in subject.courses
 										if privilege.course? and privilege.course != course then continue
-					###
+					
 
 
 
