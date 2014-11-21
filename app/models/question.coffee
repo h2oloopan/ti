@@ -61,7 +61,9 @@ module.exports =
 		auth:
 			#c
 			c: (req, user, power, cb) ->
-				if power >= 999 || user.role.name == 'editor'
+				if power >= 999
+					cb null
+				else if user.role.name == 'editor'
 					question = req.body
 					if authorizer.canAccessQuestion user, question
 						cb null
