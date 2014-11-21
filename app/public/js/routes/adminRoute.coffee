@@ -109,7 +109,7 @@ define ['jquery', 'me', 'utils',
 						@set 'isAddingPrivilege', true 
 						return false
 					savePrivilege: ->
-						if me.isEmptyString(@get('school')) and
+						if !@get('school')? and
 						   me.isEmptyString(@get('term')) and 
 						   me.isEmptyString(@get('subject')) and 
 						   me.isEmptyString(@get('course'))
@@ -119,12 +119,8 @@ define ['jquery', 'me', 'utils',
 						   !me.isEmptyString(@get('course'))
 							alert 'Course must be coupled with subject'
 							return false
-						if me.isEmptyString(@get('course')) and
-						   !me.isEmptyString(@get('subject'))
-							alert 'Subject must be coupled with course'
-							return false
 
-						user = @get 'model'
+						user = @get 'user'
 						privileges = user.get 'privileges'
 						privileges.pushObject
 							school: @get 'school'
@@ -142,7 +138,7 @@ define ['jquery', 'me', 'utils',
 					deletePrivilege: (privilege) ->
 						privileges = @get 'user.privileges'
 						privileges.removeObject privilege
-						@set 'model.privileges', privileges
+						@set 'user.privileges', privileges
 						return false
 					save: (user) ->
 						result = user.validate()

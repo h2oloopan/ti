@@ -129,7 +129,7 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
           },
           savePrivilege: function() {
             var privileges, user;
-            if (me.isEmptyString(this.get('school')) && me.isEmptyString(this.get('term')) && me.isEmptyString(this.get('subject')) && me.isEmptyString(this.get('course'))) {
+            if ((this.get('school') == null) && me.isEmptyString(this.get('term')) && me.isEmptyString(this.get('subject')) && me.isEmptyString(this.get('course'))) {
               alert('Cannot enter an empty row of privilege');
               return false;
             }
@@ -137,11 +137,7 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
               alert('Course must be coupled with subject');
               return false;
             }
-            if (me.isEmptyString(this.get('course')) && !me.isEmptyString(this.get('subject'))) {
-              alert('Subject must be coupled with course');
-              return false;
-            }
-            user = this.get('model');
+            user = this.get('user');
             privileges = user.get('privileges');
             privileges.pushObject({
               school: this.get('school'),
@@ -163,7 +159,7 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
             var privileges;
             privileges = this.get('user.privileges');
             privileges.removeObject(privilege);
-            this.set('model.privileges', privileges);
+            this.set('user.privileges', privileges);
             return false;
           },
           save: function(user) {
