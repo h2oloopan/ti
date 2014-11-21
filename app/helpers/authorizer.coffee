@@ -2,14 +2,21 @@ authorizer = module.exports =
 	canAccessQuestion: (user, question) ->
 		#admin can always access
 		if user.power >= 999 then return true
-
-		console.log JSON.stringify(user)
-		console.log JSON.stringify(question)
+		exist = (something) ->
+			if something? && something.length > 0 then return true
+			return false
 
 		for privilege in user.privileges
-			if privilege.school? and privilege.school != question.school then continue
-			if privilege.term? and privilege.term != question.term then continue
-			if privilege.subject? and privilege.subject != question.subject then continue
-			if privilege.course? and privilege.course != question.course then continue
+			#console.log 'A'
+			#console.log privilege.school
+			#console.log question.school
+			if exist(privilege.school) and privilege.school.trim().toLowerCase() != question.school.toString().trim().toLowerCase() then continue
+			#console.log 'B'
+			if exist(privilege.term) and privilege.term.trim().toLowerCase() != question.term.trim().toLowerCase() then continue
+			#console.log 'C'
+			if exist(privilege.subject) and privilege.subject.trim().toLowerCase() != question.subject.trim().toLowerCase() then continue
+			#console.log 'D'
+			if exist(privilege.course) and privilege.course.trim().toLowerCase() != question.course.trim().toLowerCase() then continue
+			#console.log 'E'
 			return true
 		return false

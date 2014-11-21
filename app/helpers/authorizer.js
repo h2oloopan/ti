@@ -3,25 +3,29 @@ var authorizer;
 
 authorizer = module.exports = {
   canAccessQuestion: function(user, question) {
-    var privilege, _i, _len, _ref;
+    var exist, privilege, _i, _len, _ref;
     if (user.power >= 999) {
       return true;
     }
-    console.log(JSON.stringify(user));
-    console.log(JSON.stringify(question));
+    exist = function(something) {
+      if ((something != null) && something.length > 0) {
+        return true;
+      }
+      return false;
+    };
     _ref = user.privileges;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       privilege = _ref[_i];
-      if ((privilege.school != null) && privilege.school !== question.school) {
+      if (exist(privilege.school) && privilege.school.trim().toLowerCase() !== question.school.toString().trim().toLowerCase()) {
         continue;
       }
-      if ((privilege.term != null) && privilege.term !== question.term) {
+      if (exist(privilege.term) && privilege.term.trim().toLowerCase() !== question.term.trim().toLowerCase()) {
         continue;
       }
-      if ((privilege.subject != null) && privilege.subject !== question.subject) {
+      if (exist(privilege.subject) && privilege.subject.trim().toLowerCase() !== question.subject.trim().toLowerCase()) {
         continue;
       }
-      if ((privilege.course != null) && privilege.course !== question.course) {
+      if (exist(privilege.course) && privilege.course.trim().toLowerCase() !== question.course.trim().toLowerCase()) {
         continue;
       }
       return true;
