@@ -67,24 +67,64 @@ module.exports =
 				if user.power >= 999
 					cb null, schools #admins can see everything
 				else
-					#cb null, schools # do this for now, and fix ui first
-					
-					filter = (school, index) ->
-						ans = false
-						for privilege in user.privileges
-							if privilege.school? and privilege.school != school then continue
-							ans = true
-							info = {}
-							for term in info.terms
-								if privilege.term? and privilege.term != term then continue
-								for subject in term.subjects
-									if privilege.subject? and privilege.subject != subject then continue
-									for course in subject.courses
-										if privilege.course? and privilege.course != course then continue
-						
-						if ans then school.info = info
-						return ans
+					schools = schools.map (school) ->
+						return school.toObject()
+					for privilege in user.privileges
+						filter = (set, subsets, fields, rules, counter, max) ->
+							field = fields[counter]
+							if counter == 0
+								rule = privilege[rules[counter]]._id
+							else
+								rule = privilege[rules[counter]]
+							if rule?
+								filterSet = (item) ->
+									#console.log field
+									#console.log rule
+									#console.log item[field]
+									if item[field].toString().trim().toLowerCase() == rule.trim().toLowerCase()
+										item.selected = true
+										if counter <= max
+											if counter == 0
+												filter item.info[subsets[counter + 1]], subsets, fields, rules, counter + 1, max
+											else
+												filter item[subsets[counter + 1]], subsets, fields, rules, counter + 1, max
+									return true
+								set = set.filter filterSet
+							else
+								filterSet = (item) ->
+									item.selected = true
+									if counter <= max
+										if counter == 0
+											filter item.info[subsets[counter + 1]], subsets, fields, rules, counter + 1, max
+										else
+											filter item[subsets[counter + 1]], subsets, fields, rules, counter + 1, max
+									return true
+								set = set.filter filterSet
 
+						filter schools, ['', 'terms', 'subjects', 'courses'], 
+						['_id', 'name', 'name', 'number'], 
+						['school', 'term', 'subject', 'course'], 0, 2
+
+
+					for school in schools
+						for term in school.info.terms
+							for subject in term.subjects
+								subject.courses = subject.courses.filter (course) ->
+									if course.selected then return true
+									return false
+							term.subjects = term.subjects.filter (subject) ->
+								if subject.selected then return true
+								return false
+						school.info.terms = school.info.terms.filter (term) ->
+							if term.selected then return true
+							return false
+					schools = schools.filter (school) ->
+						if school.selected then return true
+						return false
+
+
+					console.log JSON.stringify(schools)
+					cb null, schools
 
 
 
