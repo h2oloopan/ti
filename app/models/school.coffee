@@ -72,15 +72,10 @@ module.exports =
 					for privilege in user.privileges
 						filter = (set, subsets, fields, rules, counter, max) ->
 							field = fields[counter]
-							if counter == 0
-								rule = privilege[rules[counter]]._id
-							else
-								rule = privilege[rules[counter]]
-							if rule?
+							rule = privilege[rules[counter]]
+							
+							if rule? && rule.length > 0
 								filterSet = (item) ->
-									#console.log field
-									#console.log rule
-									#console.log item[field]
 									if item[field].toString().trim().toLowerCase() == rule.trim().toLowerCase()
 										item.selected = true
 										if counter <= max
@@ -123,7 +118,6 @@ module.exports =
 						return false
 
 
-					console.log JSON.stringify(schools)
 					cb null, schools
 
 

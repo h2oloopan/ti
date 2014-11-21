@@ -94,12 +94,8 @@ module.exports = {
             filter = function(set, subsets, fields, rules, counter, max) {
               var field, filterSet, rule;
               field = fields[counter];
-              if (counter === 0) {
-                rule = privilege[rules[counter]]._id;
-              } else {
-                rule = privilege[rules[counter]];
-              }
-              if (rule != null) {
+              rule = privilege[rules[counter]];
+              if ((rule != null) && rule.length > 0) {
                 filterSet = function(item) {
                   if (item[field].toString().trim().toLowerCase() === rule.trim().toLowerCase()) {
                     item.selected = true;
@@ -166,7 +162,6 @@ module.exports = {
             }
             return false;
           });
-          console.log(JSON.stringify(schools));
           return cb(null, schools);
         }
       }

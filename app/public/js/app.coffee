@@ -24,9 +24,6 @@ define ['me', 'routes/questionsRoute', 'routes/adminRoute',
 						thiz = @
 						me.auth.logout().then ->
 							#done
-							thiz.store.unloadAll 'user'
-							thiz.store.unloadAll 'school'
-							thiz.store.unloadAll 'question'
 							thiz.controllerFor('application').set 'model', {}
 							thiz.transitionTo 'index'
 						, (errors) ->
