@@ -1,12 +1,22 @@
 crypto = require 'crypto'
 me = require 'mongo-ember'
+path = require 'path'
+fs = require 'fs'
+folder = path.resolve 'apis'
 
 encrypt = (input) ->
 	sha = crypto.createHash 'sha256'
 	sha.update input
 	return sha.digest('hex').toString()
 
-exports.init = ->
+exports.init = (app) ->
+
+
+	#bind apis
+	files = fs.readdirSync folder
+	(require path.join(folder, api)).bind app for api in files when path.extname(api) == '.js'
+	console.log 'apis binded'
+
 	addAdmin = ->
 		#add admin user
 		user = 

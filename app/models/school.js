@@ -102,6 +102,9 @@ module.exports = {
                 if ((privilege.term != null) && privilege.term !== term) {
                   continue;
                 }
+                if (info.terms == null) {
+                  info.terms = [];
+                }
                 _ref2 = term.subjects;
                 for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
                   subject = _ref2[_k];

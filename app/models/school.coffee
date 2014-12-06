@@ -77,6 +77,7 @@ module.exports =
 							info = {}
 							for term in info.terms
 								if privilege.term? and privilege.term != term then continue
+								if !info.terms? then info.terms = []
 								for subject in term.subjects
 									if privilege.subject? and privilege.subject != subject then continue
 									for course in subject.courses
