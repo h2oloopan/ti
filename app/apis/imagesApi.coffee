@@ -1,3 +1,7 @@
+fs = require 'fs'
+path = require 'path'
+gm = require 'gm'
+
 exports.bind = (app) ->
 	#get all images' names for one question
 	app.get 'api/images/:qid', (req, res) ->
