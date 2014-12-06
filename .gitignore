@@ -1,2 +1,4 @@
 *.sublime-project
 *.sublime-workspace
+app/public/images/questions/*
+app/public/images/questions/*/*
