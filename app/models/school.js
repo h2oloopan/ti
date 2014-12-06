@@ -81,51 +81,88 @@ module.exports = {
     },
     after: {
       ra: function(schools, user, cb) {
-        var filter;
+        var filter, privilege, school, subject, term, _i, _j, _k, _l, _len, _len1, _len2, _len3, _ref, _ref1, _ref2;
         if (user.power >= 999) {
           return cb(null, schools);
         } else {
-          return filter = function(school, index) {
-            var ans, course, info, privilege, subject, term, _i, _j, _k, _l, _len, _len1, _len2, _len3, _ref, _ref1, _ref2, _ref3;
-            ans = false;
-            _ref = user.privileges;
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              privilege = _ref[_i];
-              if ((privilege.school != null) && privilege.school !== school) {
-                continue;
-              }
-              ans = true;
-              info = {};
-              _ref1 = info.terms;
-              for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-                term = _ref1[_j];
-                if ((privilege.term != null) && privilege.term !== term) {
-                  continue;
-                }
-                if (info.terms == null) {
-                  info.terms = [];
-                }
-                _ref2 = term.subjects;
-                for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
-                  subject = _ref2[_k];
-                  if ((privilege.subject != null) && privilege.subject !== subject) {
-                    continue;
-                  }
-                  _ref3 = subject.courses;
-                  for (_l = 0, _len3 = _ref3.length; _l < _len3; _l++) {
-                    course = _ref3[_l];
-                    if ((privilege.course != null) && privilege.course !== course) {
-                      continue;
+          schools = schools.map(function(school) {
+            return school.toObject();
+          });
+          _ref = user.privileges;
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            privilege = _ref[_i];
+            filter = function(set, subsets, fields, rules, counter, max) {
+              var field, filterSet, rule;
+              field = fields[counter];
+              rule = privilege[rules[counter]];
+              if ((rule != null) && rule.length > 0) {
+                filterSet = function(item) {
+                  if (item[field].toString().trim().toLowerCase() === rule.trim().toLowerCase()) {
+                    item.selected = true;
+                    if (counter <= max) {
+                      if (counter === 0) {
+                        filter(item.info[subsets[counter + 1]], subsets, fields, rules, counter + 1, max);
+                      } else {
+                        filter(item[subsets[counter + 1]], subsets, fields, rules, counter + 1, max);
+                      }
                     }
                   }
-                }
+                  return true;
+                };
+                return set = set.filter(filterSet);
+              } else {
+                filterSet = function(item) {
+                  item.selected = true;
+                  if (counter <= max) {
+                    if (counter === 0) {
+                      filter(item.info[subsets[counter + 1]], subsets, fields, rules, counter + 1, max);
+                    } else {
+                      filter(item[subsets[counter + 1]], subsets, fields, rules, counter + 1, max);
+                    }
+                  }
+                  return true;
+                };
+                return set = set.filter(filterSet);
               }
+            };
+            filter(schools, ['', 'terms', 'subjects', 'courses'], ['_id', 'name', 'name', 'number'], ['school', 'term', 'subject', 'course'], 0, 2);
+          }
+          for (_j = 0, _len1 = schools.length; _j < _len1; _j++) {
+            school = schools[_j];
+            _ref1 = school.info.terms;
+            for (_k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
+              term = _ref1[_k];
+              _ref2 = term.subjects;
+              for (_l = 0, _len3 = _ref2.length; _l < _len3; _l++) {
+                subject = _ref2[_l];
+                subject.courses = subject.courses.filter(function(course) {
+                  if (course.selected) {
+                    return true;
+                  }
+                  return false;
+                });
+              }
+              term.subjects = term.subjects.filter(function(subject) {
+                if (subject.selected) {
+                  return true;
+                }
+                return false;
+              });
             }
-            if (ans) {
-              school.info = info;
+            school.info.terms = school.info.terms.filter(function(term) {
+              if (term.selected) {
+                return true;
+              }
+              return false;
+            });
+          }
+          schools = schools.filter(function(school) {
+            if (school.selected) {
+              return true;
             }
-            return ans;
-          };
+            return false;
+          });
+          return cb(null, schools);
         }
       }
     }

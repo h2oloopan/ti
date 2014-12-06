@@ -70,6 +70,8 @@ define ['me', 'routes/questionsRoute', 'routes/adminRoute',
 						if !result then return false
 						me.auth.login(@get('model')).then (user) ->
 							#done
+							thiz.store.unloadAll 'question'
+							thiz.store.unloadAll 'school'
 							thiz.set 'controllers.application.model', user
 							thiz.transitionToRoute 'questions'
 						, (errors) ->

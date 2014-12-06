@@ -171,7 +171,7 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 							#fail
 							question.rollback
 							console.log errors
-							alert errors
+							alert errors.responseText
 						return false
 
 #questions
@@ -384,7 +384,7 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 							#fail
 							question.rollback()
 							console.log errors
-							alert errors
+							alert errors.responseText
 						return false
 						
 
