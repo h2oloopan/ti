@@ -6,6 +6,7 @@ config = module.exports = {
   	questionImageFolder: 'public/images/questions',
   	width: 1280,
   	height: 960,
+  	quality: 80,
   	format: '.gif'
   }
 };

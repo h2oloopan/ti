@@ -1,6 +1,7 @@
 fs = require 'fs'
 path = require 'path'
 gm = require 'gm'
+moment = require 'moment'
 me = require 'mongo-ember'
 authorizer = require '../helpers/authorizer'
 
@@ -26,19 +27,48 @@ exports.bind = (app) ->
 				res.send 200, list 
 
 	#add one image to one question
-	app.post '/api/images/questions/:qid/:iid', (req, res) ->
+	app.post '/api/images/questions/:qid', (req, res) ->
 		qid = req.params.qid
-		iid = req.params.iid
+		#get iid from server time so everything must be in sync
+		iid = moment().unix()
 		Question = me.getModel 'question'
+
+		negative = (req, res, err) ->
+			res.send 500,
+				files: [{
+					name: req.files.file.originalName
+					size: req.files.file.size
+					error: err.message
+				}]
+
+		positive = (req, res, url) ->
+			res.send 200,
+				files: [{
+					name: req.files.file.originalName
+					size: req.files.file.size
+					url: url
+				}]
+
 		Question.find {_id: qid}, (err, question) ->
 			if err
-				res.send 500, err.message
+				negative req, res, err
 			else
 				user = req.user
 				if user.power >= 999 or authorizer.canAccessQuestion(user, question)
+					file = path.resolve req.files.file.path
+					destination = path.join folder, qid, iid + config.image.format
+					#create file at destination
+					gm(file).resize config.image.width, config.image.height, '!'
+					.quality config.image.quality
+					.write destination, (err) ->
+						if err
+							negative req, res, err
+						else
+							fs.unlink file
+							positive req, res, destination
 
 				else
-					res.send 401, 'You do not have the privilege to access this'
+					negative req, res, new Error 'You do not have the privilege to access this'
 				
 
 	#delete one image from one question
@@ -48,4 +78,3 @@ exports.bind = (app) ->
 
 
 
-		

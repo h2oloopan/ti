@@ -17,6 +17,7 @@
     "mongo-ember": "~0.0.1",
     "ember-precompile": "~0.0.1",
     "nodemailer": "^1.3.0",
-    "gm": "^1.17.0"
+    "gm": "^1.17.0",
+    "moment": "^2.8.4"
   }
 }
