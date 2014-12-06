@@ -1,6 +1,8 @@
 fs = require 'fs'
 path = require 'path'
 gm = require 'gm'
+me = require 'mongo-ember'
+authorizer = require '../helpers/authorizer'
 
 config = require '../config'
 folder = path.resolve config.image.questionImageFolder
@@ -27,6 +29,23 @@ exports.bind = (app) ->
 	app.post '/api/images/questions/:qid/:iid', (req, res) ->
 		qid = req.params.qid
 		iid = req.params.iid
+		Question = me.getModel 'question'
+		Question.find {_id: qid}, (err, question) ->
+			if err
+				res.send 500, err.message
+			else
+				user = req.user
+				if user.power >= 999 or authorizer.canAccessQuestion(user, question)
+
+				else
+					res.send 401, 'You do not have the privilege to access this'
+				
 
 	#delete one image from one question
 	app.delete '/api/images/questions/:qid/:iid', (req, res) ->
+
+
+
+
+
+		
