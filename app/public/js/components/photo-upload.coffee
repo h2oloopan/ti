@@ -3,22 +3,22 @@ define ['ehbs!templates/components/photo-upload', 'jquery.fileupload'], () ->
 		didInsertElement: ->
 			@_super()
 			thiz = @
-			@$('button').click ->
+			@$('a.btn').click ->
 				thiz.$('input').click()
 			@$('input').fileupload
 				dataType: 'json'
 				done: (e, data) ->
 					return thiz.send 'done', data
 				fail: (e, data) ->
-					return thiz.sendAction 'fail', data
+					return thiz.send 'fail', data
 		actions:
 			done: (data) ->
 				url = data.response().result.files[0].url
-				photos = @get 'photos'
+				photos = @get 'question.photos'
 				if !photos? then photos = []
-				photos.push url
-				@set 'photos', photos
+				photos.pushObject url
+				@set 'question.photos', photos
 				return false
 			fail: (data) ->
-				alert 'fail'
+				alert 'Something was wrong: ' + data.errorThrown
 				return false

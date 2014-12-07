@@ -6,7 +6,7 @@ define(['ehbs!templates/components/photo-upload', 'jquery.fileupload'], function
       var thiz;
       this._super();
       thiz = this;
-      this.$('button').click(function() {
+      this.$('a.btn').click(function() {
         return thiz.$('input').click();
       });
       return this.$('input').fileupload({
@@ -15,7 +15,7 @@ define(['ehbs!templates/components/photo-upload', 'jquery.fileupload'], function
           return thiz.send('done', data);
         },
         fail: function(e, data) {
-          return thiz.sendAction('fail', data);
+          return thiz.send('fail', data);
         }
       });
     },
@@ -23,16 +23,16 @@ define(['ehbs!templates/components/photo-upload', 'jquery.fileupload'], function
       done: function(data) {
         var photos, url;
         url = data.response().result.files[0].url;
-        photos = this.get('photos');
+        photos = this.get('question.photos');
         if (photos == null) {
           photos = [];
         }
-        photos.push(url);
-        this.set('photos', photos);
+        photos.pushObject(url);
+        this.set('question.photos', photos);
         return false;
       },
       fail: function(data) {
-        alert('fail');
+        alert('Something was wrong: ' + data.errorThrown);
         return false;
       }
     }

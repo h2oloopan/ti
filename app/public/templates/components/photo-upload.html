@@ -1,13 +1,12 @@
 <div class="list-photo">
 	<!-- List of already uploaded photos -->
-	{{photos.length}}
-	{{#each photo in photos}}
+	{{#each photo in question.photos}}
 		<img {{bind-attr src=photo}} width="128" height="96" border="0" />
 	{{/each}}
 </div>
 
 {{#if hidden}}
-	<button class="btn btn-sm btn-default">Upload Photo</button>
+	<a class="btn btn-sm btn-default">Upload Photo</a>
 {{/if}}
 <input type="file" {{bind-attr class=":file-upload hidden:hidden"}} 
 	class="file-upload" name="file" {{bind-attr data-url=destination}}/>
