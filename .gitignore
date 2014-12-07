@@ -2,3 +2,5 @@
 *.sublime-workspace
 app/public/images/questions/*
 app/public/images/questions/*/*
+app/public/images/temp/questions/*
+app/public/images/temp/questions/*/*

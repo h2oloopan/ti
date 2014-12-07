@@ -146,6 +146,12 @@ body {
 	font-size: 0.9em;
 }
 
+/* file upload */
+.list-photo {
+	border: 1px solid #ccc;
+	height: 130px;
+	margin-bottom: 10px;
+}
 
 
 

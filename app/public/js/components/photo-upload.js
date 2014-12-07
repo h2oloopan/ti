@@ -2,21 +2,39 @@
 define(['ehbs!templates/components/photo-upload', 'jquery.fileupload'], function() {
   var PhotoUploadComponent;
   return PhotoUploadComponent = Ember.Component.extend({
-    width: 128,
-    height: 96,
     didInsertElement: function() {
       var thiz;
       this._super();
       thiz = this;
+      this.$('button').click(function() {
+        return thiz.$('input').click();
+      });
       return this.$('input').fileupload({
         dataType: 'json',
         done: function(e, data) {
-          return thiz.sendAction('uploadDone', data);
+          return thiz.send('done', data);
         },
         fail: function(e, data) {
-          return thiz.sendAction('uploadFail', data);
+          return thiz.sendAction('fail', data);
         }
       });
+    },
+    actions: {
+      done: function(data) {
+        var photos, url;
+        url = data.response().result.files[0].url;
+        photos = this.get('photos');
+        if (photos == null) {
+          photos = [];
+        }
+        photos.push(url);
+        this.set('photos', photos);
+        return false;
+      },
+      fail: function(data) {
+        alert('fail');
+        return false;
+      }
     }
   });
 });
