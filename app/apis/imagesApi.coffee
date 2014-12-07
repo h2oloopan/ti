@@ -79,6 +79,8 @@ exports.bind = (app) ->
 						positive req, res, translate(destination)
 
 
+	#delete an image file by location
+	app.delete '/api/images/location', (req, res) ->
 
 
 	#add one image to one question

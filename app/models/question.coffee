@@ -119,6 +119,9 @@ module.exports =
 				if !user?
 					console.log 'Something is wrong, question created without user'
 					return cb new Error 'Question created without user'
+
+				#move photos to questions' dedicated folder
+
 				Log = me.getModel 'Log'
 				log = new Log
 					user: user._id

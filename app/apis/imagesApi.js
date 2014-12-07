@@ -111,6 +111,7 @@ exports.bind = function(app) {
       }
     });
   });
+  app["delete"]('/api/images/location', function(req, res) {});
   app.post('/api/images/questions/:qid', function(req, res) {
     var Question, iid, qid;
     qid = req.params.qid;
