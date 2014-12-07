@@ -1,8 +1,10 @@
-define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
+define ['jquery', 'me', 'utils', 'components/photo-upload',
+'moment',
+'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
 'ehbs!templates/questions/question.edit',
 'ehbs!templates/questions/questions.index',
 'ehbs!templates/questions/questions.new'], 
-($, me, utils) ->
+($, me, utils, PhotoUploadComponent, mmt) ->
 	QuestionsRoute = 
 		setup: (App) ->
 			#route
@@ -11,6 +13,8 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 					@route 'new'
 				@resource 'question', {path: '/question/:question_id'}, ->
 					@route 'edit'
+
+			App.PhotoUploadComponent = PhotoUploadComponent
 
 			App.QuestionsRoute = Ember.Route.extend
 				beforeModel: ->
@@ -249,6 +253,7 @@ define ['jquery', 'me', 'utils', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLo
 				needs: 'application'
 				types: ['other', 'quiz', 'assignment', 'midterm', 'final', 'textbook']
 				difficulties: [1, 2, 3, 4, 5]
+				uploadLink: '/api/images/temp'
 				settings: ( ->
 					cookie = $.cookie 'settings'
 					if !cookie?

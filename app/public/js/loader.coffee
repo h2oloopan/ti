@@ -4,6 +4,7 @@ require.config
 		compile: true
 		extension: '.html'
 	paths:
+		components: '/js/components'
 		templates: '/templates'
 		routes: '/js/routes'
 		app: '/js/app'

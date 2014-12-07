@@ -2,12 +2,13 @@ fs = require 'fs'
 path = require 'path'
 gm = require 'gm'
 moment = require 'moment'
+mkdirp = require 'mkdirp'
 me = require 'mongo-ember'
 authorizer = require '../helpers/authorizer'
 
 config = require '../config'
 folder = path.resolve config.image.questionImageFolder
-console.log folder
+tempFolder = path.join path.resolve(config.image.tempFolder), 'questions'
 
 exports.bind = (app) ->
 	#get all images' names for one question
@@ -26,6 +27,60 @@ exports.bind = (app) ->
 					return aTime - bTime
 				res.send 200, list 
 
+
+	#helper functions to respond to file-uploader
+	negative = (req, res, err) ->
+		res.send 500,
+			files: [{
+				name: req.files.file.originalName
+				size: req.files.file.size
+				error: err.message
+			}]
+
+	positive = (req, res, url) ->
+		res.send 200,
+			files: [{
+				name: req.files.file.originalName
+				size: req.files.file.size
+				url: url
+			}]
+
+	process = (input, output, cb) ->
+		gm(input).resize config.image.width, config.image.height, '!'
+		.quality config.image.quality
+		.write output, (err) ->
+			cb err
+
+
+	#add one image to temp folder
+	app.post '/api/images/temp', (req, res) ->
+		#first only allow admin and editors to upload photo
+		if !req.user? then return res.send 401, 'You do not have the permission to access this'
+		if req.user.power < 999 and req.user.role.name != 'editor' then return res.send 401, 'You do not have the permission to access this'
+		
+		translate = (url) ->
+			#convert physical url to web url
+			return path.relative path.resolve('public'), url
+
+		fid = '' + moment().unix()
+		mkdirp path.join(tempFolder, fid), (err) ->
+			if err
+				negative req, res, err
+			else
+				#folder is ready
+				iid = '' + moment().unix()
+				file = path.resolve req.files.file.path
+				destination = path.join tempFolder, fid, iid + config.image.format
+				process file, destination, (err) ->
+					if err
+						negative req, res, err
+					else
+						fs.unlink file
+						positive req, res, translate(destination)
+
+
+
+
 	#add one image to one question
 	app.post '/api/images/questions/:qid', (req, res) ->
 		qid = req.params.qid
@@ -33,21 +88,7 @@ exports.bind = (app) ->
 		iid = moment().unix()
 		Question = me.getModel 'question'
 
-		negative = (req, res, err) ->
-			res.send 500,
-				files: [{
-					name: req.files.file.originalName
-					size: req.files.file.size
-					error: err.message
-				}]
-
-		positive = (req, res, url) ->
-			res.send 200,
-				files: [{
-					name: req.files.file.originalName
-					size: req.files.file.size
-					url: url
-				}]
+		
 
 		Question.find {_id: qid}, (err, question) ->
 			if err
