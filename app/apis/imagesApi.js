@@ -111,7 +111,27 @@ exports.bind = function(app) {
       }
     });
   });
-  app["delete"]('/api/images/location', function(req, res) {});
+  app["delete"]('/api/images/location', function(req, res) {
+    var file;
+    if (req.user == null) {
+      return res.send(401, 'You do not have the permission to access this');
+    }
+    if (req.user.power < 999 && req.user.role.name !== 'editor') {
+      return res.send(401, 'You do not have the permission to access this');
+    }
+    file = req.query.url;
+    file = path.join(path.resolve('public'), file);
+    if (file.toLowerCase().indexOf(tempFolder.toLowerCase()) < 0) {
+      return res.send(401, 'You do not have the permission to access this');
+    }
+    return fs.unlink(file, function(err) {
+      if (err) {
+        return res.send(500, err.message);
+      } else {
+        return res.send(204);
+      }
+    });
+  });
   app.post('/api/images/questions/:qid', function(req, res) {
     var Question, iid, qid;
     qid = req.params.qid;

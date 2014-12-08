@@ -81,6 +81,20 @@ exports.bind = (app) ->
 
 	#delete an image file by location
 	app.delete '/api/images/location', (req, res) ->
+		if !req.user? then return res.send 401, 'You do not have the permission to access this'
+		if req.user.power < 999 and req.user.role.name != 'editor' then return res.send 401, 'You do not have the permission to access this'
+		file = req.query.url
+		file = path.join path.resolve('public'), file
+		#one can only delete photos in the temp folder for this api
+		if file.toLowerCase().indexOf(tempFolder.toLowerCase()) < 0 then return res.send 401, 'You do not have the permission to access this'
+
+		#now delete file
+		fs.unlink file, (err) ->
+			if err
+				res.send 500, err.message
+			else
+				res.send 204
+
 
 
 	#add one image to one question
