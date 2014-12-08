@@ -1,7 +1,14 @@
 <div class="list-photo">
 	<!-- List of already uploaded photos -->
 	{{#each photo in question.photos}}
-		<img {{bind-attr src=photo}} width="128" height="96" border="0" />
+		<div class="photo-holder">
+			<a class="photo-delete" {{action "delete" photo}}>
+				<span class="glyphicon glyphicon-remove"></span>
+			</a>
+			<a {{action "preview" photo}}>
+				<img {{bind-attr src=photo}} width="128" height="96" border="0" />
+			</a>
+		</div>
 	{{/each}}
 </div>
 
@@ -10,3 +17,6 @@
 {{/if}}
 <input type="file" {{bind-attr class=":file-upload hidden:hidden"}} 
 	class="file-upload" name="file" {{bind-attr data-url=destination}}/>
+
+
+<!-- Modal for photo preview -->
