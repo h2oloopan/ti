@@ -5,7 +5,7 @@
 			<a class="photo-delete" title="Delete Photo" {{action "delete" photo}}>
 				<span class="glyphicon glyphicon-remove"></span>
 			</a>
-			<a {{action "preview" photo}}>
+			<a {{action "preview" photo}} title="Preview Photo">
 				<img {{bind-attr src=photo}} width="128" height="96" border="0" />
 			</a>
 		</div>
@@ -20,3 +20,19 @@
 
 
 <!-- Modal for photo preview -->
+<div class="modal fade modal-photo-preview">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title">Photo Preview</h4>
+			</div>
+			<div class="modal-body">
+				<img width="600" height="450" border="0" {{bind-attr src=previewLink}} />
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

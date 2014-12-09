@@ -22,3 +22,6 @@ define ['ehbs!templates/components/photo-upload', 'jquery.fileupload'], () ->
 			fail: (data) ->
 				alert 'Something was wrong: ' + data.errorThrown
 				return false
+			preview: (url) ->
+				@set 'previewLink', url
+				@$('.modal-photo-preview').modal()

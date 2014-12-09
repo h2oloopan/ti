@@ -170,3 +170,7 @@ body {
 	cursor: pointer;
 }
 
+.modal-photo-preview .modal-body {
+	text-align: center;
+}
+
