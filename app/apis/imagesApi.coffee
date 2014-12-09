@@ -3,6 +3,7 @@ path = require 'path'
 gm = require 'gm'
 moment = require 'moment'
 mkdirp = require 'mkdirp'
+rimraf = require 'rimraf'
 me = require 'mongo-ember'
 authorizer = require '../helpers/authorizer'
 
@@ -51,6 +52,17 @@ exports.bind = (app) ->
 		.write output, (err) ->
 			cb err
 
+
+	#delete temp question photos
+	app.delete '/api/images/temp', (req, res) ->
+		fs.readdir tempFolder, (err, files) ->
+			if err then return console.log err
+			for file in files
+				rimraf path.join(tempFolder, file), (err) ->
+					if err then console.log err
+
+		#doesn't matter we succeed or not just proceed
+		res.send 204
 
 	#add one image to temp folder
 	app.post '/api/images/temp', (req, res) ->

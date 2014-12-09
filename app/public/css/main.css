@@ -157,6 +157,16 @@ body {
 	white-space: nowrap;
 }
 
+.photo-holder {
+	display: inline-block;
+}
 
+.photo-holder .photo-delete {
+	position: absolute;
+	left: 22px;
+}
 
+.photo-holder a {
+	cursor: pointer;
+}
 

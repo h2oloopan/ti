@@ -2,7 +2,7 @@
 	<!-- List of already uploaded photos -->
 	{{#each photo in question.photos}}
 		<div class="photo-holder">
-			<a class="photo-delete" {{action "delete" photo}}>
+			<a class="photo-delete" title="Delete Photo" {{action "delete" photo}}>
 				<span class="glyphicon glyphicon-remove"></span>
 			</a>
 			<a {{action "preview" photo}}>

@@ -34,6 +34,19 @@ define ['jquery', 'me', 'utils',
 						, (errors) ->
 							reject errors
 
+			App.AdminController = Ember.ObjectController.extend
+				actions:
+					deleteQuestionPhoto: ->
+						$.ajax
+							url: '/api/images/temp'
+							type: 'DELETE'
+						.done (result) ->
+							return false #do nothing
+						.fail (response) ->
+							alert response.responseText
+
+						return false
+
 			App.AdminView = Ember.View.extend
 				didInsertElement: ->
 					@_super()
