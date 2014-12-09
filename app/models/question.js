@@ -155,10 +155,7 @@ module.exports = {
         });
         return log.save(function(err) {
           if (err) {
-            console.log(err);
-            return cb(err);
-          } else {
-            return cb(null, question);
+            return console.log(err);
           }
         });
       },

@@ -122,8 +122,7 @@ module.exports =
 					console.log 'Something is wrong, question created without user'
 					return cb new Error 'Question created without user'
 
-				#move photos to questions' dedicated folder
-
+				#log changes to db, doesn't matter it succeed or not
 				Log = me.getModel 'Log'
 				log = new Log
 					user: user._id
@@ -132,11 +131,10 @@ module.exports =
 					data: 
 						question: question.toObject()
 				log.save (err) ->
-					if err
-						console.log err
-						cb err
-					else
-						cb null, question
+					if err then console.log err
+
+				#move photos to questions' dedicated folder
+
 
 			#r - this is for authorization purposes
 			ra: (questions, user, cb) ->

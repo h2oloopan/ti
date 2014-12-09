@@ -45,6 +45,14 @@ define(['ehbs!templates/components/photo-upload', 'jquery.fileupload'], function
         photos = this.get('question.photos');
         photos.removeObject(url);
         this.set('question.photos', photos);
+        $.ajax({
+          url: '/api/images/location?url=' + url,
+          type: 'DELETE'
+        }).done(function(result) {
+          return false;
+        }).fail(function(reponse) {
+          return false;
+        });
         return false;
       }
     }
