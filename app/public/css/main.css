@@ -159,11 +159,12 @@ body {
 
 .photo-holder {
 	display: inline-block;
+	position: relative;
 }
 
 .photo-holder .photo-delete {
 	position: absolute;
-	left: 22px;
+	left: 2px;
 }
 
 .photo-holder a {

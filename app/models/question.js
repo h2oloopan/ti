@@ -35,7 +35,10 @@ module.exports = {
       type: {
         type: String
       },
-      photos: [String],
+      photos: {
+        type: [String],
+        "default": []
+      },
       flag: {
         type: Number,
         "default": 1

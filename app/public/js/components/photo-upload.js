@@ -37,7 +37,15 @@ define(['ehbs!templates/components/photo-upload', 'jquery.fileupload'], function
       },
       preview: function(url) {
         this.set('previewLink', url);
-        return this.$('.modal-photo-preview').modal();
+        this.$('.modal-photo-preview').modal();
+        return false;
+      },
+      "delete": function(url) {
+        var photos;
+        photos = this.get('question.photos');
+        photos.removeObject(url);
+        this.set('question.photos', photos);
+        return false;
       }
     }
   });
