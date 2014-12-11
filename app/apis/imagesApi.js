@@ -102,7 +102,7 @@ exports.bind = function(app) {
     return res.send(204);
   });
   app.post('/api/images/temp', function(req, res) {
-    var fid, translate;
+    var translate;
     if (req.user == null) {
       return res.send(401, 'You do not have the permission to access this');
     }
@@ -112,15 +112,14 @@ exports.bind = function(app) {
     translate = function(url) {
       return path.relative(path.resolve('public'), url);
     };
-    fid = '' + moment().unix();
-    return mkdirp(path.join(tempFolder, fid), function(err) {
+    return mkdirp(tempFolder, function(err) {
       var destination, file, iid;
       if (err) {
         return negative(req, res, err);
       } else {
         iid = '' + moment().unix();
         file = path.resolve(req.files.file.path);
-        destination = path.join(tempFolder, fid, iid + config.image.format);
+        destination = path.join(tempFolder, iid + config.image.format);
         return process(file, destination, function(err) {
           if (err) {
             return negative(req, res, err);

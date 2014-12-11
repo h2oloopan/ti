@@ -64,6 +64,13 @@ module.exports = {
           return cb(new Error('You do not have the permission to access this'));
         }
       },
+      ra: function(req, user, power, cb) {
+        if (user != null) {
+          return cb(null);
+        } else {
+          return cb(new Error('You do not have the permission to access this'));
+        }
+      },
       u: function(req, user, power, cb) {
         if (power >= 999) {
           return cb(null);

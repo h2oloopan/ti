@@ -74,15 +74,14 @@ exports.bind = (app) ->
 			#convert physical url to web url
 			return path.relative path.resolve('public'), url
 
-		fid = '' + moment().unix()
-		mkdirp path.join(tempFolder, fid), (err) ->
+		mkdirp tempFolder, (err) ->
 			if err
 				negative req, res, err
 			else
 				#folder is ready
 				iid = '' + moment().unix()
 				file = path.resolve req.files.file.path
-				destination = path.join tempFolder, fid, iid + config.image.format
+				destination = path.join tempFolder, iid + config.image.format
 				process file, destination, (err) ->
 					if err
 						negative req, res, err

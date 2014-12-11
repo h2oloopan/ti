@@ -44,6 +44,12 @@ module.exports =
 					cb new Error 'You do not have the permission to access this'
 
 			#r
+			ra: (req, user, power, cb) ->
+				if user?
+					cb null
+				else
+					cb new Error 'You do not have the permission to access this'
+
 
 			#u
 			u: (req, user, power, cb) ->
