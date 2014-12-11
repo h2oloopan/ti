@@ -1,6 +1,13 @@
 me = require 'mongo-ember'
+mv = require 'mv'
+fs = require 'fs'
+path = require 'path'
 Schema = me.Schema
 authorizer = require '../helpers/authorizer'
+
+config = require '../config'
+folder = path.resolve config.image.questionImageFolder
+publicFolder = path.resolve 'public'
 
 module.exports = 
 	Question:
@@ -134,7 +141,16 @@ module.exports =
 					if err then console.log err
 
 				#move photos to questions' dedicated folder
-
+				#note this is synchronous for now
+				#TODO: change it to async in the future
+				for url in question.photos
+					location = path.join publicFolder, url
+					destination = path.join folder, question._id.toString(), path.basename(url)
+					try
+						fs.renameSync location, destination
+					catch err
+						console.log err
+				cb null, question #it doesn't matter if some photo was not copied
 
 			#r - this is for authorization purposes
 			ra: (questions, user, cb) ->
