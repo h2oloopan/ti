@@ -187,7 +187,7 @@ module.exports = {
       ra: function(questions, user, cb) {
         var filter;
         filter = function(question, index) {
-          if (authorizer.canAccessQuestion(user, question)) {
+          if (authorizer.canAccessQuestion(user, question && question.flag !== 0)) {
             return true;
           } else {
             return false;

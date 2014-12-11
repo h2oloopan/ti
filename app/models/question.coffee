@@ -155,7 +155,7 @@ module.exports =
 			#r - this is for authorization purposes
 			ra: (questions, user, cb) ->
 				filter = (question, index) ->
-					if authorizer.canAccessQuestion user, question
+					if authorizer.canAccessQuestion user, question and question.flag != 0
 						return true
 					else
 						return false
