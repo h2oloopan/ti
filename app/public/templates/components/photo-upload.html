@@ -1,23 +1,31 @@
 <div class="list-photo">
 	<!-- List of already uploaded photos -->
 	{{#each photo in question.photos}}
-		<div class="photo-holder">
-			<a class="photo-delete" title="Delete Photo" {{action "delete" photo}}>
-				<span class="glyphicon glyphicon-remove"></span>
-			</a>
-			<a {{action "preview" photo}} title="Preview Photo">
-				<img {{bind-attr src=photo}} width="128" height="96" border="0" />
-			</a>
-		</div>
+		{{#if readonly}}
+			<div class="photo-holder-lg">
+				<img {{bind-attr src=photo}} width="256" height="" border="0" />
+			</div>
+		{{else}}
+			<div class="photo-holder">
+				<a class="photo-delete" title="Delete Photo" {{action "delete" photo}}>
+					<span class="glyphicon glyphicon-remove"></span>
+				</a>
+				<a {{action "preview" photo}} title="Preview Photo">
+					<img {{bind-attr src=photo}} width="128" height="96" border="0" />
+				</a>
+			</div>
+		{{/if}}
 	{{/each}}
 </div>
 
-{{#if hidden}}
-	<a class="btn btn-sm btn-default">Upload Photo</a>
-{{/if}}
+
+{{#unless readonly}}
+	{{#if hidden}}
+		<a class="btn btn-sm btn-default">Upload Photo</a>
+	{{/if}}
+
 <input type="file" {{bind-attr class=":file-upload hidden:hidden"}} 
 	class="file-upload" name="file" {{bind-attr data-url=destination}}/>
-
 
 <!-- Modal for photo preview -->
 <div class="modal fade modal-photo-preview">
@@ -36,3 +44,4 @@
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+{{/unless}}
