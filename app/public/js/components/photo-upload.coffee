@@ -24,6 +24,7 @@ define ['ehbs!templates/components/photo-upload', 'jquery.fileupload'], () ->
 				return false
 			preview: (url) ->
 				@set 'previewLink', url
+				@set 'insertLink', url.substr(url.lastIndexOf('/') + 1)
 				@$('.modal-photo-preview').modal()
 				return false
 			delete: (url) ->
