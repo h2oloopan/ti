@@ -173,10 +173,11 @@ module.exports = {
           }
         });
         return mkdirp(path.join(folder, question._id.toString()), function(err) {
-          var destination, location, url, _i, _len, _ref;
+          var destination, location, photos, url, _i, _len, _ref;
           if (err) {
             return cb(err);
           } else {
+            photos = [];
             _ref = question.photos;
             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
               url = _ref[_i];
@@ -184,12 +185,14 @@ module.exports = {
               destination = path.join(folder, question._id.toString(), path.basename(url));
               try {
                 fs.renameSync(location, destination);
+                photos.push(path.relative(publicFolder, destination));
               } catch (_error) {
                 err = _error;
                 console.log(err);
               }
             }
-            return cb(null, question);
+            question.photos = photos;
+            return question.save(cb);
           }
         });
       },

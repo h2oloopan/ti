@@ -148,14 +148,17 @@ module.exports =
 					if err
 						cb err
 					else
+						photos = []
 						for url in question.photos
 							location = path.join publicFolder, url
 							destination = path.join folder, question._id.toString(), path.basename(url)
 							try
 								fs.renameSync location, destination
+								photos.push path.relative(publicFolder, destination)
 							catch err
 								console.log err
-						cb null, question #it doesn't matter if some photo was not copied
+						question.photos = photos
+						question.save cb 
 
 			#r - this is for authorization purposes
 			ra: (questions, user, cb) ->
