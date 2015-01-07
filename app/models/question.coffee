@@ -198,19 +198,35 @@ module.exports =
 						cb null, question
 
 				#move photos from temp folder to question's dedicated folder
-				#remove photos in question's which are no longer part of the question
+				#there is something wrong with synchronization
 				photos = []
 				for url in question.photos
 					location = path.join publicFolder, url
 					if location.toLowerCase().indexOf(tempFolder.toLowerCase()) >= 0
 						#this is a temp folder photo
 						destination = path.join folder, question._id.toString(), path.basename(url)
+						console.log location
+						console.log destination
+						mv location, destination, {mkdirp: true}, (err) ->
+							if err
+								console.log err
+							else
+								console.log 'reaching here'
+								photos.push path.relative(publicFolder, destination)
+					else
+						photos.push url
+				#remove photos in question's which are no longer part of the question
+				questionFolder = path.join folder, question._id.toString()
+				files = fs.readdirSync questionFolder
+				for file in files
+					filePath = path.join questionFolder, file
+					fileRelativePath = path.relative publicFolder, filePath
+					if question.photos.indexOf(fileRelativePath) < 0
 						try
-							fs.renameSync location, destination
-							photos.push path.relative(publicFolder, destination)
+							fs.unlinkSync filePath
 						catch err
 							console.log err
-
+						
 
 				question.photos = photos
 				question.save cb

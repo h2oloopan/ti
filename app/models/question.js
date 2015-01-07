@@ -218,7 +218,7 @@ module.exports = {
         }
       },
       u: function(question, user, cb) {
-        var Log, destination, err, location, log, photos, url, _i, _len, _ref;
+        var Log, destination, err, file, filePath, fileRelativePath, files, location, log, photos, questionFolder, url, _i, _j, _len, _len1, _ref;
         if (user == null) {
           console.log('Something is wrong, question updated without user');
           return cb(new Error('Question updated without user'));
@@ -247,9 +247,31 @@ module.exports = {
           location = path.join(publicFolder, url);
           if (location.toLowerCase().indexOf(tempFolder.toLowerCase()) >= 0) {
             destination = path.join(folder, question._id.toString(), path.basename(url));
+            console.log(location);
+            console.log(destination);
+            mv(location, destination, {
+              mkdirp: true
+            }, function(err) {
+              if (err) {
+                return console.log(err);
+              } else {
+                console.log('reaching here');
+                return photos.push(path.relative(publicFolder, destination));
+              }
+            });
+          } else {
+            photos.push(url);
+          }
+        }
+        questionFolder = path.join(folder, question._id.toString());
+        files = fs.readdirSync(questionFolder);
+        for (_j = 0, _len1 = files.length; _j < _len1; _j++) {
+          file = files[_j];
+          filePath = path.join(questionFolder, file);
+          fileRelativePath = path.relative(publicFolder, filePath);
+          if (question.photos.indexOf(fileRelativePath) < 0) {
             try {
-              fs.renameSync(location, destination);
-              photos.push(path.relative(publicFolder, destination));
+              fs.unlinkSync(filePath);
             } catch (_error) {
               err = _error;
               console.log(err);
