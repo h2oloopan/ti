@@ -2,8 +2,8 @@
 	<!-- List of already uploaded photos -->
 	{{#each photo in question.photos}}
 		{{#if readonly}}
-			<div class="photo-holder-lg">
-				<img {{bind-attr src=photo}} width="256" height="" border="0" />
+			<div class="photo-holder">
+				<a title="{{photo}}"><img {{bind-attr src=photo}} width="256" height="" border="0" /></a>
 			</div>
 		{{else}}
 			<div class="photo-holder">
