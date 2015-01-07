@@ -111,6 +111,7 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 					summaryEditor.update()
 					
 			App.QuestionEditController = Ember.ObjectController.extend
+				uploadLink: '/api/images/temp'
 				types: ['other', 'quiz', 'assignment', 'midterm', 'final', 'textbook']
 				difficulties: [1, 2, 3, 4, 5]
 				terms: ( ->
