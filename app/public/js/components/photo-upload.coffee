@@ -31,6 +31,7 @@ define ['ehbs!templates/components/photo-upload', 'jquery.fileupload'], () ->
 				photos = @get 'question.photos'
 				photos.removeObject url
 				@set 'question.photos', photos
+				if @get('edit') then return false
 				#call to remove the photo from server's temp folder, it doesn't matter if it succeed or not
 				$.ajax
 					url: '/api/images/location?url=' + url

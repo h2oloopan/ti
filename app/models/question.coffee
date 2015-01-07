@@ -8,6 +8,7 @@ authorizer = require '../helpers/authorizer'
 
 config = require '../config'
 folder = path.resolve config.image.questionImageFolder
+tempFolder = path.resolve config.image.tempFolder
 publicFolder = path.resolve 'public'
 
 module.exports = 
@@ -195,6 +196,26 @@ module.exports =
 						cb err
 					else
 						cb null, question
+
+				#move photos from temp folder to question's dedicated folder
+				#remove photos in question's which are no longer part of the question
+				photos = []
+				for url in question.photos
+					location = path.join publicFolder, url
+					if location.toLowerCase().indexOf(tempFolder.toLowerCase()) >= 0
+						#this is a temp folder photo
+						destination = path.join folder, question._id.toString(), path.basename(url)
+						try
+							fs.renameSync location, destination
+							photos.push path.relative(publicFolder, destination)
+						catch err
+							console.log err
+
+
+				question.photos = photos
+				question.save cb
+						
+
 
 
 
