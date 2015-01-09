@@ -164,7 +164,7 @@ module.exports =
 			#r - this is for authorization purposes
 			ra: (questions, user, cb) ->
 				filter = (question, index) ->
-					if authorizer.canAccessQuestion user, question and question.flag != 0
+					if authorizer.canAccessQuestion(user, question) and question.flag != 0
 						return true
 					else
 						return false
@@ -173,7 +173,7 @@ module.exports =
 
 
 			ro: (question, user, cb) ->
-				if !authorizer.canAccessQuestion user, question
+				if !authorizer.canAccessQuestion(user, question)
 					cb new Error 'You do not have the permission to access this'
 				else
 					cb null, question
