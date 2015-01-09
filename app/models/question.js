@@ -104,7 +104,7 @@ module.exports = {
         if (power >= 999) {
           return cb(null);
         } else if (user.role.name === 'editor') {
-          question = req.body;
+          question = req.body.question;
           if (authorizer.canAccessQuestion(user, question)) {
             return cb(null);
           } else {
@@ -117,7 +117,7 @@ module.exports = {
       u: function(req, user, power, cb) {
         var question;
         if (power >= 999 || user.role.name === 'editor') {
-          question = req.body;
+          question = req.body.question;
           if (authorizer.canAccessQuestion(user, question)) {
             return cb(null);
           } else {

@@ -76,7 +76,8 @@ module.exports =
 				if power >= 999
 					cb null
 				else if user.role.name == 'editor'
-					question = req.body
+					#TODO: the unwrapping should be part of the preprocessing passing into here
+					question = req.body.question
 					if authorizer.canAccessQuestion user, question
 						cb null
 					else
@@ -91,7 +92,7 @@ module.exports =
 			#u
 			u: (req, user, power, cb) ->
 				if power >= 999 || user.role.name == 'editor'
-					question = req.body
+					question = req.body.question
 					if authorizer.canAccessQuestion user, question
 						cb null
 					else
