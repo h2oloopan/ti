@@ -240,6 +240,9 @@ module.exports = {
             return cb(null, question);
           }
         });
+        if ((question.photos == null) || question.photos.length < 1) {
+          return cb(null, question);
+        }
         photos = [];
         _ref = question.photos;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {

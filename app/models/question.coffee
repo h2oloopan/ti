@@ -197,6 +197,9 @@ module.exports =
 					else
 						cb null, question
 
+
+				if !question.photos? or question.photos.length < 1 then return cb null, question
+
 				#move photos from temp folder to question's dedicated folder
 				#there is something wrong with synchronization
 				photos = []
