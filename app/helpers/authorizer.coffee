@@ -1,6 +1,7 @@
 authorizer = module.exports =
 	canAccessQuestion: (user, question) ->
 		console.log question
+		console.log question.school
 		#admin can always access
 		if user.power >= 999 then return true
 		exist = (something) ->
