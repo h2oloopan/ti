@@ -190,6 +190,12 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 				didInsertElement: ->
 					@_super()
 					#load up mathjax and display math formulas
+					question = @controller.get('model').toJSON()
+					$('#question-preview').html question.question
+					$('#hint-preview').html question.hint
+					$('#solution-preview').html question.solution
+					$('#summary-preview').html question.summary
+					MathJax.Hub.Queue ['Typeset', MathJax.Hub, $('.question-form .right')[0]]
 
 			App.QuestionIndexController = Ember.ObjectController.extend
 				actions:
@@ -228,16 +234,6 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 							, (errors) ->
 								question.rollback()
 								alert errors.responseText
-						return false
-					view: (question) ->
-						@set 'controllers.questionsIndex.preview', question
-						question = question.toJSON()
-						questionView = $('#question-view').html question.question
-						hintView = $('#hint-view').html question.hint
-						solutionView = $('#solution-view').html question.solution
-						summaryView = $('#summary-view').html question.summary
-						MathJax.Hub.Queue ['Typeset', MathJax.Hub, $('#modal-math')[0]]
-						$('.modal').modal()
 						return false
 
 #questions new

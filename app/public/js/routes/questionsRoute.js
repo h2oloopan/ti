@@ -222,7 +222,14 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
       });
       App.QuestionIndexView = Ember.View.extend({
         didInsertElement: function() {
-          return this._super();
+          var question;
+          this._super();
+          question = this.controller.get('model').toJSON();
+          $('#question-preview').html(question.question);
+          $('#hint-preview').html(question.hint);
+          $('#solution-preview').html(question.solution);
+          $('#summary-preview').html(question.summary);
+          return MathJax.Hub.Queue(['Typeset', MathJax.Hub, $('.question-form .right')[0]]);
         }
       });
       App.QuestionIndexController = Ember.ObjectController.extend({
@@ -266,18 +273,6 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
                 return alert(errors.responseText);
               });
             }
-            return false;
-          },
-          view: function(question) {
-            var hintView, questionView, solutionView, summaryView;
-            this.set('controllers.questionsIndex.preview', question);
-            question = question.toJSON();
-            questionView = $('#question-view').html(question.question);
-            hintView = $('#hint-view').html(question.hint);
-            solutionView = $('#solution-view').html(question.solution);
-            summaryView = $('#summary-view').html(question.summary);
-            MathJax.Hub.Queue(['Typeset', MathJax.Hub, $('#modal-math')[0]]);
-            $('.modal').modal();
             return false;
           }
         }
