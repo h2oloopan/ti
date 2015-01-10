@@ -201,37 +201,44 @@ module.exports =
 
 				#move photos from temp folder to question's dedicated folder
 				#there is something wrong with synchronization
-				photos = []
-				for url in question.photos
-					location = path.join publicFolder, url
-					if location.toLowerCase().indexOf(tempFolder.toLowerCase()) >= 0
-						#this is a temp folder photo
-						destination = path.join folder, question._id.toString(), path.basename(url)
-						console.log location
-						console.log destination
-						mv location, destination, {mkdirp: true}, (err) ->
-							if err
-								console.log err
-							else
-								console.log 'reaching here'
-								photos.push path.relative(publicFolder, destination)
-					else
-						photos.push url
+				updatePhotos = (question, cb) ->
+					photos = []
+					counter = question.photos.length
+					for url in question.photos
+						location = path.join publicFolder, url
+						if location.toLowerCase().indexOf(tempFolder.toLowerCase()) >= 0
+							#this is a temp folder folder
+							destination = path.join folder, question._id.toString(), path.basename(url)
+							mv location, destination, {mkdirp: true}, (err) ->
+								if err
+									console.log err
+								else
+									photos.push path.relative(publicFolder, destination)
+								counter--
+								if counter == 0 then cb photos
+						else
+							photos.push url
+							counter--
+							if counter == 0 then cb photos
+
+
 				#remove photos in question's which are no longer part of the question
 				questionFolder = path.join folder, question._id.toString()
-				files = fs.readdirSync questionFolder
-				for file in files
-					filePath = path.join questionFolder, file
-					fileRelativePath = path.relative publicFolder, filePath
-					if question.photos.indexOf(fileRelativePath) < 0
-						try
-							fs.unlinkSync filePath
-						catch err
-							console.log err
-						
-
-				question.photos = photos
-				question.save cb
+				fs.readdir questionFolder, (err, files) ->
+					if err
+						console.log err #suppress
+					else
+						for file in files
+							filePath = path.join questionFolder, file
+							fileRelativePath = path.relative publicFolder, filePath
+							if question.photos.indexOf(fileRelativePath) < 0
+								try
+									fs.unlinkSync filePath
+								catch err
+									console.log err
+						updatePhotos question, (photos) ->
+							question.photos = photos
+							question.save cb
 						
 
 

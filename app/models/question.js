@@ -214,7 +214,7 @@ module.exports = {
         }
       },
       u: function(question, user, cb) {
-        var Log, destination, err, file, filePath, fileRelativePath, files, location, log, photos, questionFolder, url, _i, _j, _len, _len1, _ref;
+        var Log, log, questionFolder, updatePhotos;
         if (user == null) {
           console.log('Something is wrong, question updated without user');
           return cb(new Error('Question updated without user'));
@@ -239,46 +239,67 @@ module.exports = {
         if ((question.photos == null) || question.photos.length < 1) {
           return cb(null, question);
         }
-        photos = [];
-        _ref = question.photos;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          url = _ref[_i];
-          location = path.join(publicFolder, url);
-          if (location.toLowerCase().indexOf(tempFolder.toLowerCase()) >= 0) {
-            destination = path.join(folder, question._id.toString(), path.basename(url));
-            console.log(location);
-            console.log(destination);
-            mv(location, destination, {
-              mkdirp: true
-            }, function(err) {
-              if (err) {
-                return console.log(err);
+        updatePhotos = function(question, cb) {
+          var counter, destination, location, photos, url, _i, _len, _ref, _results;
+          photos = [];
+          counter = question.photos.length;
+          _ref = question.photos;
+          _results = [];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            url = _ref[_i];
+            location = path.join(publicFolder, url);
+            if (location.toLowerCase().indexOf(tempFolder.toLowerCase()) >= 0) {
+              destination = path.join(folder, question._id.toString(), path.basename(url));
+              _results.push(mv(location, destination, {
+                mkdirp: true
+              }, function(err) {
+                if (err) {
+                  console.log(err);
+                } else {
+                  photos.push(path.relative(publicFolder, destination));
+                }
+                counter--;
+                if (counter === 0) {
+                  return cb(photos);
+                }
+              }));
+            } else {
+              photos.push(url);
+              counter--;
+              if (counter === 0) {
+                _results.push(cb(photos));
               } else {
-                console.log('reaching here');
-                return photos.push(path.relative(publicFolder, destination));
+                _results.push(void 0);
               }
-            });
-          } else {
-            photos.push(url);
-          }
-        }
-        questionFolder = path.join(folder, question._id.toString());
-        files = fs.readdirSync(questionFolder);
-        for (_j = 0, _len1 = files.length; _j < _len1; _j++) {
-          file = files[_j];
-          filePath = path.join(questionFolder, file);
-          fileRelativePath = path.relative(publicFolder, filePath);
-          if (question.photos.indexOf(fileRelativePath) < 0) {
-            try {
-              fs.unlinkSync(filePath);
-            } catch (_error) {
-              err = _error;
-              console.log(err);
             }
           }
-        }
-        question.photos = photos;
-        return question.save(cb);
+          return _results;
+        };
+        questionFolder = path.join(folder, question._id.toString());
+        return fs.readdir(questionFolder, function(err, files) {
+          var file, filePath, fileRelativePath, _i, _len;
+          if (err) {
+            return console.log(err);
+          } else {
+            for (_i = 0, _len = files.length; _i < _len; _i++) {
+              file = files[_i];
+              filePath = path.join(questionFolder, file);
+              fileRelativePath = path.relative(publicFolder, filePath);
+              if (question.photos.indexOf(fileRelativePath) < 0) {
+                try {
+                  fs.unlinkSync(filePath);
+                } catch (_error) {
+                  err = _error;
+                  console.log(err);
+                }
+              }
+            }
+            return updatePhotos(question, function(photos) {
+              question.photos = photos;
+              return question.save(cb);
+            });
+          }
+        });
       }
     }
   }
