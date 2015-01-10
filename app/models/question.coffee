@@ -150,7 +150,8 @@ module.exports =
 						insertPhotos = (question, photos, counter, cb) ->
 							if counter > question.photos.length then return cb photos
 							url = question.photos[counter - 1]
-							destination = path.join folder, question_id.toString(), path.basename(url)
+							location = path.join publicFolder, url
+							destination = path.join folder, question._id.toString(), path.basename(url)
 							mv location, destination, {mkdirp: true}, (err) ->
 								if err
 									console.log err

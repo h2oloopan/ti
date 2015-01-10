@@ -176,12 +176,13 @@ module.exports = {
             return cb(err);
           } else {
             insertPhotos = function(question, photos, counter, cb) {
-              var destination, url;
+              var destination, location, url;
               if (counter > question.photos.length) {
                 return cb(photos);
               }
               url = question.photos[counter - 1];
-              destination = path.join(folder, question_id.toString(), path.basename(url));
+              location = path.join(publicFolder, url);
+              destination = path.join(folder, question._id.toString(), path.basename(url));
               return mv(location, destination, {
                 mkdirp: true
               }, function(err) {
