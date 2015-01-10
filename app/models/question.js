@@ -171,26 +171,32 @@ module.exports = {
           }
         });
         return mkdirp(path.join(folder, question._id.toString()), function(err) {
-          var destination, location, photos, url, _i, _len, _ref;
+          var insertPhotos;
           if (err) {
             return cb(err);
           } else {
-            photos = [];
-            _ref = question.photos;
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              url = _ref[_i];
-              location = path.join(publicFolder, url);
-              destination = path.join(folder, question._id.toString(), path.basename(url));
-              try {
-                fs.renameSync(location, destination);
-                photos.push(path.relative(publicFolder, destination));
-              } catch (_error) {
-                err = _error;
-                console.log(err);
+            insertPhotos = function(question, photos, counter, cb) {
+              var destination, url;
+              if (counter > question.photos.length) {
+                return cb(photos);
               }
-            }
-            question.photos = photos;
-            return question.save(cb);
+              url = question.photos[counter - 1];
+              destination = path.join(folder, question_id.toString(), path.basename(url));
+              return mv(location, destination, {
+                mkdirp: true
+              }, function(err) {
+                if (err) {
+                  console.log(err);
+                } else {
+                  photos.push(path.relative(publicFolder, destination));
+                }
+                return insertPhotos(question, photos, counter + 1, cb);
+              });
+            };
+            return insertPhotos(question, [], 1, function(photos) {
+              question.photos = photos;
+              return question.save(cb);
+            });
           }
         });
       },

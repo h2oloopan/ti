@@ -143,22 +143,24 @@ module.exports =
 
 				#move photos to questions' dedicated folder
 				#note this is synchronous for now
-				#TODO: change it to async in the future
 				mkdirp path.join(folder, question._id.toString()), (err) ->
 					if err
 						cb err
 					else
-						photos = []
-						for url in question.photos
-							location = path.join publicFolder, url
-							destination = path.join folder, question._id.toString(), path.basename(url)
-							try
-								fs.renameSync location, destination
-								photos.push path.relative(publicFolder, destination)
-							catch err
-								console.log err
-						question.photos = photos
-						question.save cb 
+						insertPhotos = (question, photos, counter, cb) ->
+							if counter > question.photos.length then return cb photos
+							url = question.photos[counter - 1]
+							destination = path.join folder, question_id.toString(), path.basename(url)
+							mv location, destination, {mkdirp: true}, (err) ->
+								if err
+									console.log err
+								else
+									photos.push path.relative(publicFolder, destination)
+								insertPhotos question, photos, counter + 1, cb
+
+						insertPhotos question, [], 1, (photos) ->
+							question.photos = photos
+							question.save cb
 
 			#r - this is for authorization purposes
 			ra: (questions, user, cb) ->
