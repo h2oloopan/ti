@@ -186,6 +186,17 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 					qid = @modelFor('question').id
 					return @store.find 'question', qid
 
+			App.QuestionIndexView = Ember.View.extend
+				didInsertElement: ->
+					@_super()
+					#load up mathjax and display math formulas
+
+			App.QuestionIndexController = Ember.ObjectController.extend
+				actions:
+					back: ->
+						window.history.go(-1)
+						return false
+
 
 #questions
 			App.QuestionsIndexRoute = Ember.Route.extend

@@ -220,6 +220,19 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
           return this.store.find('question', qid);
         }
       });
+      App.QuestionIndexView = Ember.View.extend({
+        didInsertElement: function() {
+          return this._super();
+        }
+      });
+      App.QuestionIndexController = Ember.ObjectController.extend({
+        actions: {
+          back: function() {
+            window.history.go(-1);
+            return false;
+          }
+        }
+      });
       App.QuestionsIndexRoute = Ember.Route.extend({
         model: function() {
           return this.store.find('question');
