@@ -48,8 +48,7 @@
 					{{/if}}
 				</td>
 				<td>
-					
-					<a title="View Question" href="" {{action "view" question}}><span class="glyphicon glyphicon-search"></span></a>
+					{{#link-to "question.index" question title="Review Question"}}<span class="glyphicon glyphicon-search"></span>{{/link-to}}
 					{{#link-to "question.edit" question title="Edit Question"}}<span class="glyphicon glyphicon-pencil"></span>{{/link-to}}
 					<!-- This is not a real delete, it only changes the flag of question, the question will still persist in the database -->
 					<a title="Delete Question" href="" {{action "delete" question}}>
@@ -67,46 +66,3 @@
 	<br/>
 	<br/>
 </div>
-<div class="modal fade">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-				<h6>{{preview.school.name}}, {{preview.term}}, {{preview.subject}} {{preview.course}}</h6>
-				<h4 class="modal-title">Question ID: {{preview.id}}</h4>
-			</div>
-			<div class="modal-body">
-				<div class="well">
-					Type: {{preview.type}}
-					<br/>
-					Difficulty:
-					{{#if preview.difficulty}}
-					{{preview.difficulty}}
-					{{else}}
-					TBD
-					{{/if}}
-					<br/>
-					Tags: {{preview.tags}}
-					<br/>
-					Note: {{preview.note}}
-				</div>
-				<div class="photo-list">
-					{{photo-upload question=preview readonly="true"}}
-				</div>
-				<div id="modal-math">
-					<h5 class="page-header">Question</h5>
-					<div id="question-view"></div>
-					<h5 class="page-header">Hint</h5>
-					<div id="hint-view"></div>
-					<h5 class="page-header">Solution</h5>
-					<div id="solution-view"></div>
-					<h5 class="page-header">Summary</h5>
-					<div id="summary-view"></div>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			</div>
-			</div><!-- /.modal-content -->
-			</div><!-- /.modal-dialog -->
-			</div><!-- /.modal -->

@@ -1,6 +1,7 @@
 define ['jquery', 'me', 'utils', 'components/photo-upload',
 'moment',
 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
+'ehbs!templates/questions/question.index',
 'ehbs!templates/questions/question.edit',
 'ehbs!templates/questions/questions.index',
 'ehbs!templates/questions/questions.new'], 
@@ -178,6 +179,13 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 							console.log errors
 							alert errors.responseText
 						return false
+
+#question, single item view
+			App.QuestionIndexRoute = Ember.Route.extend
+				model: ->
+					qid = @modelFor('question').id
+					return @store.find 'question', qid
+
 
 #questions
 			App.QuestionsIndexRoute = Ember.Route.extend
