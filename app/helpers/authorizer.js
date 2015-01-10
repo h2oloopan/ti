@@ -4,8 +4,6 @@ var authorizer;
 authorizer = module.exports = {
   canAccessQuestion: function(user, question) {
     var exist, privilege, _i, _len, _ref;
-    console.log(question);
-    console.log(question.school);
     if (user.power >= 999) {
       return true;
     }

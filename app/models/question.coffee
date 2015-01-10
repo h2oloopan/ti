@@ -201,26 +201,27 @@ module.exports =
 
 				#move photos from temp folder to question's dedicated folder
 				#there is something wrong with synchronization
-				updatePhotos = (question, cb) ->
-					photos = []
-					counter = question.photos.length
-					for url in question.photos
-						location = path.join publicFolder, url
-						if location.toLowerCase().indexOf(tempFolder.toLowerCase()) >= 0
-							#this is a temp folder folder
-							destination = path.join folder, question._id.toString(), path.basename(url)
-							mv location, destination, {mkdirp: true}, (err) ->
-								if err
-									console.log err
-								else
-									photos.push path.relative(publicFolder, destination)
-								counter--
-								if counter == 0 then cb photos
-						else
-							photos.push url
-							counter--
-							if counter == 0 then cb photos
-
+				#recursive callback
+				updatePhotos = (question, photos, counter, cb) ->
+					if counter > question.photos.length then return cb photos
+					url = question.photos[counter - 1]
+					location = path.join publicFolder, url
+					if location.toLowerCase().indexOf(tempFolder.toLowerCase()) >= 0
+						destination = path.join folder, question._id.toString(), path.basename(url)
+						console.log location
+						console.log destination
+						mv location, destination, {mkdirp: true}, (err) ->
+							if err
+								console.log 'dah'
+								console.log err
+							else
+								console.log 'err'
+								photos.push path.relative(publicFolder, destination)
+							updatePhotos question, photos, counter + 1, cb
+					else
+						console.log url
+						photos.push url
+						updatePhotos question, photos, counter + 1, cb
 
 				#remove photos in question's which are no longer part of the question
 				questionFolder = path.join folder, question._id.toString()
@@ -236,7 +237,7 @@ module.exports =
 									fs.unlinkSync filePath
 								catch err
 									console.log err
-						updatePhotos question, (photos) ->
+						updatePhotos question, [], 1, (photos) ->
 							question.photos = photos
 							question.save cb
 						

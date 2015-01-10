@@ -239,41 +239,34 @@ module.exports = {
         if ((question.photos == null) || question.photos.length < 1) {
           return cb(null, question);
         }
-        updatePhotos = function(question, cb) {
-          var counter, destination, location, photos, url, _i, _len, _ref, _results;
-          photos = [];
-          counter = question.photos.length;
-          _ref = question.photos;
-          _results = [];
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            url = _ref[_i];
-            location = path.join(publicFolder, url);
-            if (location.toLowerCase().indexOf(tempFolder.toLowerCase()) >= 0) {
-              destination = path.join(folder, question._id.toString(), path.basename(url));
-              _results.push(mv(location, destination, {
-                mkdirp: true
-              }, function(err) {
-                if (err) {
-                  console.log(err);
-                } else {
-                  photos.push(path.relative(publicFolder, destination));
-                }
-                counter--;
-                if (counter === 0) {
-                  return cb(photos);
-                }
-              }));
-            } else {
-              photos.push(url);
-              counter--;
-              if (counter === 0) {
-                _results.push(cb(photos));
-              } else {
-                _results.push(void 0);
-              }
-            }
+        updatePhotos = function(question, photos, counter, cb) {
+          var destination, location, url;
+          if (counter > question.photos.length) {
+            return cb(photos);
           }
-          return _results;
+          url = question.photos[counter - 1];
+          location = path.join(publicFolder, url);
+          if (location.toLowerCase().indexOf(tempFolder.toLowerCase()) >= 0) {
+            destination = path.join(folder, question._id.toString(), path.basename(url));
+            console.log(location);
+            console.log(destination);
+            return mv(location, destination, {
+              mkdirp: true
+            }, function(err) {
+              if (err) {
+                console.log('dah');
+                console.log(err);
+              } else {
+                console.log('err');
+                photos.push(path.relative(publicFolder, destination));
+              }
+              return updatePhotos(question, photos, counter + 1, cb);
+            });
+          } else {
+            console.log(url);
+            photos.push(url);
+            return updatePhotos(question, photos, counter + 1, cb);
+          }
         };
         questionFolder = path.join(folder, question._id.toString());
         return fs.readdir(questionFolder, function(err, files) {
@@ -294,7 +287,7 @@ module.exports = {
                 }
               }
             }
-            return updatePhotos(question, function(photos) {
+            return updatePhotos(question, [], 1, function(photos) {
               question.photos = photos;
               return question.save(cb);
             });
