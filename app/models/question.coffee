@@ -72,12 +72,11 @@ module.exports =
 				required: 'Course cannot be empty'
 		auth:
 			#c
-			c: (req, user, power, cb) ->
+			c: (req, question, user, power, cb) ->
 				if power >= 999
 					cb null
 				else if user.role.name == 'editor'
 					#TODO: the unwrapping should be part of the preprocessing passing into here
-					question = req.body.question
 					if authorizer.canAccessQuestion user, question
 						cb null
 					else
@@ -90,9 +89,8 @@ module.exports =
 			#out questions that cannot be accessed
 
 			#u
-			u: (req, user, power, cb) ->
+			u: (req, question, user, power, cb) ->
 				if power >= 999 || user.role.name == 'editor'
-					question = req.body.question
 					if authorizer.canAccessQuestion user, question
 						cb null
 					else
@@ -101,7 +99,7 @@ module.exports =
 					cb new Error 'You do not have the permission to access this'
 
 			#d
-			d: (req, user, power, cb) ->
+			d: (req, question, user, power, cb) ->
 				#only admin can delete a question
 				if power >= 999
 					cb null

@@ -21,27 +21,27 @@ module.exports = {
       }
     },
     auth: {
-      c: function(req, user, power, cb) {
+      c: function(req, log, user, power, cb) {
         return cb(new Error('Creating log from api call is not allowed'));
       },
-      ra: function(req, user, power, cb) {
+      ra: function(req, log, user, power, cb) {
         if (power >= 999) {
           return cb(null);
         } else {
           return cb(new Error('You do not have the permission to access this'));
         }
       },
-      ro: function(req, user, power, cb) {
+      ro: function(req, log, user, power, cb) {
         if (power >= 999) {
           return cb(null);
         } else {
           return cb(new Error('You do not have the permission to access this'));
         }
       },
-      u: function(req, user, power, cb) {
+      u: function(req, log, user, power, cb) {
         return cb(new Error('Updating log from api call is not allowed'));
       },
-      d: function(req, user, power, cb) {
+      d: function(req, log, user, power, cb) {
         return cb(new Error('Deleting log from api calls is not allowed'));
       }
     }

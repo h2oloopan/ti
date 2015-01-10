@@ -37,14 +37,14 @@ module.exports =
 
 		auth:
 			#c
-			c: (req, user, power, cb) ->
+			c: (req, school, user, power, cb) ->
 				if power >= 999
 					cb null
 				else
 					cb new Error 'You do not have the permission to access this'
 
 			#r
-			ra: (req, user, power, cb) ->
+			ra: (req, school, user, power, cb) ->
 				if user?
 					cb null
 				else
@@ -52,14 +52,14 @@ module.exports =
 
 
 			#u
-			u: (req, user, power, cb) ->
+			u: (req, school, user, power, cb) ->
 				if power >= 999
 					cb null
 				else
 					cb new Error 'You do not have the permission to access this'
 
 			#d
-			d: (req, user, power, cb) ->
+			d: (req, school, user, power, cb) ->
 				if power >= 999
 					cb null
 				else

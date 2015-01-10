@@ -110,35 +110,35 @@ module.exports = {
       }
     },
     auth: {
-      c: function(req, user, power, cb) {
+      c: function(req, userObj, user, power, cb) {
         if (power >= 999) {
           return cb(null);
         } else {
           return cb(new Error('You do not have the permission to access this'));
         }
       },
-      ra: function(req, user, power, cb) {
+      ra: function(req, userObj, user, power, cb) {
         if (power >= 999) {
           return cb(null);
         } else {
           return cb(new Error('You do not have the permission to access this'));
         }
       },
-      ro: function(req, user, power, cb) {
+      ro: function(req, userObj, user, power, cb) {
         if (power >= 999) {
           return cb(null);
         } else {
           return cb(new Error('You do not have the permission to access this'));
         }
       },
-      u: function(req, user, power, cb) {
+      u: function(req, userObj, user, power, cb) {
         if (power >= 999) {
           return cb(null);
         } else {
           return cb(new Error('You do not have the permission to access this'));
         }
       },
-      d: function(req, user, power, cb) {
+      d: function(req, userObj, user, power, cb) {
         if (power >= 999) {
           return cb(null);
         } else {

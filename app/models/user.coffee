@@ -77,20 +77,20 @@ module.exports =
 
 		auth:
 			#c
-			c: (req, user, power, cb) ->
+			c: (req, userObj, user, power, cb) ->
 				if power >= 999
 					cb null
 				else
 					cb new Error 'You do not have the permission to access this'
 
 			#r
-			ra: (req, user, power, cb) ->
+			ra: (req, userObj, user, power, cb) ->
 				if power >= 999
 					cb null
 				else
 					cb new Error 'You do not have the permission to access this'
 
-			ro: (req, user, power, cb) ->
+			ro: (req, userObj, user, power, cb) ->
 				#now we just block any access to non admin user
 				#but we may want user to access himself/herself
 				if power >= 999
@@ -99,14 +99,14 @@ module.exports =
 					cb new Error 'You do not have the permission to access this'
 
 			#u
-			u: (req, user, power, cb) ->
+			u: (req, userObj, user, power, cb) ->
 				if power >= 999
 					cb null
 				else
 					cb new Error 'You do not have the permission to access this'
 
 			#d
-			d: (req, user, power, cb) ->
+			d: (req, userObj, user, power, cb) ->
 				if power >= 999
 					cb null
 				else
