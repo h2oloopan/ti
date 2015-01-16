@@ -13,6 +13,14 @@ define ['jquery', 'bootstrap-wysiwyg'], ($) ->
 					$(@input).wysiwyg()
 					$(@input).on 'keypress', ->
 						thiz.update()
+					$(@input).on 'paste', (e) ->
+						e.preventDefault()
+						if e.originalEvent.clipboardData
+							content = (e.originalEvent || e).clipboardData.getData 'text/plain'
+							document.execCommand 'insertText', false, content
+						else if window.clipboardData
+							content = window.clipboardData.getData 'Text'
+							document.selection.createRange().pasteHTML content
 
 				update: ->
 					thiz = @

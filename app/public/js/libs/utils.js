@@ -21,8 +21,19 @@ define(['jquery', 'bootstrap-wysiwyg'], function($) {
           var thiz;
           thiz = this;
           $(this.input).wysiwyg();
-          return $(this.input).on('keypress', function() {
+          $(this.input).on('keypress', function() {
             return thiz.update();
+          });
+          return $(this.input).on('paste', function(e) {
+            var content;
+            e.preventDefault();
+            if (e.originalEvent.clipboardData) {
+              content = (e.originalEvent || e).clipboardData.getData('text/plain');
+              return document.execCommand('insertText', false, content);
+            } else if (window.clipboardData) {
+              content = window.clipboardData.getData('Text');
+              return document.selection.createRange().pasteHTML(content);
+            }
           });
         };
 
