@@ -47,8 +47,8 @@ exports.bind = (app) ->
 			}]
 
 	process = (input, output, cb) ->
-		gm(input).resize config.image.width, config.image.height, '!'
-		.quality config.image.quality
+		#gm(input).resize config.image.width, config.image.height, '!'
+		gm(input).quality config.image.quality
 		.write output, (err) ->
 			cb err
 
@@ -126,8 +126,8 @@ exports.bind = (app) ->
 					file = path.resolve req.files.file.path
 					destination = path.join folder, qid, iid + config.image.format
 					#create file at destination
-					gm(file).resize config.image.width, config.image.height, '!'
-					.quality config.image.quality
+					#gm(file).resize config.image.width, config.image.height, '!'
+					gm(file).quality config.image.quality
 					.write destination, (err) ->
 						if err
 							negative req, res, err

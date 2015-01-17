@@ -78,7 +78,7 @@ exports.bind = function(app) {
     });
   };
   process = function(input, output, cb) {
-    return gm(input).resize(config.image.width, config.image.height, '!').quality(config.image.quality).write(output, function(err) {
+    return gm(input).quality(config.image.quality).write(output, function(err) {
       return cb(err);
     });
   };
@@ -168,7 +168,7 @@ exports.bind = function(app) {
         if (user.power >= 999 || authorizer.canAccessQuestion(user, question)) {
           file = path.resolve(req.files.file.path);
           destination = path.join(folder, qid, iid + config.image.format);
-          return gm(file).resize(config.image.width, config.image.height, '!').quality(config.image.quality).write(destination, function(err) {
+          return gm(file).quality(config.image.quality).write(destination, function(err) {
             if (err) {
               return negative(req, res, err);
             } else {
