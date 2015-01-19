@@ -59,6 +59,40 @@ module.exports =
 				type: Schema.Types.ObjectId
 				ref: 'User'
 
+			#house keeping stuff
+			lastEditor:
+				type: String
+				default: ''
+			lastModifiedTime:
+				type: Date
+				default: null
+			questionLastEditor:
+				type: String
+				default: ''
+			questionLastModifiedTime:
+				type: Date
+				default: null
+			hintLastEditor:
+				type: String
+				default: ''
+			hintLastModifiedTime:
+				type: Date
+				default: null
+			solutionLastEditor:
+				type: String
+				default: ''
+			solutionLastModifiedTime:
+				type: Date
+				default: null
+			summaryLastEditor:
+				type: String
+				default: ''
+			summaryLastModifiedTime:
+				type: Date
+				default: null
+
+
+
 		validationMessages:
 			question:
 				required: 'Question cannot be empty'
