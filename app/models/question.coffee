@@ -148,6 +148,21 @@ module.exports =
 					cb new Error 'No user is present'
 				else
 					question.editor = user._id
+					
+					username = user.username
+					time = moment().toDate()
+
+					question.lastEditor = username
+					question.lastModifiedTime = time
+					question.questionLastEditor = username
+					question.questionLastModifiedTime = time
+					question.solutionLastEditor = username
+					question.solutionLastModifiedTime = time
+					question.hintLastEditor = username
+					question.hintLastModifiedTime = time
+					question.summaryLastEditor = username
+					question.summaryLastModifiedTime = time
+
 					cb null, question
 
 			#u
@@ -156,7 +171,41 @@ module.exports =
 					cb new Error 'No user is present'
 				else
 					question.editor = user._id
-					cb null, question
+
+					Question = me.getModel 'Question'
+					Question.findOne {_id: question._id}, (err, oldQuestion) ->
+						if err
+							cb err
+						else
+							changed =false
+							username = user.username
+							time = moment().toDate()
+
+							if question.question != oldQuestion.question
+								question.questionLastEditor = username
+								question.questionLastModifiedTime = time
+								changed = true
+
+							if question.solution != oldQuestion.solution
+								question.solutionLastEditor = username
+								question.solutionLastModifiedTime = time
+								changed = true
+
+							if question.hint != oldQuestion.hint
+								question.hintLastEditor = username
+								question.hintLastModifiedTime = time
+								changed = true
+
+							if question.summary != oldQuestion.summary
+								question.summaryLastEditor = username
+								question.summaryLastModifiedTime = time
+								changed = true
+
+							if changed
+								question.lastEditor = username
+								question.lastModifiedTime = time
+
+							cb null, question
 
 		after:
 			#c
@@ -175,6 +224,7 @@ module.exports =
 						question: question.toObject()
 				log.save (err) ->
 					if err then console.log err
+
 
 				#move photos to questions' dedicated folder
 				#note this is synchronous for now

@@ -175,19 +175,70 @@ module.exports = {
     },
     before: {
       c: function(question, user, cb) {
+        var time, username;
         if (user == null) {
           return cb(new Error('No user is present'));
         } else {
           question.editor = user._id;
+          username = user.username;
+          time = moment().toDate();
+          question.lastEditor = username;
+          question.lastModifiedTime = time;
+          question.questionLastEditor = username;
+          question.questionLastModifiedTime = time;
+          question.solutionLastEditor = username;
+          question.solutionLastModifiedTime = time;
+          question.hintLastEditor = username;
+          question.hintLastModifiedTime = time;
+          question.summaryLastEditor = username;
+          question.summaryLastModifiedTime = time;
           return cb(null, question);
         }
       },
       u: function(question, user, cb) {
+        var Question;
         if (user == null) {
           return cb(new Error('No user is present'));
         } else {
           question.editor = user._id;
-          return cb(null, question);
+          Question = me.getModel('Question');
+          return Question.findOne({
+            _id: question._id
+          }, function(err, oldQuestion) {
+            var changed, time, username;
+            if (err) {
+              return cb(err);
+            } else {
+              changed = false;
+              username = user.username;
+              time = moment().toDate();
+              if (question.question !== oldQuestion.question) {
+                question.questionLastEditor = username;
+                question.questionLastModifiedTime = time;
+                changed = true;
+              }
+              if (question.solution !== oldQuestion.solution) {
+                question.solutionLastEditor = username;
+                question.solutionLastModifiedTime = time;
+                changed = true;
+              }
+              if (question.hint !== oldQuestion.hint) {
+                question.hintLastEditor = username;
+                question.hintLastModifiedTime = time;
+                changed = true;
+              }
+              if (question.summary !== oldQuestion.summary) {
+                question.summaryLastEditor = username;
+                question.summaryLastModifiedTime = time;
+                changed = true;
+              }
+              if (changed) {
+                question.lastEditor = username;
+                question.lastModifiedTime = time;
+              }
+              return cb(null, question);
+            }
+          });
         }
       }
     },
