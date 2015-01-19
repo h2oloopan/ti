@@ -1,4 +1,5 @@
 me = require 'mongo-ember'
+moment = require 'moment'
 mv = require 'mv'
 fs = require 'fs'
 path = require 'path'
