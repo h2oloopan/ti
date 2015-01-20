@@ -173,6 +173,7 @@ module.exports =
 					question.editor = user._id
 
 					Question = me.getModel 'Question'
+					console.log question
 					Question.findOne {_id: question._id}, (err, oldQuestion) ->
 						if err
 							cb err
