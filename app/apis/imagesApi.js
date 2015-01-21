@@ -56,6 +56,7 @@ exports.bind = function(app) {
     });
   });
   negative = function(req, res, err) {
+    console.log(err);
     return res.send(500, {
       files: [
         {

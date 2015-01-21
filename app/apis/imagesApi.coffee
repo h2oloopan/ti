@@ -31,6 +31,7 @@ exports.bind = (app) ->
 
 	#helper functions to respond to file-uploader
 	negative = (req, res, err) ->
+		console.log err
 		res.send 500,
 			files: [{
 				name: req.files.file.originalName
