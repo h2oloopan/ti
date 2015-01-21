@@ -3,6 +3,12 @@ body {
 	padding-bottom: 20px;
 }
 
+.helper {
+	font-size: 0.8em;
+	color: #181818;
+	font-weight: normal;
+}
+
 .container {
 	width: 970px !important;
 }
