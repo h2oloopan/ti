@@ -7,80 +7,138 @@
 <div class="container">
 	<form role="form" class="question-form">
 		<div class="row">
-			<div class="col-md-3 left">
+			<div class="col-md-12">
 				<div class="form-group">
 					<label>ID</label>
 					<p class="help-block">{{question_fake.id}}</p>
 				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-3">
 				<div class="form-group">
 					<label>School</label>
 					{{view Ember.Select classNames="form-control" content=schools optionLabelPath="content.name" selection=question_fake.school}}
 				</div>
 				<div class="form-group">
+					<label>
+						Difficulty
+						<span class="helper">
+							(1 - Easiest, 5 - Hardest)
+						</span>
+					</label>
+					{{view Ember.Select classNames="form-control" prompt="TBD" content=difficulties selection=question_fake.difficulty}}
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="form-group">
 					<label>Term</label>
 					{{view Ember.Select classNames="form-control" content=terms optionLabelPath="content.name" selection=question_fake.term}}
-				</div>
-				<div class="form-group">
-					<label>Subject</label>
-					{{view Ember.Select classNames="form-control" content=subjects optionLabelPath="content.name" selection=question_fake.subject}}
-				</div>
-
-				<div class="form-group">
-					<label>Course</label>
-					{{view Ember.Select classNames="form-control" content=courses optionLabelPath="content.number" selection=question_fake.course}}
-				</div>
-				<div class="form-group">
-					<label>Difficulty</label>
-					<span class="help-block">
-					1 - Easiest
-					<br/>
-					5 - Hardest
-					</span>
-					{{view Ember.Select classNames="form-control" prompt="TBD" content=difficulties selection=question_fake.difficulty}}
 				</div>
 				<div class="form-group">
 					<label>Type</label>
 					{{view Ember.Select classNames="form-control" content=types selection=question_fake.type}}
 				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="form-group">
+					<label>Subject</label>
+					{{view Ember.Select classNames="form-control" content=subjects optionLabelPath="content.name" selection=question_fake.subject}}
+				</div>
 				<div class="form-group">
 					<label>Note</label>
 					{{input name="note" class="form-control" value=question_fake.note}}
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="form-group">
+					<label>Course</label>
+					{{view Ember.Select classNames="form-control" content=courses optionLabelPath="content.number" selection=question_fake.course}}
 				</div>
 				<div class="form-group">
 					<label>Tags</label>
 					{{input name="tags" class="form-control" value=question_fake.tags}}
 				</div>
-				<button type="submit" class="btn btn-primary" {{action "save"}}>Save</button>
 			</div>
-			<div class="col-md-9 right">
+		</div>
+		<div class="row">
+			<div class="col-md-12">
 				<div class="form-group">
 					<label>Photos</label>
 					{{photo-upload question=question_fake destination=uploadLink hidden="true" edit="true"}}
 				</div>
-				<div class="form-group">
-					<label>Question</label>
-					<div id="question-preview" class="math-preview"></div>
-					<div id="question-input" class="math-input">{{{unbound question_fake.question}}}</div>
-				</div>
-				<div class="form-group">
-					<label>Hint</label>
-					<div id="hint-preview" class="math-preview"></div>
-					<div id="hint-input" class="math-input">{{{unbound question_fake.hint}}}</div>
-				</div>
-				<div class="form-group">
-					<label>Solution</label>
-					<div id="solution-preview" class="math-preview"></div>
-					<div id="solution-input" class="math-input">{{{unbound question_fake.solution}}}</div>
-				</div>
-				<div class="form-group">
-					<label>Summary</label>
-					<div id="summary-preview" class="math-preview"></div>
-					<div id="summary-input" class="math-input">{{{unbound question_fake.summary}}}</div>
-				</div>
-				<button type="submit" class="btn btn-primary" {{action "save"}}>Save</button>
 			</div>
 		</div>
-		
-		
+		<hr />
+		<div class="row">
+			<div class="col-md-6">
+				<div class="form-group">
+					<label>Question Input</label>
+					<div id="question-input" class="math-input">
+						{{{unbound question_fake.question}}}
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					<label>Question Preview</label>
+					<div id="question-preview" class="math-preview"></div>
+				</div>
+			</div>
+		</div>
+		<hr />
+		<div class="row">
+			<div class="col-md-6">
+				<div class="form-group">
+					<label>Hint Input</label>
+					<div id="hint-input" class="math-input">
+						{{{unbound question_fake.hint}}}
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					<label>Hint Preview</label>
+					<div id="hint-preview" class="math-preview"></div>
+				</div>
+			</div>
+		</div>
+		<hr />
+		<div class="row">
+			<div class="col-md-6">
+				<div class="form-group">
+					<label>Solution Input</label>
+					<div id="solution-input" class="math-input">
+						{{{unbound question_fake.solution}}}
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					<label>Solution Preview</label>
+					<div id="solution-preview" class="math-preview"></div>
+				</div>
+			</div>
+		</div>
+		<hr />
+		<div class="row">
+			<div class="col-md-6">
+				<div class="form-group">
+					<label>Summary Input</label>
+					<div id="summary-input" class="math-input">
+						{{{unbound question_fake.summary}}}
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					<label>Summary Preview</label>
+					<div id="summary-preview" class="math-preview"></div>
+				</div>
+			</div>
+		</div>
+		<button type="submit" class="btn btn-primary" {{action "save"}}>Save</button>
+		<br />
+		<br />
 	</form>
 </div>
