@@ -117,6 +117,7 @@ exports.bind = function(app) {
     return mkdirp(tempFolder, function(err) {
       var destination, file, iid;
       if (err) {
+        console.log('mkdirp failed');
         return negative(req, res, err);
       } else {
         iid = '' + moment().unix();

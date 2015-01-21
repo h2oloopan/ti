@@ -78,6 +78,7 @@ exports.bind = (app) ->
 
 		mkdirp tempFolder, (err) ->
 			if err
+				console.log 'mkdirp failed'
 				negative req, res, err
 			else
 				#folder is ready
