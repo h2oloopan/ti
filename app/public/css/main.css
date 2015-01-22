@@ -45,8 +45,9 @@ body {
 }
 
 .math-input {
-	height: 200px;
-	max-height: 200px;
+	min-height: 100px;
+	/*height: 200px;*/
+	/*max-height: 200px;*/
 	background-color: white;
 	border-collapse: separate;
 	border: 1px solid rgb(204, 204, 204);
@@ -56,7 +57,7 @@ body {
 	box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px 0px inset;
 	border-top-right-radius: 3px; border-bottom-right-radius: 3px;
 	border-bottom-left-radius: 3px; border-top-left-radius: 3px;
-	overflow: scroll;
+	/*overflow: scroll;*/
 	outline: none;
 }
 
