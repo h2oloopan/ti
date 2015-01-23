@@ -74,6 +74,7 @@
 			<div class="col-md-6">
 				<div class="form-group">
 					<label>Question Input</label>
+					<span class="last-modification">Last modified at {{display-time "MMM Do YY, h:mm a" question_fake.questionLastModifiedTime}} by {{question_fake.questionLastEditor}}</span>
 					<div id="question-input" class="math-input">
 						{{{unbound question_fake.question}}}
 					</div>
@@ -91,6 +92,7 @@
 			<div class="col-md-6">
 				<div class="form-group">
 					<label>Hint Input</label>
+					<span class="last-modification">Last modified at {{display-time "MMM Do YY, h:mm a" question_fake.hintLastModifiedTime}} by {{question_fake.hintLastEditor}}</span>
 					<div id="hint-input" class="math-input">
 						{{{unbound question_fake.hint}}}
 					</div>
@@ -108,6 +110,7 @@
 			<div class="col-md-6">
 				<div class="form-group">
 					<label>Solution Input</label>
+					<span class="last-modification">Last modified at {{display-time "MMM Do YY, h:mm a" question_fake.solutionLastModifiedTime}} by {{question_fake.solutionLastEditor}}</span>
 					<div id="solution-input" class="math-input">
 						{{{unbound question_fake.solution}}}
 					</div>
@@ -125,6 +128,7 @@
 			<div class="col-md-6">
 				<div class="form-group">
 					<label>Summary Input</label>
+					<span class="last-modification">Last modified at {{display-time "MMM Do YY, h:mm a" question_fake.summaryLastModifiedTime}} by {{question_fake.summaryLastEditor}}</span>
 					<div id="summary-input" class="math-input">
 						{{{unbound question_fake.summary}}}
 					</div>

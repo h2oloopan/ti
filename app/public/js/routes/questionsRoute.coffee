@@ -8,6 +8,10 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 ($, me, utils, PhotoUploadComponent, mmt) ->
 	QuestionsRoute = 
 		setup: (App) ->
+			#helper
+			Ember.Handlebars.registerBoundHelper 'display-time', (format, time) ->
+				return moment(time).format(format)
+
 			#route
 			App.Router.map ->
 				@resource 'questions', ->

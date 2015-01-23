@@ -53,18 +53,22 @@
 				</div>
 				<div class="form-group">
 					<label>Question</label>
+					<span class="last-modification">Last modified at {{display-time "MMM Do YY, h:mm a" questionLastModifiedTime}} by {{questionLastEditor}}</span>
 					<div id="question-preview" class="math-preview"></div>
 				</div>
 				<div class="form-group">
 					<label>Hint</label>
+					<span class="last-modification">Last modified at {{display-time "MMM Do YY, h:mm a" hintLastModifiedTime}} by {{hintLastEditor}}</span>
 					<div id="hint-preview" class="math-preview"></div>
 				</div>
 				<div class="form-group">
 					<label>Solution</label>
+					<span class="last-modification">Last modified at {{display-time "MMM Do YY, h:mm a" solutionLastModifiedTime}} by {{solutionLastEditor}}</span>
 					<div id="solution-preview" class="math-preview"></div>
 				</div>
 				<div class="form-group">
 					<label>Summary</label>
+					<span class="last-modification">Last modified at {{display-time "MMM Do YY, h:mm a" summaryLastModifiedTime}} by {{summaryLastEditor}}</span>
 					<div id="summary-preview" class="math-preview"></div>
 				</div>
 				<button type="button" class="btn btn-default" {{action "back"}}>Back</button>
