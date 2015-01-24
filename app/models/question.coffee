@@ -148,6 +148,10 @@ module.exports =
 					cb new Error 'No user is present'
 				else
 					question.editor = user._id
+					question.question = question.question.trim()
+					question.solution = question.solution.trim()
+					question.hint = question.hint.trim()
+					question.summary = question.summary.trim()
 					
 					username = user.username
 					time = moment().toDate()
@@ -177,6 +181,11 @@ module.exports =
 						if err
 							cb err
 						else
+							question.question = question.question.trim()
+							question.solution = question.solution.trim()
+							question.hint = question.hint.trim()
+							question.summary = question.summary.trim()
+
 							changed =false
 							username = user.username
 							time = moment().toDate()
