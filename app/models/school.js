@@ -10,10 +10,13 @@ module.exports = {
         type: String,
         required: true
       },
+      terms: {
+        type: [String]
+      },
       info: {
         type: Schema.Types.Mixed,
         "default": {
-          terms: []
+          subjects: []
         }
       }
     },

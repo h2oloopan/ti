@@ -5,9 +5,11 @@ module.exports =
 			name:
 				type: String
 				required: true
+			terms:
+				type: [ String ]
 			info:
 				type: Schema.Types.Mixed
-				default: {terms: []}
+				default: {subjects: []}
 
 		validationMessages:
 			name:
