@@ -15,9 +15,14 @@ me.connect {}, 'mongodb://localhost/ti', (app) ->
 		else
 			#there is an error
 			stuff = school.toJSON().info
+			if !stuff.terms? then return false
 			actual =
 				subjects: new Array()
+			terms = []
 			for term in stuff.terms
+				#update terms
+				if terms.indexOf(term.name) < 0 then terms.push term.name
+
 				subjects = term.subjects
 				for subject in subjects
 					courses = subject.courses
@@ -36,6 +41,7 @@ me.connect {}, 'mongodb://localhost/ti', (app) ->
 							found.courses.push course
 			
 			school.info = actual
+			school.terms = terms
 			school.save (err) ->
 				if err then console.log err
 
