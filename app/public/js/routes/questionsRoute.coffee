@@ -271,7 +271,7 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 			App.QuestionsNewController = Ember.ObjectController.extend
 				initialize: null
 				needs: 'application'
-				types: ['other', 'quiz', 'assignment', 'midterm', 'final', 'textbook']
+				types: ['other', 'quiz', 'assignment', 'midterm', 'final', 'textbook', 'wechat']
 				difficulties: [1, 2, 3, 4, 5]
 				uploadLink: '/api/images/temp'
 				settings: ( ->
@@ -283,6 +283,7 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 				).property 'initialize'
 				terms: ( ->
 					school = @get 'question.school'
+					###
 					if !school?
 						@set 'question.term', null
 						return []
@@ -301,6 +302,9 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 					else
 						@set 'question.term', null
 					return school.toJSON().info.terms
+					###
+					if !school? then return []
+					return school.toJSON().terms
 				).property 'question.school'
 				subjects: ( ->
 					term = @get 'question.term'
