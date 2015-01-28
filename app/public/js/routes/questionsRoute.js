@@ -359,16 +359,16 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
           return school.toJSON().terms;
         }).property('question.school'),
         subjects: (function() {
-          var found, settings, term;
-          term = this.get('question.term');
-          if (term == null) {
+          var found, school, settings;
+          school = this.get('question.school');
+          if (school == null) {
             this.set('question.subject', null);
             return [];
           }
-          if ((term.subjects != null) && term.subjects.length > 0) {
+          if (school.toJSON().info.subjects.length > 0) {
             if (this.get('initialize.subject') && this.get('settings')) {
               settings = this.get('settings');
-              found = term.subjects.find(function(item) {
+              found = school.toJSON().info.subjects.find(function(item) {
                 if (item.name === settings.subject) {
                   return true;
                 }
@@ -380,12 +380,34 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
               }
               this.set('initialize.subject', false);
             } else {
-              this.set('question.subject', term.subjects[0]);
+              this.set('question.subject', school.toJSON().info.subjects[0]);
             }
           } else {
             this.set('question.subject', null);
           }
-          return term.subjects;
+          return school.toJSON().info.subjects;
+
+          /*
+          					term = @get 'question.term'
+          					if !term?
+          						@set 'question.subject', null
+          						return []
+          					if term.subjects? && term.subjects.length > 0
+          						if @get('initialize.subject') && @get('settings')
+          							settings = @get 'settings'
+          							found = term.subjects.find (item) ->
+          								if item.name == settings.subject then return true
+          								return false
+          							if found?
+          								@set 'question.subject', found
+          								@set 'initialize.course', true
+          							@set 'initialize.subject', false
+          						else
+          							@set 'question.subject', term.subjects[0]
+          					else
+          						@set 'question.subject', null
+          					return term.subjects
+           */
         }).property('question.term'),
         courses: (function() {
           var found, settings, subject;

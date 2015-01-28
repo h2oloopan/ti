@@ -307,6 +307,28 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 					return school.toJSON().terms
 				).property 'question.school'
 				subjects: ( ->
+					school = @get 'question.school'
+					if !school?
+						@set 'question.subject', null
+						return []
+
+					if school.toJSON().info.subjects.length > 0
+						if @get('initialize.subject') and @get('settings')
+							settings = @get 'settings'
+							found = school.toJSON().info.subjects.find (item) ->
+								if item.name == settings.subject then return true
+								return false
+							if found?
+								@set 'question.subject', found
+								@set 'initialize.course', true
+							@set 'initialize.subject', false
+						else
+							@set 'question.subject', school.toJSON().info.subjects[0]
+					else
+						@set 'question.subject', null
+					return school.toJSON().info.subjects
+
+					###
 					term = @get 'question.term'
 					if !term?
 						@set 'question.subject', null
@@ -326,6 +348,7 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 					else
 						@set 'question.subject', null
 					return term.subjects
+					###
 				).property 'question.term'
 				courses: ( ->
 					subject = @get 'question.subject'
