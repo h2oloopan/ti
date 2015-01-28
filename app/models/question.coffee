@@ -28,6 +28,8 @@ module.exports =
 				type: String
 			tags:
 				type: String
+			typeTags:
+				type: String
 			difficulty: 
 				type: Number
 			type:

@@ -7,6 +7,8 @@ module.exports =
 				required: true
 			terms:
 				type: [ String ]
+			types:
+				type: [ String ]
 			info:
 				type: Schema.Types.Mixed
 				default: {subjects: []}
