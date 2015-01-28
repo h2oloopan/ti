@@ -383,7 +383,7 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 							return false
 						if found?
 							@set 'question.school', found
-							@set 'initialize.term', true
+							@set 'initialize.subject', true
 						@set 'initialize.school', false
 				).observes('schools')
 				prepare: (question) ->
@@ -403,7 +403,7 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 					uid = @get 'controllers.application.model._id'
 					settings = 
 						school: @get 'question.school.name'
-						term: @get 'question.term.name'
+						#term: @get 'question.term.name'
 						subject: @get 'question.subject.name'
 						course: @get 'question.course.number'
 						type: @get 'question.type'

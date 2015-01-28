@@ -458,7 +458,7 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
             });
             if (found != null) {
               this.set('question.school', found);
-              this.set('initialize.term', true);
+              this.set('initialize.subject', true);
             }
             return this.set('initialize.school', false);
           }
@@ -485,7 +485,6 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
           uid = this.get('controllers.application.model._id');
           settings = {
             school: this.get('question.school.name'),
-            term: this.get('question.term.name'),
             subject: this.get('question.subject.name'),
             course: this.get('question.course.number'),
             type: this.get('question.type')
