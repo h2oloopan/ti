@@ -6,5 +6,21 @@ me = require('mongo-ember');
 authorizer = require('../helpers/authorizer');
 
 exports.bind = function(app) {
-  return app.get('/api/search/questions/text', function(req, res) {});
+  return app.get('/api/search/questions/text', function(req, res) {
+    var Question, pattern, query, text;
+    query = req.query;
+    text = query.text;
+    Question = me.getModel('Question');
+    pattern = new RegExp('.*' + text + '.*', 'ig');
+    return Question.find({
+      question: pattern
+    }, function(err, questions) {
+      if (err) {
+        return res.send(500, err.message);
+      } else {
+        console.log(questions.length);
+        return res.send(200);
+      }
+    });
+  });
 };
