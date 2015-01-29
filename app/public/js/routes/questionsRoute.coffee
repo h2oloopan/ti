@@ -1,6 +1,7 @@
 define ['jquery', 'me', 'utils', 'components/photo-upload',
 'moment',
 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
+'bootstrap-tagsinput',
 'ehbs!templates/questions/question.index',
 'ehbs!templates/questions/question.edit',
 'ehbs!templates/questions/questions.index',

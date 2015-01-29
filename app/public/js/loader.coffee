@@ -14,6 +14,7 @@ require.config
 		'jquery.hotkeys': ['jquery']
 		'jquery.cookie': ['jquery']
 		'bootstrap-wysiwyg': ['bootstrap', 'jquery', 'jquery.hotkeys']
+		'bootstrap-tagsinput': ['bootstrap']
 		'ember': ['handlebars', 'jquery']
 		'ember-data': ['ember']
 		'jquery.fileupload': ['jquery', 'jquery.ui.widget', 'jquery.iframe-transport']
