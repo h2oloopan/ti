@@ -22,7 +22,6 @@ me.connect {}, 'mongodb://localhost/ti', (app) ->
 			for term in stuff.terms
 				#update terms
 				if terms.indexOf(term.name) < 0 then terms.push term.name
-
 				subjects = term.subjects
 				for subject in subjects
 					courses = subject.courses
@@ -35,9 +34,16 @@ me.connect {}, 'mongodb://localhost/ti', (app) ->
 							found =
 								name: subject.name
 								courses: []
-							found.courses.push course
+							match = found.courses.find (item) ->
+								if item.number == course.number then return true
+								return false
+							if !match? then found.courses.push course
 							actual.subjects.push found
 						else
+							match = found.courses.find (item) ->
+								if item.number == course.number then return true
+								return false
+							if !match? then found.courses.push course
 							found.courses.push course
 			
 			school.info = actual
