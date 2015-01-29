@@ -4,3 +4,7 @@ var authorizer, me;
 me = require('mongo-ember');
 
 authorizer = require('../helpers/authorizer');
+
+exports.bind = function(app) {
+  return app.get('/api/search/questions/text', function(req, res) {});
+};
