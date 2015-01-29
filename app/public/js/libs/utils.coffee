@@ -1,13 +1,13 @@
 define ['jquery', 'bootstrap-wysiwyg'], ($) ->
 	return utils = 
-		createMathEditor: (input, preview) ->
-
+		createMathEditor: (input, preview, options) ->
 			class MathEditor
-				constructor: (@input, @preview) ->
+				constructor: (@input, @preview, @options) ->
 					@init()
 				delay: 300
 				timeout: null
 				running: false
+				checking: false
 				init: ->
 					thiz = @
 					$(@input).wysiwyg()
@@ -22,6 +22,32 @@ define ['jquery', 'bootstrap-wysiwyg'], ($) ->
 							content = window.clipboardData.getData 'Text'
 							document.selection.createRange().pasteHTML content
 
+					#string matching test for duplication
+					@options = @options || {}
+					check = @options.check || false
+					url = @options.url || null
+					if check and url?
+						#check
+						#get some setting properties
+						interval = @options.interval || 5000
+						minimum = @options.minimum || 50
+						recurrence = @options.recurrence || 3
+						#do the work
+						timer = null
+						counter = 0
+						poll = (counter) ->
+							if checking then return
+							if counter > recurrence then return clearInterval timer
+
+							
+
+							counter++
+
+						timer = setInterval () ->
+							poll()
+						, interval
+
+
 				update: ->
 					thiz = @
 					if @timeout then clearTimeout @timeout
@@ -35,4 +61,4 @@ define ['jquery', 'bootstrap-wysiwyg'], ($) ->
 				done: ->
 					@running = false
 
-			return new MathEditor input, preview
+			return new MathEditor input, preview, options
