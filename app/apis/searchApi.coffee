@@ -12,6 +12,10 @@ exports.bind = (app) ->
 			if err
 				res.send 500, err.message
 			else
-				console.log questions.length
-				res.send 200
+				#even a user has no authorization to access the question still send it back so he knows there is a duplication
+				#and we only send back ids so we are not exposing any internal information that could lead to potential security breaching
+				ids = []
+				for question in questions
+					ids.push question._id.toString()
+				res.send 200, ids
 

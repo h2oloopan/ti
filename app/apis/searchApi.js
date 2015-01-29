@@ -15,11 +15,16 @@ exports.bind = function(app) {
     return Question.find({
       question: pattern
     }, function(err, questions) {
+      var ids, question, _i, _len;
       if (err) {
         return res.send(500, err.message);
       } else {
-        console.log(questions.length);
-        return res.send(200);
+        ids = [];
+        for (_i = 0, _len = questions.length; _i < _len; _i++) {
+          question = questions[_i];
+          ids.push(question._id.toString());
+        }
+        return res.send(200, ids);
       }
     });
   });
