@@ -12,7 +12,7 @@ authorizer = module.exports =
 			#console.log question.school
 			if exist(privilege.school) and privilege.school.trim().toLowerCase() != question.school.toString().trim().toLowerCase() then continue
 			#console.log 'B'
-			if exist(privilege.term) and privilege.term.trim().toLowerCase() != question.term.trim().toLowerCase() then continue
+			#if exist(privilege.term) and privilege.term.trim().toLowerCase() != question.term.trim().toLowerCase() then continue
 			#console.log 'C'
 			if exist(privilege.subject) and privilege.subject.trim().toLowerCase() != question.subject.trim().toLowerCase() then continue
 			#console.log 'D'
