@@ -282,7 +282,7 @@ define ['jquery', 'me', 'utils',
 						return false
 					saveCourse: (course) ->
 						thiz = @
-						selectedTerm = @get 'selectedTerm'
+						#selectedTerm = @get 'selectedTerm'
 						selectedSubject = @get 'selectedSubject'
 						match = (item) ->
 							if item.number.toLowerCase() == course.toLowerCase()
@@ -301,12 +301,13 @@ define ['jquery', 'me', 'utils',
 						school = @get 'model'
 						school.save().then ->
 							#done
-							found = school.get('info.terms').find (item) ->
-								if item.name == selectedTerm.name then return true
-								return false
-							if !found? then return false
+							#found = school.get('info.terms').find (item) ->
+							#	if item.name == selectedTerm.name then return true
+							#	return false
+							#if !found? then return false
+							#thiz.set 'isReset', true
+							#thiz.set 'selectedTerm', found
 							thiz.set 'isReset', true
-							thiz.set 'selectedTerm', found
 							found = found.subjects.find (item) ->
 								if item.name == selectedSubject.name then return true
 								return false
@@ -322,17 +323,17 @@ define ['jquery', 'me', 'utils',
 						thiz = @
 						ans = confirm 'Are you sure you want to delete course ' + course.number + '?'
 						if !ans then return false
-						selectedTerm = @get 'selectedTerm'
+						#selectedTerm = @get 'selectedTerm'
 						selectedSubject = @get 'selectedSubject'
 						selectedSubject.courses.removeObject course
 						#async
 						school = @get 'model'
 						school.save().then ->
 							#done
-							found = school.get('info.terms').find (item) ->
-								if item.name == selectedTerm.name then return true
-								return false
-							if !found? then return false
+							#found = school.get('info.terms').find (item) ->
+							#	if item.name == selectedTerm.name then return true
+							#	return false
+							#if !found? then return false
 							found = found.subjects.find (item) ->
 								if item.name == selectedSubject.name then return true
 								return false
@@ -402,6 +403,7 @@ define ['jquery', 'me', 'utils',
 							school.rollback()
 							alert errors.responseText
 						return false
+###
 					addTerm: ->
 						@set 'isAddingTerm', true
 						return false
@@ -452,6 +454,7 @@ define ['jquery', 'me', 'utils',
 							school.rollback()
 							alert errors.responseText
 						return false
+###
 
 
 	return AdminRoute
