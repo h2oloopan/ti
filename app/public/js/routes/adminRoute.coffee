@@ -354,12 +354,12 @@ define ['jquery', 'me', 'utils',
 						return false
 					saveSubject: (subject) ->
 						thiz = @
-						selectedTerm = @get 'selectedTerm'
-						match = (item) ->
-							if item.name.toLowerCase() == subject.toLowerCase()
-								return true
-							else
-								return false
+						#selectedTerm = @get 'selectedTerm'
+						#match = (item) ->
+						#	if item.name.toLowerCase() == subject.toLowerCase()
+						#		return true
+						#	else
+						#		return false
 						if selectedTerm.subjects.any match
 							alert 'You cannot add subject with same name'
 							return false
@@ -403,7 +403,7 @@ define ['jquery', 'me', 'utils',
 							school.rollback()
 							alert errors.responseText
 						return false
-###
+						###
 					addTerm: ->
 						@set 'isAddingTerm', true
 						return false
@@ -454,7 +454,7 @@ define ['jquery', 'me', 'utils',
 							school.rollback()
 							alert errors.responseText
 						return false
-###
+						###
 
 
 	return AdminRoute

@@ -22,12 +22,26 @@
 				</div>
 			</div>
 			<div class="col-md-8">
-				<label>Type Information</label>
-				<form class="form-inline form-type-info">
-					{{view Ember.Select classNames="form-control" content=terms selection=selectedTerm}}
-					{{view Ember.Select classNames="form-control" content=types selection=selectedType}}
-					<button class="btn btn-success" type="button">+</button>
-					{{input name="type-tags" class="form-control" value=question.typeTags}}
+				<div class="row">
+					<div class="col-md-4">
+					<label>Type Information</label>
+					<form class="form-inline form-type-info">
+						<div class="form-group">
+							
+							{{view Ember.Select classNames="form-control input-group-select" content=terms selection=selectedTerm}}
+							{{view Ember.Select classNames="form-control input-group-select" content=types selection=selectedType}}
+							<button class="btn btn-success" type="button">+</button>
+						</div>
+					</form>
+					</div>
+					<div class="col-md-8">
+						<label>&nbsp;</label>
+						{{input name="type-tags" class="form-control" value=question.typeTags}}
+					</div>
+				</div>
+				
+				<form class="form-inline">
+					
 				</form>
 				<div class="row">
 					<div class="col-md-6">

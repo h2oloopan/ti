@@ -284,6 +284,7 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 				).property 'initialize'
 				terms: ( ->
 					school = @get 'question.school'
+					console.log school.toJSON()
 					###
 					if !school?
 						@set 'question.term', null
