@@ -56,6 +56,50 @@
 		</div>
 		<hr/>
 		<div class="row">
+			<div class="col-md-6">
+				<div class="form-group">
+					<label>Terms</label>
+					{{view Ember.Select classNames="form-control" size="6" content=terms selection=selectedTerm}}
+					{{#if isAddingTerm}}
+						<div class="input-group info-input">
+							{{input class="form-control" placeholder="Term Name" value=term}}
+							<span class="input-group-btn">
+								<a title="Cancel" class="btn btn-default" {{action "cancelTerm"}}>
+									<span class="glyphicon glyphicon-remove"></span>
+								</a>
+								<a title="Save" class="btn btn-default" {{action "saveTerm" term}}>
+									<span class="glyphicon glyphicon-ok"></span>
+								</a>
+							</span>
+						</div>
+					{{else}}
+						<button class="btn btn-xs btn-success" {{action "addTerm"}}>Add</button>
+						<button class="btn btn-xs btn-danger" {{action "deleteTerm" selectedTerm}}>Delete</button>
+					{{/if}}
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					<label>Types</label>
+					{{view Ember.Select classNames="form-control" size="6" content=types selection=selectedType}}
+					{{#if isAddingType}}
+						<div class="input-group info-input">
+							{{input class="form-control" placeholder="Type Name" value=type}}
+							<span class="input-group-btn">
+								<a title="Cancel" class="btn btn-default" {{action "cancelType"}}>
+									<span class="glyphicon glyphicon-remove"></span>
+								</a>
+								<a title="Save" class="btn btn-default" {{action "saveType" type}}>
+									<span class="glyphicon glyphicon-ok"></span>
+								</a>
+							</span>
+						</div>
+					{{else}}
+						<button class="btn btn-xs btn-success" {{action "addType"}}>Add</button>
+						<button class="btn btn-xs btn-danger" {{action "deleteType" selectedType}}>Delete</button>
+					{{/if}}
+				</div>
+			</div>
 		</div>
 	</form>
 </div>
