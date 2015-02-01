@@ -262,6 +262,10 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 			App.QuestionsNewView = Ember.View.extend
 				didInsertElement: ->
 					@_super()
+
+					#tags
+					$('#type-tags').tagsinput()
+
 					questionEditor = utils.createMathEditor($('#question-input'), $('#question-preview'))
 					hintEditor = utils.createMathEditor($('#hint-input'), $('#hint-preview'))
 					solutionEditor = utils.createMathEditor($('#solution-input'), $('#solution-preview'))

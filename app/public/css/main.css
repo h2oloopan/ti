@@ -214,7 +214,10 @@ body {
 	margin-bottom: 15px;
 }
 
-
+.bootstrap-tagsinput {
+	height: 34px;
+	display: block;
+}
 
 
 

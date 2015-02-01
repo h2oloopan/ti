@@ -307,6 +307,7 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
         didInsertElement: function() {
           var hintEditor, questionEditor, solutionEditor, summaryEditor;
           this._super();
+          $('#type-tags').tagsinput();
           questionEditor = utils.createMathEditor($('#question-input'), $('#question-preview'));
           hintEditor = utils.createMathEditor($('#hint-input'), $('#hint-preview'));
           solutionEditor = utils.createMathEditor($('#solution-input'), $('#solution-preview'));
