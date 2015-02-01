@@ -313,6 +313,7 @@ define ['jquery', 'me', 'utils',
 							return false
 						return false
 					deleteSubject: (subject) ->
+						thiz = @
 						ans = confirm 'Are you sure you want to delete subject ' + subject.name + '?'
 						if !ans then return false
 						info = @get 'info'

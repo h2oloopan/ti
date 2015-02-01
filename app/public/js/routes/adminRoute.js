@@ -368,7 +368,8 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
             return false;
           },
           deleteSubject: function(subject) {
-            var ans, info, school;
+            var ans, info, school, thiz;
+            thiz = this;
             ans = confirm('Are you sure you want to delete subject ' + subject.name + '?');
             if (!ans) {
               return false;
