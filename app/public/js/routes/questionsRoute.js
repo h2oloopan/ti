@@ -67,7 +67,7 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
           });
         },
         afterModel: function(model, transition) {
-          var c, course, fake, real, s, school, subject, t, term, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
+          var c, course, fake, real, s, school, subject, _i, _j, _len, _len1, _ref, _ref1;
           real = model.question_real;
           fake = model.question_fake;
           fake.set('school', real.get('school'));
@@ -78,23 +78,12 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
           fake.set('id', real.get('id'));
           fake.set('initialize', {
             subject: true,
-            term: true,
             course: true
           });
-          term = school.info.terms[0];
-          _ref = school.info.terms;
+          subject = school.info.subjects[0];
+          _ref = school.info.subjects;
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            t = _ref[_i];
-            if (t.name === real.get('term')) {
-              term = t;
-              break;
-            }
-          }
-          fake.set('term', term);
-          subject = term.subjects[0];
-          _ref1 = term.subjects;
-          for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-            s = _ref1[_j];
+            s = _ref[_i];
             if (s.name === real.get('subject')) {
               subject = s;
               break;
@@ -102,9 +91,9 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
           }
           fake.set('subject', subject);
           course = subject.courses[0];
-          _ref2 = subject.courses;
-          for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
-            c = _ref2[_k];
+          _ref1 = subject.courses;
+          for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+            c = _ref1[_j];
             if (c.number === real.get('course')) {
               course = c;
               break;
@@ -136,26 +125,35 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
           if (school == null) {
             return [];
           }
-          if (this.get('question_fake.initialize.term')) {
-            this.set('question_fake.initialize.term', false);
-          } else {
-            this.set('question_fake.term', school.toJSON().info.terms[0]);
+          if (school.toJSON().terms.length > 0) {
+            this.set('selectedTerm', school.toJSON().terms[0]);
           }
-          return school.toJSON().info.terms;
+          return school.toJSON().terms;
+        }).property('question_fake.school'),
+        types: (function() {
+          var school;
+          school = this.get('question_fake.school');
+          if (school == null) {
+            return [];
+          }
+          if (school.toJSON().types.length > 0) {
+            this.set('selectedType', school.toJSON().types[0]);
+          }
+          return school.toJSON().types;
         }).property('question_fake.school'),
         subjects: (function() {
-          var term;
-          term = this.get('question_fake.term');
-          if (term == null) {
+          var school;
+          school = this.get('question_fake.school');
+          if (school == null) {
             return [];
           }
           if (this.get('question_fake.initialize.subject')) {
             this.set('question_fake.initialize.subject', false);
           } else {
-            this.set('question_fake.subject', term.subjects[0]);
+            this.set('question_fake.subject', school.info.subjects[0]);
           }
-          return term.subjects;
-        }).property('question_fake.term'),
+          return school.toJSON().info.subjects;
+        }).property('question_fake.school'),
         courses: (function() {
           var subject;
           subject = this.get('question_fake.subject');

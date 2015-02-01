@@ -75,20 +75,11 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 
 					fake.set 'initialize', 
 						subject: true
-						term: true
 						course: true
 
-					#term
-					term = school.info.terms[0]
-					for t in school.info.terms
-						if t.name == real.get 'term'
-							term = t
-							break
-					fake.set 'term', term
-
 					#subject
-					subject = term.subjects[0]
-					for s in term.subjects
+					subject = school.info.subjects[0]
+					for s in school.info.subjects
 						if s.name == real.get 'subject'
 							subject = s
 							break
@@ -122,21 +113,25 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 				terms: ( ->
 					school = @get 'question_fake.school'
 					if !school? then return []
-					if @get 'question_fake.initialize.term'
-						@set 'question_fake.initialize.term', false
-					else
-						@set 'question_fake.term', school.toJSON().info.terms[0]
-					return school.toJSON().info.terms
+					if school.toJSON().terms.length > 0 then @set 'selectedTerm', school.toJSON().terms[0]
+					return school.toJSON().terms
+				).property 'question_fake.school'
+				types: ( ->
+					school = @get 'question_fake.school'
+					if !school? then return []
+					if school.toJSON().types.length > 0 then @set 'selectedType', school.toJSON().types[0]
+					return school.toJSON().types
 				).property 'question_fake.school'
 				subjects: ( ->
-					term = @get 'question_fake.term'
-					if !term? then return []
+					school = @get 'question_fake.school'
+					if !school? then return []
+
 					if @get 'question_fake.initialize.subject'
 						@set 'question_fake.initialize.subject', false
 					else
-						@set 'question_fake.subject', term.subjects[0]
-					return term.subjects
-				).property 'question_fake.term'
+						@set 'question_fake.subject', school.info.subjects[0]
+					return school.toJSON().info.subjects
+				).property 'question_fake.school'
 				courses: ( ->
 					subject = @get 'question_fake.subject'
 					if !subject? then return []
