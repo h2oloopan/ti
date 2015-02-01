@@ -23,19 +23,18 @@
 			</div>
 			<div class="col-md-8">
 				<div class="row">
-					<div class="col-md-4">
+					<div class="col-md-6">
 					<label>Type Information</label>
 					<form class="form-inline form-type-info">
 						<div class="form-group">
-							
 							{{view Ember.Select classNames="form-control input-group-select" content=terms selection=selectedTerm}}
 							{{view Ember.Select classNames="form-control input-group-select" content=types selection=selectedType}}
-							<button class="btn btn-success" type="button">+</button>
+							<button class="btn btn-success" type="button">Add Tag &gt;</button>
 						</div>
 					</form>
 					</div>
-					<div class="col-md-8">
-						<label>&nbsp;</label>
+					<div class="col-md-6">
+						<label>Type Tags</label>
 						{{input name="type-tags" class="form-control" value=question.typeTags}}
 					</div>
 				</div>

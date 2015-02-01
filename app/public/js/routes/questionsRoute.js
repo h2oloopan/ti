@@ -330,32 +330,18 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
         terms: (function() {
           var school;
           school = this.get('question.school');
-          console.log(school.toJSON());
-
-          /*
-          					if !school?
-          						@set 'question.term', null
-          						return []
-          					if school.toJSON().info.terms.length > 0
-          						if @get('initialize.term') && @get('settings')
-          							settings = @get 'settings'
-          							found = school.toJSON().info.terms.find (item) ->
-          								if item.name == settings.term then return true
-          								return false
-          							if found?
-          								@set 'question.term', found
-          								@set 'initialize.subject', true
-          							@set 'initialize.term', false
-          						else
-          							@set 'question.term', school.toJSON().info.terms[0]
-          					else
-          						@set 'question.term', null
-          					return school.toJSON().info.terms
-           */
           if (school == null) {
             return [];
           }
           return school.toJSON().terms;
+        }).property('question.school'),
+        types: (function() {
+          var school;
+          school = this.get('question.school');
+          if (school == null) {
+            return [];
+          }
+          return school.toJSON().types;
         }).property('question.school'),
         subjects: (function() {
           var found, school, settings;
