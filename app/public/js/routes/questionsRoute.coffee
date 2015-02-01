@@ -118,7 +118,6 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 					
 			App.QuestionEditController = Ember.ObjectController.extend
 				uploadLink: '/api/images/temp'
-				types: ['other', 'quiz', 'assignment', 'midterm', 'final', 'textbook']
 				difficulties: [1, 2, 3, 4, 5]
 				terms: ( ->
 					school = @get 'question_fake.school'
@@ -272,7 +271,6 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 			App.QuestionsNewController = Ember.ObjectController.extend
 				initialize: null
 				needs: 'application'
-				types: ['other', 'quiz', 'assignment', 'midterm', 'final', 'textbook', 'wechat']
 				difficulties: [1, 2, 3, 4, 5]
 				uploadLink: '/api/images/temp'
 				settings: ( ->
