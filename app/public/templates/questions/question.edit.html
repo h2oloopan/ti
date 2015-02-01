@@ -42,7 +42,7 @@
 					</div>
 					<div class="col-md-6">
 						<label>Type Tags</label>
-						<input type="text" id="type-tags" name="type-tags" class="form-control" />
+						{{input id="type-tags" name="type-tags" value=question_fake.typeTags}}
 					</div>
 				</div>
 				<div class="row">
@@ -57,14 +57,14 @@
 							{{view Ember.Select classNames="form-control" prompt="TBD" content=difficulties selection=question_fake.difficulty}}
 						</div>
 						<div class="form-group">
-							<label>Tags</label>
-							<input type="text" id="tags" name="tags" class="form-control" />
+							<label>Note</label>
+							{{input name="note" class="form-control" value=question_fake.note}}
 						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
-							<label>Note</label>
-							{{input name="note" class="form-control" value=question_fake.note}}
+							<label>Other Tags</label>
+							{{input id="tags" name="tags" value=question_fake.tags}}
 						</div>
 					</div>
 				</div>

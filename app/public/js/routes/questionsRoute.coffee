@@ -97,6 +97,10 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 				didInsertElement: ->
 					@_super()
 
+					#initialize tags
+					$('#type-tags').tagsinput()
+					$('#tags').tagsinput()
+
 					questionEditor = utils.createMathEditor($('#question-input'), $('#question-preview'))
 					hintEditor = utils.createMathEditor($('#hint-input'), $('#hint-preview'))
 					solutionEditor = utils.createMathEditor($('#solution-input'), $('#solution-preview'))
@@ -144,12 +148,15 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 				prepare: (question) ->
 					another = question.toJSON()
 					another.subject = question.get('subject.name')
-					another.term = question.get('term.name')
 					another.course = question.get('course.number')
 					another.question = $('#question-input').html()
 					another.hint = $('#hint-input').html()
 					another.solution = $('#solution-input').html()
 					another.summary = $('#summary-input').html()
+
+					another.typeTags = $('#type-tags').val().replace ',', ', '
+					another.tags = $('#tags').val().replace ',', ', '
+
 					if !question.get('difficulty')? then another.difficulty = 0
 					another = @store.createRecord 'Question', another
 					another.set 'school', question.get('school')
