@@ -253,6 +253,7 @@ define ['jquery', 'me', 'utils',
 						@get('schoolEdit').send 'update', school
 
 			App.SchoolEditController = Ember.ObjectController.extend
+				###
 				selectedTermChange: ( ->
 					if @get 'isReset'
 						@set 'isReset', false
@@ -262,6 +263,7 @@ define ['jquery', 'me', 'utils',
 					else
 						@set 'selectedSubject', null
 				).observes 'selectedTerm'
+				###
 				actions:
 					update: (school) ->
 						@set 'model', school
@@ -272,6 +274,64 @@ define ['jquery', 'me', 'utils',
 								@set 'selectedSubject', @get('selectedTerm.subjects')[0]
 					deleteSchool: (school) ->
 						alert 'We are not allowed to delete school at the moment'
+						return false
+					addSubject: ->
+						@set 'isAddingSubject', true
+						return false
+					cancelSubject: ->
+						@set 'subject', null
+						@set 'isAddingSubject', false
+						return false
+					saveSubject: (subject) ->
+						thiz = @
+						info = @get 'info'
+						match = (item) ->
+							if item.name.toLowerCase() == subject.toLowerCase() then return true
+							return false
+
+						if info.subjects.any match
+							alert 'You cannot add subject with same name'
+							return false
+
+						selectedTerm.subjects.pushObject
+							name: subject
+							courses: []
+						@set 'subject', null
+						@set 'isAddingSubject', false
+						#async updating to server
+						school = @get 'model'
+						school.save().then ->
+							#done
+							found = school.get('info.terms').find (item) ->
+								if item.name == selectedTerm.name then return true
+								return false
+							if !found? then return false
+							thiz.set 'isReset', true
+							thiz.set 'selectedTerm', found
+							thiz.set 'selectedSubject', found.subjects[found.subjects.length - 1]
+							return true
+						, (errors) ->
+							school.rollback()
+							alert errors.responseText
+						return false
+					deleteSubject: (subject) ->
+						ans = confirm 'Are you sure you want to delete subject ' + subject.name + '?'
+						if !ans then return false
+						selectedTerm = @get 'selectedTerm'
+						selectedTerm.subjects.removeObject subject
+						#async updating
+						school = @get 'model'
+						school.save().then ->
+							#done
+							found = school.get('info.terms').find (item) ->
+								if item.name == selectedTerm.name then return true
+								return false
+							if !found? then return false
+							thiz.set 'selectedTerm', found
+							return true
+						, (errors) ->
+							school.rollback()
+							alert errors.responseText
 						return false
 					addCourse: ->
 						@set 'isAddingCourse', true
@@ -342,64 +402,6 @@ define ['jquery', 'me', 'utils',
 							return true
 						, (errors) ->
 							#fail
-							school.rollback()
-							alert errors.responseText
-						return false
-					addSubject: ->
-						@set 'isAddingSubject', true
-						return false
-					cancelSubject: ->
-						@set 'subject', null
-						@set 'isAddingSubject', false
-						return false
-					saveSubject: (subject) ->
-						thiz = @
-						#selectedTerm = @get 'selectedTerm'
-						#match = (item) ->
-						#	if item.name.toLowerCase() == subject.toLowerCase()
-						#		return true
-						#	else
-						#		return false
-						if selectedTerm.subjects.any match
-							alert 'You cannot add subject with same name'
-							return false
-						selectedTerm.subjects.pushObject
-							name: subject
-							courses: []
-						@set 'subject', null
-						@set 'isAddingSubject', false
-						#async updating to server
-						school = @get 'model'
-						school.save().then ->
-							#done
-							found = school.get('info.terms').find (item) ->
-								if item.name == selectedTerm.name then return true
-								return false
-							if !found? then return false
-							thiz.set 'isReset', true
-							thiz.set 'selectedTerm', found
-							thiz.set 'selectedSubject', found.subjects[found.subjects.length - 1]
-							return true
-						, (errors) ->
-							school.rollback()
-							alert errors.responseText
-						return false
-					deleteSubject: (subject) ->
-						ans = confirm 'Are you sure you want to delete subject ' + subject.name + '?'
-						if !ans then return false
-						selectedTerm = @get 'selectedTerm'
-						selectedTerm.subjects.removeObject subject
-						#async updating
-						school = @get 'model'
-						school.save().then ->
-							#done
-							found = school.get('info.terms').find (item) ->
-								if item.name == selectedTerm.name then return true
-								return false
-							if !found? then return false
-							thiz.set 'selectedTerm', found
-							return true
-						, (errors) ->
 							school.rollback()
 							alert errors.responseText
 						return false
