@@ -14,9 +14,9 @@
 		<thead>
 			<tr>
 				<th style="width:200px;">School</th>
-				<th style="width:100px;">Term</th>
-				<th style="width:100px;">Subject</th>
-				<th style="width:100px;">Course</th>
+				<th style="width:70px;">Subject</th>
+				<th style="width:70px;">Course</th>
+				<th style="width:160px;">Type</th>
 				<th style="width:250px;">Note</th>
 				<th style="width:60px;">Status</th>
 				<th>Actions</th>
@@ -31,13 +31,13 @@
 					{{question.school.name}}
 				</td>
 				<td>
-					{{question.term}}
-				</td>
-				<td>
 					{{question.subject}}
 				</td>
 				<td>
 					{{question.course}}
+				</td>
+				<td>
+					{{question.typeTags}}
 				</td>
 				<td>
 					{{question.note}}
