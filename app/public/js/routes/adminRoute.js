@@ -295,27 +295,12 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
         }
       });
       return App.SchoolEditController = Ember.ObjectController.extend({
-
-        /*
-        				selectedTermChange: ( ->
-        					if @get 'isReset'
-        						@set 'isReset', false
-        						return false
-        					if @get('selectedTerm.subjects')? && @get('selectedTerm.subjects').length > 0
-        						@set 'selectedSubject', @get('selectedTerm.subjects')[0]
-        					else
-        						@set 'selectedSubject', null
-        				).observes 'selectedTerm'
-         */
         actions: {
           update: function(school) {
             this.set('model', school);
             this.set('isEditing', true);
-            if (this.get('info.terms').length > 0) {
-              this.set('selectedTerm', this.get('info.terms')[0]);
-              if (this.get('selectedTerm.subjects').length > 0) {
-                return this.set('selectedSubject', this.get('selectedTerm.subjects')[0]);
-              }
+            if (this.get('info.subjects').length > 0) {
+              return this.set('selectedSubject', this.get('info.subjects')[0]);
             }
           },
           deleteSchool: function(school) {
@@ -469,59 +454,112 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
               return alert(errors.responseText);
             });
             return false;
-
-            /*
-            					addTerm: ->
-            						@set 'isAddingTerm', true
-            						return false
-            					cancelTerm: ->
-            						@set 'term', null
-            						@set 'isAddingTerm', false
-            						return false
-            					saveTerm: (term) ->
-            						thiz = @
-            						info = @get 'info'
-            						match = (item) ->
-            							if item.name.toLowerCase() == term.toLowerCase()
-            								return true
-            							else
-            								return false
-            						if info.terms.any match
-            							alert 'You cannot add term with same name'
-            							return false
-            						info.terms.pushObject
-            							name: term
-            							subjects: []
-            						@set 'term', null
-            						@set 'isAddingTerm', false
-            						 *async
-            						school = @get 'model'
-            						school.save().then ->
-            							 *done
-            							thiz.set 'selectedTerm', thiz.get('info.terms')[thiz.get('info.terms').length - 1]
-            							return true
-            						, (errors) ->
-            							school.rollback()
-            							alert errors.responseText
-            						return false
-            					deleteTerm: (term) ->
-            						thiz = @
-            						ans = confirm 'Are you sure you want to delete term ' + term.name + '?'
-            						if !ans then return false
-            						info = @get 'info'
-            						info.terms.removeObject term
-            						@set 'selectedTerm', null
-            						 *async
-            						school = @get 'model'
-            						school.save().then ->
-            							 *done
-            							return true
-            						, (errors) ->
-            							 *fail
-            							school.rollback()
-            							alert errors.responseText
-            						return false
-             */
+          },
+          addType: function() {
+            this.set('isAddingType', true);
+            return false;
+          },
+          cancelType: function() {
+            this.set('type', null);
+            this.set('isAddingType', false);
+            return false;
+          },
+          saveType: function(type) {
+            var match, school, thiz, types;
+            thiz = this;
+            types = this.get('types');
+            match = function(item) {
+              if (item.toLowerCase() === type.toLowerCase()) {
+                return true;
+              }
+              return false;
+            };
+            if (types.any(match)) {
+              alert('You cannot add type with same name');
+              return false;
+            }
+            types.pushObject(type);
+            this.set('type', null);
+            this.set('isAddingType', false);
+            school = this.get('model');
+            return school.save().then(function() {
+              return true;
+            }, function(errors) {
+              school.rollback();
+              alert(errors.responseText);
+              return false;
+            });
+          },
+          deleteType: function(type) {
+            var ans, school, thiz, types;
+            thiz = this;
+            ans = confirm('Are you sure you want to delete type ' + type + '?');
+            if (!ans) {
+              return false;
+            }
+            types = this.get('types');
+            types.removeObject(type);
+            school = this.get('model');
+            return school.save().then(function() {
+              return true;
+            }, function(errors) {
+              school.rollback();
+              alert(errors.responseText);
+              return false;
+            });
+          },
+          addTerm: function() {
+            this.set('isAddingTerm', true);
+            return false;
+          },
+          cancelTerm: function() {
+            this.set('term', null);
+            this.set('isAddingTerm', false);
+            return false;
+          },
+          saveTerm: function(term) {
+            var match, school, terms, thiz;
+            thiz = this;
+            terms = this.get('terms');
+            match = function(item) {
+              if (item.toLowerCase() === term.toLowerCase()) {
+                return true;
+              }
+              return false;
+            };
+            if (terms.any(match)) {
+              alert('You cannot add term with same name');
+              return false;
+            }
+            terms.pushObject(term);
+            this.set('term', null);
+            this.set('isAddingTerm', false);
+            school = this.get('model');
+            return school.save().then(function() {
+              return true;
+            }, function(errors) {
+              school.rollback();
+              alert(errors.responseText);
+              return false;
+            });
+          },
+          deleteTerm: function(term) {
+            var ans, school, terms, thiz;
+            thiz = this;
+            ans = confirm('Are you sure you want to delete term ' + term + '?');
+            if (!ans) {
+              return false;
+            }
+            terms = this.get('terms');
+            terms.removeObject(term);
+            school = this.get('model');
+            return school.save().then(function() {
+              return true;
+            }, function(errors) {
+              school.rollback();
+              alert(errors.responseText);
+              return false;
+            });
           }
         }
       });

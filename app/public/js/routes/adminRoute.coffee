@@ -253,25 +253,12 @@ define ['jquery', 'me', 'utils',
 						@get('schoolEdit').send 'update', school
 
 			App.SchoolEditController = Ember.ObjectController.extend
-				###
-				selectedTermChange: ( ->
-					if @get 'isReset'
-						@set 'isReset', false
-						return false
-					if @get('selectedTerm.subjects')? && @get('selectedTerm.subjects').length > 0
-						@set 'selectedSubject', @get('selectedTerm.subjects')[0]
-					else
-						@set 'selectedSubject', null
-				).observes 'selectedTerm'
-				###
 				actions:
 					update: (school) ->
 						@set 'model', school
 						@set 'isEditing', true
-						if @get('info.terms').length > 0
-							@set 'selectedTerm', @get('info.terms')[0]
-							if @get('selectedTerm.subjects').length > 0
-								@set 'selectedSubject', @get('selectedTerm.subjects')[0]
+						if @get('info.subjects').length > 0
+							@set 'selectedSubject', @get('info.subjects')[0]
 					deleteSchool: (school) ->
 						alert 'We are not allowed to delete school at the moment'
 						return false
@@ -390,47 +377,27 @@ define ['jquery', 'me', 'utils',
 							school.rollback()
 							alert errors.responseText
 						return false
-						###
-					addTerm: ->
-						@set 'isAddingTerm', true
+					addType: ->
+						@set 'isAddingType', true
 						return false
-					cancelTerm: ->
-						@set 'term', null
-						@set 'isAddingTerm', false
+					cancelType: ->
+						@set 'type', null
+						@set 'isAddingType', false
 						return false
-					saveTerm: (term) ->
+					saveType: (type) ->
 						thiz = @
-						info = @get 'info'
+						types = @get 'types'
 						match = (item) ->
-							if item.name.toLowerCase() == term.toLowerCase()
-								return true
-							else
-								return false
-						if info.terms.any match
-							alert 'You cannot add term with same name'
+							if item.toLowerCase() == type.toLowerCase() then return true
 							return false
-						info.terms.pushObject
-							name: term
-							subjects: []
-						@set 'term', null
-						@set 'isAddingTerm', false
-						#async
-						school = @get 'model'
-						school.save().then ->
-							#done
-							thiz.set 'selectedTerm', thiz.get('info.terms')[thiz.get('info.terms').length - 1]
-							return true
-						, (errors) ->
-							school.rollback()
-							alert errors.responseText
-						return false
-					deleteTerm: (term) ->
-						thiz = @
-						ans = confirm 'Are you sure you want to delete term ' + term.name + '?'
-						if !ans then return false
-						info = @get 'info'
-						info.terms.removeObject term
-						@set 'selectedTerm', null
+						if types.any match
+							alert 'You cannot add type with same name'
+							return false
+						types.pushObject type
+
+						@set 'type', null
+						@set 'isAddingType', false
+
 						#async
 						school = @get 'model'
 						school.save().then ->
@@ -440,8 +407,70 @@ define ['jquery', 'me', 'utils',
 							#fail
 							school.rollback()
 							alert errors.responseText
+							return false
+					deleteType: (type) ->
+						thiz = @
+						ans = confirm 'Are you sure you want to delete type ' + type + '?'
+						if !ans then return false
+						types = @get 'types'
+						types.removeObject type
+						#async
+						school = @get 'model'
+						school.save().then ->
+							#done
+							return true
+						, (errors) ->
+							#fail
+							school.rollback()
+							alert errors.responseText
+							return false
+
+					addTerm: ->
+						@set 'isAddingTerm', true
 						return false
-						###
+					cancelTerm: ->
+						@set 'term', null
+						@set 'isAddingTerm', false
+						return false
+					saveTerm: (term) ->
+						thiz = @
+						terms = @get 'terms'
+						match = (item) ->
+							if item.toLowerCase() == term.toLowerCase() then return true
+							return false
+						if terms.any match
+							alert 'You cannot add term with same name'
+							return false
+						terms.pushObject term
+
+						@set 'term', null
+						@set 'isAddingTerm', false
+						#async
+						school = @get 'model'
+						school.save().then ->
+							#done
+							return true
+						, (errors) ->
+							#fail
+							school.rollback()
+							alert errors.responseText
+							return false
+					deleteTerm: (term) ->
+						thiz = @
+						ans = confirm 'Are you sure you want to delete term ' + term + '?'
+						if !ans then return false
+						terms = @get 'terms'
+						terms.removeObject term
+						#async
+						school = @get 'model'
+						school.save().then ->
+							#done
+							return true
+						, (errors) ->
+							#fail
+							school.rollback()
+							alert errors.responseText
+							return false
 
 
 	return AdminRoute
