@@ -345,7 +345,7 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
               alert('You cannot add subject with same name');
               return false;
             }
-            selectedTerm.subjects.pushObject({
+            info.subjects.pushObject({
               name: subject,
               courses: []
             });
@@ -353,47 +353,36 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
             this.set('isAddingSubject', false);
             school = this.get('model');
             school.save().then(function() {
-              var found;
-              found = school.get('info.terms').find(function(item) {
-                if (item.name === selectedTerm.name) {
-                  return true;
-                }
-                return false;
-              });
-              if (found == null) {
-                return false;
+              var subjects;
+              subjects = school.get('info.subjects');
+              if (subjects.length === 0) {
+                return true;
               }
-              thiz.set('isReset', true);
-              thiz.set('selectedTerm', found);
-              thiz.set('selectedSubject', found.subjects[found.subjects.length - 1]);
+              thiz.set('selectedSubject', subjects[subjects.length - 1]);
               return true;
             }, function(errors) {
               school.rollback();
-              return alert(errors.responseText);
+              alert(errors.responseText);
+              return false;
             });
             return false;
           },
           deleteSubject: function(subject) {
-            var ans, school, selectedTerm;
+            var ans, info, school;
             ans = confirm('Are you sure you want to delete subject ' + subject.name + '?');
             if (!ans) {
               return false;
             }
-            selectedTerm = this.get('selectedTerm');
-            selectedTerm.subjects.removeObject(subject);
+            info = this.get('info');
+            info.subjects.removeObject(subject);
             school = this.get('model');
             school.save().then(function() {
-              var found;
-              found = school.get('info.terms').find(function(item) {
-                if (item.name === selectedTerm.name) {
-                  return true;
-                }
-                return false;
-              });
-              if (found == null) {
-                return false;
+              var subjects;
+              subjects = school.get('info.subjects');
+              if (subjects.length === 0) {
+                return true;
               }
-              thiz.set('selectedTerm', found);
+              thiz.set('selectedSubject', subjects[subjects.length - 1]);
               return true;
             }, function(errors) {
               school.rollback();
@@ -417,9 +406,8 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
             match = function(item) {
               if (item.number.toLowerCase() === course.toLowerCase()) {
                 return true;
-              } else {
-                return false;
               }
+              return false;
             };
             if (selectedSubject.courses.any(match)) {
               alert('You cannot add course with same name/number');
@@ -434,21 +422,21 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
             school = this.get('model');
             school.save().then(function() {
               var found;
-              thiz.set('isReset', true);
-              found = found.subjects.find(function(item) {
+              found = school.get('info.subjects').find(function(item) {
                 if (item.name === selectedSubject.name) {
                   return true;
                 }
                 return false;
               });
               if (found == null) {
-                return false;
+                return true;
               }
               thiz.set('selectedSubject', found);
               return true;
             }, function(errors) {
               school.rollback();
-              return alert(errors.responseText);
+              alert(errors.responseText);
+              return false;
             });
             return false;
           },
@@ -464,14 +452,14 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
             school = this.get('model');
             school.save().then(function() {
               var found;
-              found = found.subjects.find(function(item) {
+              found = school.get('info.subjects').find(function(item) {
                 if (item.name === selectedSubject.name) {
                   return true;
                 }
                 return false;
               });
               if (found == null) {
-                return false;
+                return true;
               }
               thiz.set('selectedSubject', found);
               return true;

@@ -293,41 +293,37 @@ define ['jquery', 'me', 'utils',
 							alert 'You cannot add subject with same name'
 							return false
 
-						selectedTerm.subjects.pushObject
+						info.subjects.pushObject
 							name: subject
 							courses: []
+
 						@set 'subject', null
 						@set 'isAddingSubject', false
 						#async updating to server
 						school = @get 'model'
 						school.save().then ->
 							#done
-							found = school.get('info.terms').find (item) ->
-								if item.name == selectedTerm.name then return true
-								return false
-							if !found? then return false
-							thiz.set 'isReset', true
-							thiz.set 'selectedTerm', found
-							thiz.set 'selectedSubject', found.subjects[found.subjects.length - 1]
+							subjects = school.get('info.subjects')
+							if subjects.length == 0 then return true
+							thiz.set 'selectedSubject', subjects[subjects.length - 1]
 							return true
 						, (errors) ->
 							school.rollback()
 							alert errors.responseText
+							return false
 						return false
 					deleteSubject: (subject) ->
 						ans = confirm 'Are you sure you want to delete subject ' + subject.name + '?'
 						if !ans then return false
-						selectedTerm = @get 'selectedTerm'
-						selectedTerm.subjects.removeObject subject
+						info = @get 'info'
+						info.subjects.removeObject subject
 						#async updating
 						school = @get 'model'
 						school.save().then ->
 							#done
-							found = school.get('info.terms').find (item) ->
-								if item.name == selectedTerm.name then return true
-								return false
-							if !found? then return false
-							thiz.set 'selectedTerm', found
+							subjects = school.get('info.subjects')
+							if subjects.length == 0 then return true
+							thiz.set 'selectedSubject', subjects[subjects.length - 1]
 							return true
 						, (errors) ->
 							school.rollback()
@@ -342,13 +338,10 @@ define ['jquery', 'me', 'utils',
 						return false
 					saveCourse: (course) ->
 						thiz = @
-						#selectedTerm = @get 'selectedTerm'
 						selectedSubject = @get 'selectedSubject'
 						match = (item) ->
-							if item.number.toLowerCase() == course.toLowerCase()
-								return true
-							else
-								return false
+							if item.number.toLowerCase() == course.toLowerCase() then return true
+							return false
 						if selectedSubject.courses.any match
 							alert 'You cannot add course with same name/number'
 							return false
@@ -361,23 +354,18 @@ define ['jquery', 'me', 'utils',
 						school = @get 'model'
 						school.save().then ->
 							#done
-							#found = school.get('info.terms').find (item) ->
-							#	if item.name == selectedTerm.name then return true
-							#	return false
-							#if !found? then return false
-							#thiz.set 'isReset', true
-							#thiz.set 'selectedTerm', found
-							thiz.set 'isReset', true
-							found = found.subjects.find (item) ->
+							found = school.get('info.subjects').find (item) ->
 								if item.name == selectedSubject.name then return true
 								return false
-							if !found? then return false
+
+							if !found? then return true
 							thiz.set 'selectedSubject', found
 							return true
 						, (errors) ->
 							#fail
 							school.rollback()
 							alert errors.responseText
+							return false
 						return false
 					deleteCourse: (course) ->
 						thiz = @
@@ -390,14 +378,10 @@ define ['jquery', 'me', 'utils',
 						school = @get 'model'
 						school.save().then ->
 							#done
-							#found = school.get('info.terms').find (item) ->
-							#	if item.name == selectedTerm.name then return true
-							#	return false
-							#if !found? then return false
-							found = found.subjects.find (item) ->
+							found = school.get('info.subjects').find (item) ->
 								if item.name == selectedSubject.name then return true
 								return false
-							if !found? then return false
+							if !found? then return true
 							thiz.set 'selectedSubject', found
 							return true
 						, (errors) ->
