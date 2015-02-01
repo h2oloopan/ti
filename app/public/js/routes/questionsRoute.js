@@ -334,6 +334,9 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
           if (school == null) {
             return [];
           }
+          if (school.toJSON().terms.length > 0) {
+            this.set('selectedTerm', school.toJSON().terms[0]);
+          }
           return school.toJSON().terms;
         }).property('question.school'),
         types: (function() {
@@ -341,6 +344,9 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
           school = this.get('question.school');
           if (school == null) {
             return [];
+          }
+          if (school.toJSON().types.length > 0) {
+            this.set('selectedType', school.toJSON().types[0]);
           }
           return school.toJSON().types;
         }).property('question.school'),
@@ -372,29 +378,7 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
             this.set('question.subject', null);
           }
           return school.toJSON().info.subjects;
-
-          /*
-          					term = @get 'question.term'
-          					if !term?
-          						@set 'question.subject', null
-          						return []
-          					if term.subjects? && term.subjects.length > 0
-          						if @get('initialize.subject') && @get('settings')
-          							settings = @get 'settings'
-          							found = term.subjects.find (item) ->
-          								if item.name == settings.subject then return true
-          								return false
-          							if found?
-          								@set 'question.subject', found
-          								@set 'initialize.course', true
-          							@set 'initialize.subject', false
-          						else
-          							@set 'question.subject', term.subjects[0]
-          					else
-          						@set 'question.subject', null
-          					return term.subjects
-           */
-        }).property('question.term'),
+        }).property('question.school'),
         courses: (function() {
           var found, settings, subject;
           subject = this.get('question.subject');
@@ -413,15 +397,6 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
               });
               if (found != null) {
                 this.set('question.course', found);
-                found = this.get('types').find(function(item) {
-                  if (item === settings.type) {
-                    return true;
-                  }
-                  return false;
-                });
-                if (found != null) {
-                  this.set('question.type', found);
-                }
               }
               this.set('initialize.course', false);
             } else {
@@ -452,13 +427,13 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
         prepare: function(question) {
           var another;
           another = question.toJSON();
-          another.term = question.get('term.name');
           another.subject = question.get('subject.name');
           another.course = question.get('course.number');
           another.question = $('#question-input').html();
           another.hint = $('#hint-input').html();
           another.solution = $('#solution-input').html();
           another.summary = $('#summary-input').html();
+          another.typeTags = $('#type-tags').val();
           if (question.get('difficulty') == null) {
             another.difficulty = 0;
           }
@@ -472,8 +447,7 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
           settings = {
             school: this.get('question.school.name'),
             subject: this.get('question.subject.name'),
-            course: this.get('question.course.number'),
-            type: this.get('question.type')
+            course: this.get('question.course.number')
           };
           storage = $.cookie('settings');
           if (storage == null) {
@@ -487,6 +461,14 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
           });
         },
         actions: {
+          addTypeTag: function() {
+            var tag, term, type;
+            term = this.get('selectedTerm');
+            type = this.get('selectedType');
+            tag = term + ' ' + type;
+            $('#type-tags').tagsinput('add', tag);
+            return false;
+          },
           add: function() {
             var key, keys, question, result, thiz, _i, _len;
             thiz = this;

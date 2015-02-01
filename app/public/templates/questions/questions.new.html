@@ -29,13 +29,13 @@
 						<div class="form-group">
 							{{view Ember.Select classNames="form-control input-group-select" content=terms selection=selectedTerm}}
 							{{view Ember.Select classNames="form-control input-group-select" content=types selection=selectedType}}
-							<button class="btn btn-success" type="button">Add Tag &gt;</button>
+							<button class="btn btn-success" type="button" {{action "addTypeTag"}}>Add Type Tag &gt;</button>
 						</div>
 					</form>
 					</div>
 					<div class="col-md-6">
 						<label>Type Tags</label>
-						{{input id="type-tags" name="type-tags" class="form-control type-tags" value=question.typeTags}}
+						<input type="text" id="type-tags" name="type-tags" class="form-control" />
 					</div>
 				</div>
 				

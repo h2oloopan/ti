@@ -287,11 +287,15 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 				terms: ( ->
 					school = @get 'question.school'
 					if !school? then return []
+					if school.toJSON().terms.length > 0
+						@set 'selectedTerm', school.toJSON().terms[0]
 					return school.toJSON().terms
 				).property 'question.school'
 				types: ( ->
 					school = @get 'question.school'
 					if !school? then return []
+					if school.toJSON().types.length > 0
+						@set 'selectedType', school.toJSON().types[0]
 					return school.toJSON().types
 				).property 'question.school'
 				subjects: ( ->
@@ -315,29 +319,7 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 					else
 						@set 'question.subject', null
 					return school.toJSON().info.subjects
-
-					###
-					term = @get 'question.term'
-					if !term?
-						@set 'question.subject', null
-						return []
-					if term.subjects? && term.subjects.length > 0
-						if @get('initialize.subject') && @get('settings')
-							settings = @get 'settings'
-							found = term.subjects.find (item) ->
-								if item.name == settings.subject then return true
-								return false
-							if found?
-								@set 'question.subject', found
-								@set 'initialize.course', true
-							@set 'initialize.subject', false
-						else
-							@set 'question.subject', term.subjects[0]
-					else
-						@set 'question.subject', null
-					return term.subjects
-					###
-				).property 'question.term'
+				).property 'question.school'
 				courses: ( ->
 					subject = @get 'question.subject'
 					if !subject? 
@@ -351,11 +333,6 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 								return false
 							if found?
 								@set 'question.course', found
-								found = @get('types').find (item) ->
-									if item == settings.type then return true
-									return false
-								if found?
-									@set 'question.type', found
 							@set 'initialize.course', false
 						else
 							@set 'question.course', subject.courses[0]
@@ -376,13 +353,13 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 				).observes('schools')
 				prepare: (question) ->
 					another = question.toJSON()
-					another.term = question.get('term.name')
 					another.subject = question.get('subject.name')
 					another.course = question.get('course.number')
 					another.question = $('#question-input').html()
 					another.hint = $('#hint-input').html()
 					another.solution = $('#solution-input').html()
 					another.summary = $('#summary-input').html()
+					another.typeTags = $('#type-tags').val()
 					if !question.get('difficulty')? then another.difficulty = 0
 					another = @store.createRecord 'Question', another
 					another.set 'school', question.get('school')
@@ -391,10 +368,8 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 					uid = @get 'controllers.application.model._id'
 					settings = 
 						school: @get 'question.school.name'
-						#term: @get 'question.term.name'
 						subject: @get 'question.subject.name'
 						course: @get 'question.course.number'
-						type: @get 'question.type'
 
 					storage = $.cookie 'settings'
 					if !storage?
@@ -405,6 +380,13 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 					storage[uid] = settings
 					$.cookie 'settings', JSON.stringify(storage), { expires: 7 }
 				actions:
+					addTypeTag: ->
+						term = @get 'selectedTerm'
+						type = @get 'selectedType'
+						tag = term + ' ' + type
+
+						$('#type-tags').tagsinput 'add', tag
+						return false
 					add: ->
 						thiz = @
 						question = @prepare(@get 'question')

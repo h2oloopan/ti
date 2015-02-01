@@ -51,7 +51,6 @@ module.exports =
 				required: true
 			term:
 				type: String
-				required: true
 			subject:
 				type: String
 				required: true
