@@ -60,7 +60,7 @@ define(['jquery', 'bootstrap-wysiwyg'], function($) {
               if (checking) {
                 return;
               }
-              text = $(thiz.input).cleanHtml();
+              text = $(thiz.input).cleanHtml().trim();
               address = url + '?text=' + text;
               checking = true;
               return $.get(address).done(function(ids) {
@@ -75,6 +75,9 @@ define(['jquery', 'bootstrap-wysiwyg'], function($) {
                   }
                   $(display).html(message);
                   $(display).show();
+                }
+                if (ids.length === 1) {
+                  match = false;
                 }
                 checking = false;
                 minimum += step;

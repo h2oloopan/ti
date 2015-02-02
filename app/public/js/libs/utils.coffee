@@ -41,7 +41,7 @@ define ['jquery', 'bootstrap-wysiwyg'], ($) ->
 							if counter < minimum then return counter++
 							if !match then return
 							if checking then return
-							text = $(thiz.input).cleanHtml()
+							text = $(thiz.input).cleanHtml().trim()
 							address = url + '?text=' + text
 							checking = true
 							$.get(address).done (ids) ->
@@ -56,6 +56,8 @@ define ['jquery', 'bootstrap-wysiwyg'], ($) ->
 										message += '<a target="_blank" href="/#/question/' + id + '/edit">' + id + '</a>'
 									$(display).html message
 									$(display).show()
+								if ids.length == 1
+									match = false
 								checking = false
 								minimum += step
 								return true
