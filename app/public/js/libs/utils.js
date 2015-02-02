@@ -21,7 +21,7 @@ define(['jquery', 'bootstrap-wysiwyg'], function($) {
         MathEditor.prototype.checking = false;
 
         MathEditor.prototype.init = function() {
-          var check, checking, counter, display, interval, match, minimum, recurrence, thiz, url;
+          var check, checking, counter, display, match, minimum, step, thiz, url;
           thiz = this;
           $(this.input).wysiwyg();
           $(this.input).on('keypress', function() {
@@ -43,9 +43,8 @@ define(['jquery', 'bootstrap-wysiwyg'], function($) {
           url = this.options.url || null;
           display = this.options.display || null;
           if (check && (url != null) && (display != null)) {
-            interval = this.options.interval || 5000;
-            minimum = this.options.minimum || 50;
-            recurrence = this.options.recurrence || 3;
+            minimum = this.options.minimum || 30;
+            step = this.options.step || 10;
             counter = 0;
             match = true;
             checking = false;
@@ -63,9 +62,26 @@ define(['jquery', 'bootstrap-wysiwyg'], function($) {
               }
               text = $(thiz.input).cleanHtml();
               address = url + '?text=' + text;
-              return $.get(address).done(function(data) {
+              checking = true;
+              return $.get(address).done(function(ids) {
+                var id, message, _i, _len;
+                if (ids.length === 0) {
+                  match = false;
+                } else {
+                  message = 'Possible duplication(s): ';
+                  for (_i = 0, _len = ids.length; _i < _len; _i++) {
+                    id = ids[_i];
+                    message += '<a target="_blank" href="/#/question/' + id + '/edit">' + id + '</a>';
+                  }
+                  $(display).html(message);
+                  $(display).show();
+                }
+                checking = false;
+                minimum += step;
                 return true;
               }).fail(function(errors) {
+                checking = false;
+                minimum += step;
                 return false;
               });
             });

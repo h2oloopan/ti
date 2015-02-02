@@ -30,9 +30,8 @@ define ['jquery', 'bootstrap-wysiwyg'], ($) ->
 					if check and url? and display?
 						#check
 						#get some setting properties
-						interval = @options.interval || 5000
-						minimum = @options.minimum || 50
-						recurrence = @options.recurrence || 3
+						minimum = @options.minimum || 30
+						step = @options.step || 10
 						#do the work
 						counter = 0
 						match = true
@@ -44,13 +43,27 @@ define ['jquery', 'bootstrap-wysiwyg'], ($) ->
 							if checking then return
 							text = $(thiz.input).cleanHtml()
 							address = url + '?text=' + text
-							$.get(address).done (data) ->
+							checking = true
+							$.get(address).done (ids) ->
 								#done
-								
+								if ids.length == 0
+									match = false
+								else
+									#there is a match
+									message = 'Possible duplication(s): '
+									for id in ids
+										#display
+										message += '<a target="_blank" href="/#/question/' + id + '/edit">' + id + '</a>'
+									$(display).html message
+									$(display).show()
+								checking = false
+								minimum += step
 								return true
 							.fail (errors) ->
 								#fail
 								#suppress
+								checking = false
+								minimum += step
 								return false
 
 
