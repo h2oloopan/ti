@@ -37,6 +37,10 @@ body {
 	float: right;
 }
 
+.math-display {
+	display: none;
+}
+
 .math-preview {
 	border: 1px solid #ccc;
 	padding: 6px 12px;

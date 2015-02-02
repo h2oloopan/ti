@@ -174,10 +174,10 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
           another = question.toJSON();
           another.subject = question.get('subject.name');
           another.course = question.get('course.number');
-          another.question = $('#question-input').html();
-          another.hint = $('#hint-input').html();
-          another.solution = $('#solution-input').html();
-          another.summary = $('#summary-input').html();
+          another.question = $('#question-input').cleanHtml();
+          another.hint = $('#hint-input').cleanHtml();
+          another.solution = $('#solution-input').cleanHtml();
+          another.summary = $('#summary-input').cleanHtml();
           another.typeTags = $('#type-tags').val().replace(/, /g, ',').replace(/,/g, ', ');
           another.tags = $('#tags').val().replace(/, /g, ',').replace(/,/g, ', ');
           if (question.get('difficulty') == null) {
@@ -318,7 +318,11 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
           this._super();
           $('#type-tags').tagsinput();
           $('#tags').tagsinput();
-          questionEditor = utils.createMathEditor($('#question-input'), $('#question-preview'));
+          questionEditor = utils.createMathEditor($('#question-input'), $('#question-preview'), {
+            check: true,
+            url: '/api/search/questions/text',
+            display: $('#question-display')
+          });
           hintEditor = utils.createMathEditor($('#hint-input'), $('#hint-preview'));
           solutionEditor = utils.createMathEditor($('#solution-input'), $('#solution-preview'));
           return summaryEditor = utils.createMathEditor($('#summary-input'), $('#summary-preview'));
@@ -439,10 +443,10 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
           another = question.toJSON();
           another.subject = question.get('subject.name');
           another.course = question.get('course.number');
-          another.question = $('#question-input').html();
-          another.hint = $('#hint-input').html();
-          another.solution = $('#solution-input').html();
-          another.summary = $('#summary-input').html();
+          another.question = $('#question-input').cleanHtml();
+          another.hint = $('#hint-input').cleanHtml();
+          another.solution = $('#solution-input').cleanHtml();
+          another.summary = $('#summary-input').cleanHtml();
           another.typeTags = $('#type-tags').val().replace(',', ', ');
           another.tags = $('#tags').val().replace(',', ', ');
           if (question.get('difficulty') == null) {

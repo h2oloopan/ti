@@ -26,26 +26,33 @@ define ['jquery', 'bootstrap-wysiwyg'], ($) ->
 					@options = @options || {}
 					check = @options.check || false
 					url = @options.url || null
-					if check and url?
+					display = @options.display || null
+					if check and url? and display?
 						#check
 						#get some setting properties
 						interval = @options.interval || 5000
 						minimum = @options.minimum || 50
 						recurrence = @options.recurrence || 3
 						#do the work
-						timer = null
 						counter = 0
-						poll = (counter) ->
+						match = true
+						checking = false
+						thiz = @
+						$(@input).keydown (e) ->
+							if counter < minimum then return counter++
+							if !match then return
 							if checking then return
-							if counter > recurrence then return clearInterval timer
+							text = $(thiz.input).cleanHtml()
+							address = url + '?text=' + text
+							$.get(address).done (data) ->
+								#done
+								
+								return true
+							.fail (errors) ->
+								#fail
+								#suppress
+								return false
 
-							
-
-							counter++
-
-						timer = setInterval () ->
-							poll()
-						, interval
 
 
 				update: ->
