@@ -154,13 +154,20 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 					another.solution = $('#solution-input').html()
 					another.summary = $('#summary-input').html()
 
-					another.typeTags = $('#type-tags').val().replace ',', ', '
-					another.tags = $('#tags').val().replace ',', ', '
+					another.typeTags = $('#type-tags').val().replace(/, /g, ',').replace(/,/g, ', ')
+					another.tags = $('#tags').val().replace(/, /g, ',').replace(/,/g, ', ')
 
 					if !question.get('difficulty')? then another.difficulty = 0
 					another = @store.createRecord 'Question', another
 					another.set 'school', question.get('school')
 				actions:
+					addTypeTag: ->
+						term = @get 'selectedTerm'
+						type = @get 'selectedType'
+						tag = term + ' ' + type
+
+						$('#type-tags').tagsinput 'add', tag
+						return false
 					save: ->
 						thiz = @
 						question_fake = @prepare(@get 'question_fake')

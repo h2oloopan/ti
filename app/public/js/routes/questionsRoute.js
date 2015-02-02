@@ -178,8 +178,8 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
           another.hint = $('#hint-input').html();
           another.solution = $('#solution-input').html();
           another.summary = $('#summary-input').html();
-          another.typeTags = $('#type-tags').val().replace(',', ', ');
-          another.tags = $('#tags').val().replace(',', ', ');
+          another.typeTags = $('#type-tags').val().replace(/, /g, ',').replace(/,/g, ', ');
+          another.tags = $('#tags').val().replace(/, /g, ',').replace(/,/g, ', ');
           if (question.get('difficulty') == null) {
             another.difficulty = 0;
           }
@@ -187,6 +187,14 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
           return another.set('school', question.get('school'));
         },
         actions: {
+          addTypeTag: function() {
+            var tag, term, type;
+            term = this.get('selectedTerm');
+            type = this.get('selectedType');
+            tag = term + ' ' + type;
+            $('#type-tags').tagsinput('add', tag);
+            return false;
+          },
           save: function() {
             var key, keys, question, question_fake, result, thiz, _i, _len;
             thiz = this;
