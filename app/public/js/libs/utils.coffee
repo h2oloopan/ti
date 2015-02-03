@@ -34,38 +34,41 @@ define ['jquery', 'bootstrap-wysiwyg'], ($) ->
 						step = @options.step || 10
 						#do the work
 						counter = 0
-						match = true
+						match = false
 						checking = false
+						next = minimum
 						thiz = @
 						$(@input).keydown (e) ->
-							if counter < minimum then return counter++
-							if !match then return
+							if counter < next then return counter++
+							if e.which == 8 then match = false
+							if match then return
 							if checking then return
 							text = $(thiz.input).cleanHtml().trim()
+							if text.length < minimum then return $(display).hide()
 							address = url + '?text=' + text
 							checking = true
 							$.get(address).done (ids) ->
 								#done
 								if ids.length == 0
-									match = false
+									match = true
 								else
 									#there is a match
 									message = 'Possible duplication(s): '
 									for id in ids
 										#display
-										message += '<a target="_blank" href="/#/question/' + id + '/edit">' + id + '</a>'
+										message += '<a target="_blank" href="/#/question/' + id + '/edit">' + id + '</a> '
 									$(display).html message
 									$(display).show()
 								if ids.length == 1
-									match = false
+									match = true
 								checking = false
-								minimum += step
+								next += step
 								return true
 							.fail (errors) ->
 								#fail
 								#suppress
 								checking = false
-								minimum += step
+								next += step
 								return false
 
 

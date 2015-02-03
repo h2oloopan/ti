@@ -21,7 +21,7 @@ define(['jquery', 'bootstrap-wysiwyg'], function($) {
         MathEditor.prototype.checking = false;
 
         MathEditor.prototype.init = function() {
-          var check, checking, counter, display, match, minimum, step, thiz, url;
+          var check, checking, counter, display, match, minimum, next, step, thiz, url;
           thiz = this;
           $(this.input).wysiwyg();
           $(this.input).on('keypress', function() {
@@ -46,45 +46,52 @@ define(['jquery', 'bootstrap-wysiwyg'], function($) {
             minimum = this.options.minimum || 30;
             step = this.options.step || 10;
             counter = 0;
-            match = true;
+            match = false;
             checking = false;
+            next = minimum;
             thiz = this;
             return $(this.input).keydown(function(e) {
               var address, text;
-              if (counter < minimum) {
+              if (counter < next) {
                 return counter++;
               }
-              if (!match) {
+              if (e.which === 8) {
+                match = false;
+              }
+              if (match) {
                 return;
               }
               if (checking) {
                 return;
               }
               text = $(thiz.input).cleanHtml().trim();
+              if (text.length < minimum) {
+                return $(display).hide();
+              }
               address = url + '?text=' + text;
               checking = true;
               return $.get(address).done(function(ids) {
                 var id, message, _i, _len;
                 if (ids.length === 0) {
-                  match = false;
+                  match = true;
                 } else {
                   message = 'Possible duplication(s): ';
                   for (_i = 0, _len = ids.length; _i < _len; _i++) {
                     id = ids[_i];
-                    message += '<a target="_blank" href="/#/question/' + id + '/edit">' + id + '</a>';
+                    message += '<a target="_blank" href="/#/question/' + id + '/edit">' + id + '</a> ';
                   }
                   $(display).html(message);
                   $(display).show();
                 }
                 if (ids.length === 1) {
-                  match = false;
+                  match = true;
                 }
                 checking = false;
-                minimum += step;
+                next += step;
                 return true;
               }).fail(function(errors) {
                 checking = false;
-                minimum += step;
+                next += step;
                 return false;
               });
             });
