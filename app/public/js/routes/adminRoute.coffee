@@ -4,8 +4,8 @@ define ['jquery', 'me', 'utils',
 'ehbs!templates/admin/users.new',
 'ehbs!templates/admin/users.edit',
 'ehbs!templates/admin/schools',
-'ehbs!templates/admin/school.edit'
-], ($, me, utils) ->
+'ehbs!templates/admin/school.edit',
+'ehbs!templates/admin/console'], ($, me, utils) ->
 	AdminRoute = 
 		setup: (App) ->
 			App.Router.map ->
