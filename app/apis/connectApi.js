@@ -6,6 +6,7 @@ me = require('mongo-ember');
 exports.bind = function(app) {
   return app.post('/api/connect/questions/wechat', function(req, res) {
     var question, user;
+    console.log(question.body);
     question = req.body.question;
     user = req.body.user;
     if (user == null) {

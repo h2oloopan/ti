@@ -210,8 +210,29 @@ define ['jquery', 'me', 'utils',
 							alert errors.responseText
 						return false
 
+
 			#console
-			App.ConsoleController = Ember.ObjectController.extend {}
+			App.ConsoleController = Ember.ObjectController.extend
+				url: ''
+				stuff: ''
+				result: ''
+				actions:
+					post: ->
+						thiz = @
+						url = @get 'url'
+						data = @get 'stuff'
+						data = JSON.parse data.trim()
+						$.ajax
+							type: 'POST'
+							url: url
+							data: JSON.stringify data
+							dataType: 'json'
+							contentType: 'application/json; charset=utf-8'
+						.done (result) ->
+							thiz.set 'result', result
+						.fail (response) ->
+							thiz.set 'result', response.responseText
+						return false
 
 			#schools
 			App.SchoolsController = Ember.ArrayController.extend

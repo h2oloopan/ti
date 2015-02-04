@@ -2,6 +2,7 @@ me = require 'mongo-ember'
 
 exports.bind = (app) ->
 	app.post '/api/connect/questions/wechat', (req, res) ->
+		console.log question.body
 		question = req.body.question
 		user = req.body.user
 		if !user? then return res.send 401, 'You do not have the permission to access this api'
