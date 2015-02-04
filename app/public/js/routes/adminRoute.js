@@ -246,6 +246,7 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/admin/admin', 'ehbs!templates/a
           }
         }
       });
+      App.ConsoleController = Ember.ObjectController.extend({});
       App.SchoolsController = Ember.ArrayController.extend({
         school: {},
         itemController: 'school',

@@ -210,6 +210,9 @@ define ['jquery', 'me', 'utils',
 							alert errors.responseText
 						return false
 
+			#console
+			App.ConsoleController = Ember.ObjectController.extend {}
+
 			#schools
 			App.SchoolsController = Ember.ArrayController.extend
 				school: {}
