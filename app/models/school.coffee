@@ -112,16 +112,12 @@ module.exports =
 
 
 					for school in schools
-						for term in school.info.terms
-							for subject in term.subjects
-								subject.courses = subject.courses.filter (course) ->
-									if course.selected then return true
-									return false
-							term.subjects = term.subjects.filter (subject) ->
-								if subject.selected then return true
+						for subject in school.info.subjects
+							subject.courses = subject.courses.filter (course) ->
+								if course.selected then return true
 								return false
-						school.info.terms = school.info.terms.filter (term) ->
-							if term.selected then return true
+						school.info.subjects = school.info.subjects.filter (subject) ->
+							if subject.selected then return true
 							return false
 					schools = schools.filter (school) ->
 						if school.selected then return true

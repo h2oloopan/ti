@@ -94,7 +94,7 @@ module.exports = {
     },
     after: {
       ra: function(schools, user, cb) {
-        var filter, privilege, school, subject, term, _i, _j, _k, _l, _len, _len1, _len2, _len3, _ref, _ref1, _ref2;
+        var filter, privilege, school, subject, _i, _j, _k, _len, _len1, _len2, _ref, _ref1;
         if (user.power >= 999) {
           return cb(null, schools);
         } else {
@@ -142,28 +142,18 @@ module.exports = {
           }
           for (_j = 0, _len1 = schools.length; _j < _len1; _j++) {
             school = schools[_j];
-            _ref1 = school.info.terms;
+            _ref1 = school.info.subjects;
             for (_k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
-              term = _ref1[_k];
-              _ref2 = term.subjects;
-              for (_l = 0, _len3 = _ref2.length; _l < _len3; _l++) {
-                subject = _ref2[_l];
-                subject.courses = subject.courses.filter(function(course) {
-                  if (course.selected) {
-                    return true;
-                  }
-                  return false;
-                });
-              }
-              term.subjects = term.subjects.filter(function(subject) {
-                if (subject.selected) {
+              subject = _ref1[_k];
+              subject.courses = subject.courses.filter(function(course) {
+                if (course.selected) {
                   return true;
                 }
                 return false;
               });
             }
-            school.info.terms = school.info.terms.filter(function(term) {
-              if (term.selected) {
+            school.info.subjects = school.info.subjects.filter(function(subject) {
+              if (subject.selected) {
                 return true;
               }
               return false;
