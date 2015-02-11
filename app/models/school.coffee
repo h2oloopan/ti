@@ -106,9 +106,9 @@ module.exports =
 									return true
 								set = set.filter filterSet
 
-						filter schools, ['', 'terms', 'subjects', 'courses'], 
-						['_id', 'name', 'name', 'number'], 
-						['school', 'term', 'subject', 'course'], 0, 2
+						filter schools, ['', 'subjects', 'courses'], 
+						['_id', 'name', 'number'], 
+						['school', 'subject', 'course'], 0, 1
 
 
 					for school in schools

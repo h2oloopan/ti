@@ -132,7 +132,6 @@ define ['jquery', 'me', 'utils',
 				).observes 'user'
 
 				cleanPrivilege: ->
-					@set 'term', null
 					@set 'subject', null
 					@set 'course', null
 				actions:
@@ -141,7 +140,6 @@ define ['jquery', 'me', 'utils',
 						return false
 					savePrivilege: ->
 						if !@get('school')? and
-						   me.isEmptyString(@get('term')) and 
 						   me.isEmptyString(@get('subject')) and 
 						   me.isEmptyString(@get('course'))
 							alert 'Cannot enter an empty row of privilege'
@@ -155,7 +153,6 @@ define ['jquery', 'me', 'utils',
 						privileges = user.get 'privileges'
 						privileges.pushObject
 							school: @get 'school'
-							term: @get 'term'
 							subject: @get 'subject'
 							course: @get 'course'
 						user.set 'privileges', privileges

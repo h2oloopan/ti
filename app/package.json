@@ -23,6 +23,7 @@
     "multer": "^0.1.6",
     "rimraf": "^2.2.8",
     "mv": "^2.0.3",
-    "array.prototype.find": "^1.0.0"
+    "array.prototype.find": "^1.0.0",
+    "jsonwebtoken": "^3.2.2"
   }
 }
