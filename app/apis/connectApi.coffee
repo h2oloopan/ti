@@ -1,4 +1,6 @@
 me = require 'mongo-ember'
+jwt = require 'jsonwebtoken'
+config = require '../config'
 
 exports.bind = (app) ->
 	app.post '/api/connect/questions/wechat', (req, res) ->
@@ -13,3 +15,17 @@ exports.bind = (app) ->
 			else
 				console.log user
 				res.send 200, user
+
+	app.post '/api/connect/auth', (req, res) ->
+		username = req.body.username
+		password = req.body.password
+		user = 
+			username: username
+			password: password
+		me.authenticate user, (err, user) ->
+			if err
+				res.send 401, err.message
+			else
+				#actually
+				token = jwt.sign user, config.secret
+				res.send 200, token

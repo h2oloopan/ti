@@ -2,6 +2,7 @@ var config;
 
 config = module.exports = {
   url: 'http://ti.easyace.ca',
+  secret: 'xxx679',
   image: {
   	tempFolder: 'public/temp',
   	questionImageFolder: 'public/images/questions',
