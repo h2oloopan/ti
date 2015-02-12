@@ -1,6 +1,7 @@
 me = require 'mongo-ember'
 jwt = require 'jsonwebtoken'
 config = require '../config'
+path = require 'path'
 
 exports.bind = (app) ->
 	app.post '/api/connect/questions/create', (req, res) ->
@@ -12,7 +13,15 @@ exports.bind = (app) ->
 				res.send 401, 'You do not have the permission to access this api'
 			else
 				Question = me.getModel 'Question'
-				
+				question = new Question question
+
+				#update question
+
+				question.save (err, question) ->
+					if err
+						res.send 500, err.message
+					else
+						res.send 200, path.join(config.url, '#/question/' + question._id + '/edit').toString()
 
 
 	app.post '/api/connect/auth', (req, res) ->

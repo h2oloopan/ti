@@ -227,8 +227,10 @@ define ['jquery', 'me', 'utils',
 							contentType: 'application/json; charset=utf-8'
 						.done (result) ->
 							thiz.set 'result', result
+							return true
 						.fail (response) ->
 							thiz.set 'result', response.responseText
+							return false
 						return false
 
 			#schools
