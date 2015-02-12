@@ -15,12 +15,25 @@ exports.bind = function(app) {
     question = req.body.question;
     token = req.body.token;
     return jwt.verify(token, config.secret, function(err, user) {
-      var Question;
+      var Question, time, username;
       if (err) {
         return res.send(401, 'You do not have the permission to access this api');
       } else {
         Question = me.getModel('Question');
         question = new Question(question);
+        username = user.username;
+        time = moment().toDate();
+        question.editor = user._id;
+        question.lastEditor = username;
+        question.lastModifiedTime = time;
+        question.questionLastEditor = username;
+        question.questionLastModifiedTime = time;
+        question.solutionLastEditor = username;
+        question.solutionLastModifiedTime = time;
+        question.hintLastEditor = username;
+        question.hintLastModifiedTime = time;
+        question.summaryLastEditor = username;
+        question.summaryLastModifiedTime = time;
         return question.save(function(err, question) {
           if (err) {
             return res.send(500, err.message);

@@ -16,6 +16,21 @@ exports.bind = (app) ->
 				question = new Question question
 
 				#update question
+				username = user.username
+				time = moment().toDate()
+
+				question.editor = user._id
+
+				question.lastEditor = username
+				question.lastModifiedTime = time
+				question.questionLastEditor = username
+				question.questionLastModifiedTime = time
+				question.solutionLastEditor = username
+				question.solutionLastModifiedTime = time
+				question.hintLastEditor = username
+				question.hintLastModifiedTime = time
+				question.summaryLastEditor = username
+				question.summaryLastModifiedTime = time
 
 				question.save (err, question) ->
 					if err
