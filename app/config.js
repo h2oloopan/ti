@@ -3,6 +3,7 @@ var config;
 config = module.exports = {
   url: 'http://ti.easyace.ca',
   secret: 'xxx679',
+  sessionKey: 'x768me&^',
   image: {
   	tempFolder: 'public/temp',
   	questionImageFolder: 'public/images/questions',

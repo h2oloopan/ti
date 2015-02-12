@@ -9,7 +9,7 @@ var bodyParser = require('body-parser');
 var fs = require('fs');
 var me = require('mongo-ember');
 var initializer = require('./initializer');
-
+var config = require('./config');
 
 
 var app = express();
@@ -37,6 +37,7 @@ me.setup({
     meOutputPath: path.join(__dirname, 'public/js/libs/me.js'),
     primaryKey: '_id',
     userModel: 'User',
+    sessionKey: config.sessionKey,
     optimize: {
         minifyJS: true,
         compileHandlebars: false,

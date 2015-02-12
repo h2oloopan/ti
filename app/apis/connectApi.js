@@ -12,6 +12,7 @@ path = require('path');
 exports.bind = function(app) {
   app.post('/api/connect/questions/create', function(req, res) {
     var question, token;
+    console.log(me.settings.sessionKey);
     question = req.body.question;
     token = req.body.token;
     return jwt.verify(token, config.secret, function(err, user) {
@@ -19,6 +20,7 @@ exports.bind = function(app) {
       if (err) {
         return res.send(401, 'You do not have the permission to access this api');
       } else {
+        req.session[config.sessionKey] = user._id.toString();
         Question = me.getModel('Question');
         question = new Question(question);
         username = user.username;

@@ -5,6 +5,7 @@ path = require 'path'
 
 exports.bind = (app) ->
 	app.post '/api/connect/questions/create', (req, res) ->
+		console.log me.settings.sessionKey
 		question = req.body.question
 		token = req.body.token
 		
@@ -12,6 +13,9 @@ exports.bind = (app) ->
 			if err
 				res.send 401, 'You do not have the permission to access this api'
 			else
+				#login
+				req.session[config.sessionKey] = user._id.toString()
+
 				Question = me.getModel 'Question'
 				question = new Question question
 
