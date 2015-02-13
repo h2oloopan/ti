@@ -55,4 +55,5 @@ exports.bind = (app) ->
 			else
 				#actually
 				token = jwt.sign user, config.secret
+				req.session[config.sessionKey] = user._id.toString()
 				res.send 200, token
