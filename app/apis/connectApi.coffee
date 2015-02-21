@@ -18,6 +18,7 @@ exports.bind = (app) ->
 					message: 'token verification failed'
 					type: 'token verification'
 					data: 
+						body: req.body
 						token: token
 						error: err
 				e.save()

@@ -24,6 +24,7 @@ exports.bind = function(app) {
           message: 'token verification failed',
           type: 'token verification',
           data: {
+            body: req.body,
             token: token,
             error: err
           }
