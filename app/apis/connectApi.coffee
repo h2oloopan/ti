@@ -5,7 +5,9 @@ path = require 'path'
 
 exports.bind = (app) ->
 	app.post '/api/connect/questions/create', (req, res) ->
-		console.log me.settings.sessionKey
+		#cors
+		res.header 'Access-Control-Allow-Origin', '*'
+		res.header 'Access-Control-Allow-Headers', 'X-Requested-With'
 		question = req.body.question
 		token = req.body.token
 		
@@ -54,6 +56,10 @@ exports.bind = (app) ->
 
 
 	app.post '/api/connect/auth', (req, res) ->
+		#cors
+		res.header 'Access-Control-Allow-Origin', '*'
+		res.header 'Access-Control-Allow-Headers', 'X-Requested-With'
+
 		username = req.body.username
 		password = req.body.password
 		user = 

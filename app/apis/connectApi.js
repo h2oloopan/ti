@@ -12,7 +12,8 @@ path = require('path');
 exports.bind = function(app) {
   app.post('/api/connect/questions/create', function(req, res) {
     var question, token;
-    console.log(me.settings.sessionKey);
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
     question = req.body.question;
     token = req.body.token;
     return jwt.verify(token, config.secret, function(err, user) {
@@ -64,6 +65,8 @@ exports.bind = function(app) {
   });
   return app.post('/api/connect/auth', function(req, res) {
     var password, user, username;
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
     username = req.body.username;
     password = req.body.password;
     user = {
