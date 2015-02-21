@@ -17,8 +17,18 @@ exports.bind = function(app) {
     question = req.body.question;
     token = req.body.token;
     return jwt.verify(token, config.secret, function(err, user) {
-      var School, pattern;
+      var E, School, e, pattern;
       if (err) {
+        E = me.getModel('Error');
+        e = new E({
+          message: 'token verification failed',
+          type: 'token verification',
+          data: {
+            token: token,
+            error: err
+          }
+        });
+        e.save();
         return res.send(401, 'You do not have the permission to access this api');
       } else {
         req.session[config.sessionKey] = user._id.toString();

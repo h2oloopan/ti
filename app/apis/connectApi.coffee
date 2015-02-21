@@ -13,6 +13,14 @@ exports.bind = (app) ->
 		
 		jwt.verify token, config.secret, (err, user) ->
 			if err
+				E = me.getModel 'Error'
+				e = new E
+					message: 'token verification failed'
+					type: 'token verification'
+					data: 
+						token: token
+						error: err
+				e.save()
 				res.send 401, 'You do not have the permission to access this api'
 			else
 				#login
