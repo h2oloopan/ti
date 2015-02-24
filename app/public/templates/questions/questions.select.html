@@ -15,6 +15,36 @@
 	{{#each question in controller}}
 	{{#unless question.isNew}}
 	{{#unless question.isHidden}}
+		<div class="question-select-item">
+			<table class="table table-bordered">
+				<tr>
+					<td>
+						{{question.school.name}}
+					</td>
+					<td>
+						{{question.subject}}
+					</td>
+					<td>
+						{{question.course}}
+					</td>
+					<td>
+						{{question.typeTags}}
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4">
+						<div>
+							{{question.question}}
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4">
+						Select
+					</td>
+				</tr>
+			</table>
+		</div>
 	{{/unless}}
 	{{/unless}}
 	{{/each}}

@@ -307,7 +307,7 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
           limit: 20
         }
       });
-      App.QuestionSelectItem = Ember.ObjectController.extend({
+      App.QuestionSelectItemController = Ember.ObjectController.extend({
         isHidden: (function() {
           if (this.get('flag') > 0) {
             return false;

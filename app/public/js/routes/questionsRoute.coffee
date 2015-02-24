@@ -265,7 +265,7 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 					skip: 0
 					limit: 20
 
-			App.QuestionSelectItem = Ember.ObjectController.extend
+			App.QuestionSelectItemController = Ember.ObjectController.extend
 				isHidden: ( ->
 					if @get('flag') > 0 then return false
 					return true
