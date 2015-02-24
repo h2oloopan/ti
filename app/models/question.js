@@ -177,7 +177,7 @@ module.exports = {
     },
     api: {
       ra: function(req, res, model, form, cb) {
-        var advanced, err;
+        var advanced, err, limit, skip;
         advanced = null;
         try {
           advanced = req.query.advanced;
@@ -198,6 +198,18 @@ module.exports = {
             }
           });
         } else {
+          skip = advanced.skip || 0;
+          limit = advanced.limit || 1000;
+          model.find({}).skip(skip).limit(limit).exec(function(err, result) {
+            if (err) {
+              return cb(err);
+            } else {
+              return cb(null, {
+                code: 200,
+                data: result
+              });
+            }
+          });
           return cb(new Error('Not implemented yet'));
         }
       }

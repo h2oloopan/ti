@@ -5,6 +5,7 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 'ehbs!templates/questions/question.index',
 'ehbs!templates/questions/question.edit',
 'ehbs!templates/questions/questions.index',
+'ehbs!templates/questions/questions.select',
 'ehbs!templates/questions/questions.new'], 
 ($, me, utils, PhotoUploadComponent, mmt) ->
 	QuestionsRoute = 
@@ -17,6 +18,7 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 			App.Router.map ->
 				@resource 'questions', ->
 					@route 'new'
+					@route 'select'
 				@resource 'question', {path: '/question/:question_id'}, ->
 					@route 'edit'
 
@@ -248,6 +250,9 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 								question.rollback()
 								alert errors.responseText
 						return false
+
+#questions select
+			App.QuestionsSelectRoute = Ember.Route.extend {}
 
 #questions new
 			#m
