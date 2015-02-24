@@ -263,7 +263,8 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 				itemController: 'questionSelectItem'
 				advanced:
 					skip: 0
-					limit: 20
+					limit: 10
+				paging: {}
 
 			App.QuestionsSelectView = Ember.View.extend
 				didInsertElement: ->
