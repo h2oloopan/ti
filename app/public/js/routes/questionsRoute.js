@@ -314,6 +314,41 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
             four: 4,
             five: 5
           }
+        },
+        actions: {
+          update: function(advanced) {
+            this.set('model', this.store.find('question', {
+              advanced: JSON.stringify(advanced)
+            }));
+            return $('.question-preview').each(function(i) {
+              return MathJax.Hub.Queue(['Typeset', MathJax.Hub, $(this)[0]]);
+            });
+          },
+          previous: function() {
+            var advanced;
+            advanced = this.get('advanced');
+            if (advanced.skip === 0) {
+              return false;
+            } else if (advanced.skip < advanced.limit) {
+              advanced.skip = 0;
+            } else {
+              advanced.skip -= advanced.limit;
+            }
+            this.set('advanced', advanced);
+            this.send('update', advanced);
+            return false;
+          },
+          next: function() {
+            var advanced;
+            advanced = this.get('advanced');
+            advanced.skip += advanced.limit;
+            this.set('advanced', advanced);
+            this.send('update', advanced);
+            return false;
+          },
+          jump: function(index) {
+            return false;
+          }
         }
       });
       App.QuestionsSelectView = Ember.View.extend({

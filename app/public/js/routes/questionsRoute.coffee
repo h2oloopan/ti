@@ -271,14 +271,36 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 						three: 3
 						four: 4
 						five: 5
+				actions:
+					update: (advanced) ->
+						@set 'model', @store.find('question', {advanced: JSON.stringify(advanced)})
+						$('.question-preview').each (i) ->
+							MathJax.Hub.Queue ['Typeset', MathJax.Hub, $(@)[0]]
+					previous: ->
+						advanced = @get 'advanced'
+						if advanced.skip == 0
+							return false
+						else if advanced.skip < advanced.limit
+							advanced.skip = 0
+						else
+							advanced.skip -= advanced.limit
+						@set 'advanced', advanced
+						@send 'update', advanced
+						return false
+					next: ->
+						advanced = @get 'advanced'
+						advanced.skip += advanced.limit
+						@set 'advanced', advanced
+						@send 'update', advanced
+						return false
+					jump: (index) ->
+						return false
 
 			App.QuestionsSelectView = Ember.View.extend
 				didInsertElement: ->
 					@_super()
 					$('.question-preview').each (i) ->
 						MathJax.Hub.Queue ['Typeset', MathJax.Hub, $(@)[0]]
-
-					#MathJax.Hub.Queue ['Typeset', MathJax.Hub, $('.question-form .right')[0]]
 
 			App.QuestionSelectItemController = Ember.ObjectController.extend
 				isHidden: ( ->

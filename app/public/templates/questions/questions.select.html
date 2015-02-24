@@ -15,17 +15,17 @@
 	<nav class="text-right">
 	  <ul class="pagination">
 	    <li>
-	      <a href="#" aria-label="Previous">
+	      <a href="#" aria-label="Previous" {{action "previous"}}>
 	        <span aria-hidden="true">&laquo;</span>
 	      </a>
 	    </li>
-	    <li><a href="#">{{paging.pages.one}}</a></li>
-	    <li><a href="#">{{paging.pages.two}}</a></li>
-	    <li><a href="#">{{paging.pages.three}}</a></li>
-	    <li><a href="#">{{paging.pages.four}}</a></li>
-	    <li><a href="#">{{paging.pages.five}}</a></li>
+	    <li><a href="#" {{action "jump" paging.pages.one}}>{{paging.pages.one}}</a></li>
+	    <li><a href="#" {{action "jump" paging.pages.two}}>{{paging.pages.two}}</a></li>
+	    <li><a href="#" {{action "jump" paging.pages.three}}>{{paging.pages.three}}</a></li>
+	    <li><a href="#" {{action "jump" paging.pages.four}}>{{paging.pages.four}}</a></li>
+	    <li><a href="#" {{action "jump" paging.pages.five}}>{{paging.pages.five}}</a></li>
 	    <li>
-	      <a href="#" aria-label="Next">
+	      <a href="#" aria-label="Next" {{action "next"}}>
 	        <span aria-hidden="true">&raquo;</span>
 	      </a>
 	    </li>
