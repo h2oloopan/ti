@@ -252,7 +252,10 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 						return false
 
 #questions select
-			App.QuestionsSelectRoute = Ember.Route.extend {}
+			App.QuestionsSelectRoute = Ember.Route.extend
+				model: ->
+					advanced = @controllerFor('questionsSelect').get 'advanced'
+					return @store.find 'question', {advanced: JSON.stringify advanced }
 
 			App.QuestionsSelectController = Ember.ArrayController.extend
 				sortProperties: ['id']
@@ -262,7 +265,12 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 					skip: 0
 					limit: 20
 
-			App.QuestionSelectItem = Ember.ObjectController.extend {}
+			App.QuestionSelectItem = Ember.ObjectController.extend
+				isHidden: ( ->
+					if @get('flag') > 0 then return false
+					return true
+				).property 'flag'
+				needs: 'questionsSelect'
 
 
 #questions new

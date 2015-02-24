@@ -174,7 +174,7 @@ module.exports =
 								code: 200
 								data: result
 
-					cb new Error 'Not implemented yet'
+					#cb new Error 'Not implemented yet'
 				
 
 		before:

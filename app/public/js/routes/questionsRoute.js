@@ -289,7 +289,15 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
           }
         }
       });
-      App.QuestionsSelectRoute = Ember.Route.extend({});
+      App.QuestionsSelectRoute = Ember.Route.extend({
+        model: function() {
+          var advanced;
+          advanced = this.controllerFor('questionsSelect').get('advanced');
+          return this.store.find('question', {
+            advanced: JSON.stringify(advanced)
+          });
+        }
+      });
       App.QuestionsSelectController = Ember.ArrayController.extend({
         sortProperties: ['id'],
         sortAscending: false,
@@ -299,7 +307,15 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
           limit: 20
         }
       });
-      App.QuestionSelectItem = Ember.ObjectController.extend({});
+      App.QuestionSelectItem = Ember.ObjectController.extend({
+        isHidden: (function() {
+          if (this.get('flag') > 0) {
+            return false;
+          }
+          return true;
+        }).property('flag'),
+        needs: 'questionsSelect'
+      });
       App.QuestionsNewRoute = Ember.Route.extend({
         model: function() {
           var thiz;

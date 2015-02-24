@@ -12,6 +12,12 @@
 		<button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span> Search</button>
 	</div>
 	<hr />
+	{{#each question in controller}}
+	{{#unless question.isNew}}
+	{{#unless question.isHidden}}
+	{{/unless}}
+	{{/unless}}
+	{{/each}}
 </div>
 <br/>
 <br/>
