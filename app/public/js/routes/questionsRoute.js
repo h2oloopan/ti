@@ -309,7 +309,10 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
       });
       App.QuestionsSelectView = Ember.View.extend({
         didInsertElement: function() {
-          return this._super();
+          this._super();
+          return $('.question-preview').each(function(i) {
+            return MathJax.Hub.Queue(['Typeset', MathJax.Hub, $(this)[0]]);
+          });
         }
       });
       App.QuestionSelectItemController = Ember.ObjectController.extend({

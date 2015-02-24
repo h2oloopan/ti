@@ -268,6 +268,9 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 			App.QuestionsSelectView = Ember.View.extend
 				didInsertElement: ->
 					@_super()
+					$('.question-preview').each (i) ->
+						MathJax.Hub.Queue ['Typeset', MathJax.Hub, $(@)[0]]
+
 					#MathJax.Hub.Queue ['Typeset', MathJax.Hub, $('.question-form .right')[0]]
 
 			App.QuestionSelectItemController = Ember.ObjectController.extend
