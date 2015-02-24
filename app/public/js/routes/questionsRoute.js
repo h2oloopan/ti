@@ -307,6 +307,11 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
           limit: 20
         }
       });
+      App.QuestionsSelectView = Ember.View.extend({
+        didInsertElement: function() {
+          return this._super();
+        }
+      });
       App.QuestionSelectItemController = Ember.ObjectController.extend({
         isHidden: (function() {
           if (this.get('flag') > 0) {

@@ -265,6 +265,11 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 					skip: 0
 					limit: 20
 
+			App.QuestionsSelectView = Ember.View.extend
+				didInsertElement: ->
+					@_super()
+					#MathJax.Hub.Queue ['Typeset', MathJax.Hub, $('.question-form .right')[0]]
+
 			App.QuestionSelectItemController = Ember.ObjectController.extend
 				isHidden: ( ->
 					if @get('flag') > 0 then return false
