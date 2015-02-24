@@ -142,6 +142,31 @@ module.exports =
 				else
 					cb new Error 'You do not have the permission to access this'
 
+		api:
+			#ra
+			ra: (req, res, model, form, cb) ->
+				advanced = null
+				try
+					advanced = req.query.advanced
+					advanced = JSON.parse advanced
+				catch err
+					#do nothing
+					advanced = null
+
+				if !advanced?
+					#do a regular lookup
+					model.find {}, (err, result) ->
+						if err
+							cb err
+						else
+							cb null,
+								code: 200
+								data: result
+				else
+					#do an advanced lookup
+					cb new Error 'Not implemented yet'
+				
+
 		before:
 			#c
 			c: (question, user, cb) ->

@@ -175,6 +175,33 @@ module.exports = {
         }
       }
     },
+    api: {
+      ra: function(req, res, model, form, cb) {
+        var advanced, err;
+        advanced = null;
+        try {
+          advanced = req.query.advanced;
+          advanced = JSON.parse(advanced);
+        } catch (_error) {
+          err = _error;
+          advanced = null;
+        }
+        if (advanced == null) {
+          return model.find({}, function(err, result) {
+            if (err) {
+              return cb(err);
+            } else {
+              return cb(null, {
+                code: 200,
+                data: result
+              });
+            }
+          });
+        } else {
+          return cb(new Error('Not implemented yet'));
+        }
+      }
+    },
     before: {
       c: function(question, user, cb) {
         var time, username;
