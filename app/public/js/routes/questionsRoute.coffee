@@ -254,6 +254,17 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 #questions select
 			App.QuestionsSelectRoute = Ember.Route.extend {}
 
+			App.QuestionsSelectController = Ember.ArrayController.extend
+				sortProperties: ['id']
+				sortAscending: false
+				itemController: 'questionSelectItem'
+				advanced:
+					skip: 0
+					limit: 20
+
+			App.QuestionSelectItem = Ember.ObjectController.extend {}
+
+
 #questions new
 			#m
 			App.QuestionsNewRoute = Ember.Route.extend
