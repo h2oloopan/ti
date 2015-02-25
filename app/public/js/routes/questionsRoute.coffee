@@ -296,11 +296,6 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 					jump: (index) ->
 						return false
 
-			App.QuestionsSelectView = Ember.View.extend
-				didInsertElement: ->
-					@_super()
-					$('.question-preview').each (i) ->
-						MathJax.Hub.Queue ['Typeset', MathJax.Hub, $(@)[0]]
 
 			App.QuestionSelectItemController = Ember.ObjectController.extend
 				isHidden: ( ->
@@ -308,6 +303,13 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 					return true
 				).property 'flag'
 				needs: 'questionsSelect'
+
+			App.QuestionSelectItemView = Ember.View.extend
+				didInsertElement: ->
+					@_super()
+					element = @get('element')
+					MathJax.Hub.Queue ['Typeset', MathJax.Hub, element]
+
 
 
 #questions new

@@ -57,39 +57,41 @@
 	{{#each question in controller}}
 		{{#unless question.isNew}}
 		{{#unless question.isHidden}}
-			<div class="question-select-item">
-				<table class="table table-bordered">
-					<tr>
-						<td>
-							{{question.school.name}}
-						</td>
-						<td>
-							{{question.subject}}
-						</td>
-						<td>
-							{{question.course}}
-						</td>
-						<td>
-							{{question.typeTags}}
-						</td>
-						<td>
-							{{question.id}}
-						</td>
-					</tr>
-					<tr>
-						<td colspan="5">
-							<div class="question-preview">
-								{{{question.question}}}
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="5">
-							Select
-						</td>
-					</tr>
-				</table>
-			</div>
+			{{#view "questionSelectItem"}}
+				<div class="question-select-item">
+					<table class="table table-bordered">
+						<tr>
+							<td style="width:20%;">
+								{{question.id}}
+							</td>
+							<td style="width:18%;">
+								{{question.school.name}}
+							</td>
+							<td style="width:10%;">
+								{{question.subject}}
+							</td>
+							<td style="width:10%;">
+								{{question.course}}
+							</td>
+							<td>
+								{{question.typeTags}}
+							</td>
+						</tr>
+						<tr>
+							<td colspan="5">
+								<div class="question-preview">
+									{{{question.question}}}
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="5">
+								Select
+							</td>
+						</tr>
+					</table>
+				</div>
+			{{/view}}
 		{{/unless}}
 		{{/unless}}
 	{{/each}}
