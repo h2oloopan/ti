@@ -11,13 +11,22 @@
 	<div class="search-box">
 		<div class="row">
 			<div class="col-md-4">
-				School
+				<div class="form-group">
+					<label>School</label>
+					{{view Ember.Select classNames="form-control" content=schools optionLabelPath="content.name" selection=school}}
+				</div>
 			</div>
 			<div class="col-md-4">
-				Subject
+				<div class="form-group">
+					<label>Subject</label>
+					{{view Ember.Select classNames="form-control" content=subjects selection=subject}}
+				</div>
 			</div>
 			<div class="col-md-4">
-				Course
+				<div class="form-group">
+					<label>Course</label>
+					{{view Ember.Select classNames="form-control" content=courses selection=course}}
+				</div>
 			</div>
 		</div>
 	</div>
