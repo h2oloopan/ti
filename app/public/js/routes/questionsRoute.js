@@ -317,12 +317,9 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
         },
         actions: {
           update: function(advanced) {
-            this.set('model', this.store.find('question', {
+            return this.set('model', this.store.find('question', {
               advanced: JSON.stringify(advanced)
             }));
-            return $('.question-preview').each(function(i) {
-              return MathJax.Hub.Queue(['Typeset', MathJax.Hub, $(this)[0]]);
-            });
           },
           previous: function() {
             var advanced;

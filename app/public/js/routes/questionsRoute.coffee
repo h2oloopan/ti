@@ -274,8 +274,6 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 				actions:
 					update: (advanced) ->
 						@set 'model', @store.find('question', {advanced: JSON.stringify(advanced)})
-						$('.question-preview').each (i) ->
-							MathJax.Hub.Queue ['Typeset', MathJax.Hub, $(@)[0]]
 					previous: ->
 						advanced = @get 'advanced'
 						if advanced.skip == 0
