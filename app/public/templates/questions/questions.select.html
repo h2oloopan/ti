@@ -7,7 +7,21 @@
 <div class="container">
 	{{#link-to "questions.new" class="btn btn-success"}}Add New{{/link-to}}
 	<hr />
-		<h5 class="text-center">Search Criteria</h5>
+	<h5 class="text-center">Search Criteria</h5>
+	<div class="search-box">
+		<div class="row">
+			<div class="col-md-4">
+				School
+			</div>
+			<div class="col-md-4">
+				Subject
+			</div>
+			<div class="col-md-4">
+				Course
+			</div>
+		</div>
+	</div>
+	<br />
 	<div class="text-center">
 		<button class="btn btn-default" type="button" {{action "search"}}><span class="glyphicon glyphicon-search"></span> Search</button>
 	</div>
