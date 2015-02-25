@@ -52,10 +52,10 @@
 	    </li>
 	  </ul>
 	</nav>
-	{{#each question in controller}}
-		{{#unless question.isNew}}
-		{{#unless question.isHidden}}
-			{{#view "questionSelectItem"}}
+	{{#each question in questions}}
+		{{#view "questionSelectItem"}}
+			{{#unless question.isNew}}
+			{{#unless isHidden}}
 				<div class="question-select-item">
 					<table class="table table-bordered">
 						<tr>
@@ -89,9 +89,9 @@
 						</tr>
 					</table>
 				</div>
-			{{/view}}
-		{{/unless}}
-		{{/unless}}
+			{{/unless}}
+			{{/unless}}
+		{{/view}}
 	{{/each}}
 	<nav class="text-right">
 	  <ul class="pagination">

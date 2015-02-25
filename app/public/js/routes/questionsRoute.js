@@ -291,17 +291,28 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
       });
       App.QuestionsSelectRoute = Ember.Route.extend({
         model: function() {
-          var advanced;
-          advanced = this.controllerFor('questionsSelect').get('advanced');
-          return this.store.find('question', {
-            advanced: JSON.stringify(advanced)
+          var thiz;
+          thiz = this;
+          return new Ember.RSVP.Promise(function(resolve, reject) {
+            return new Ember.RSVP.hash({
+              schools: thiz.store.find('school'),
+              questions: thiz.store.find('question', {
+                advanced: JSON.stringify(thiz.controllerFor('questionsSelect').get('advanced'))
+              })
+            }).then(function(result) {
+              return resolve({
+                schools: result.schools,
+                questions: result.questions
+              });
+            }, function(errors) {
+              return reject(errors);
+            });
           });
         }
       });
-      App.QuestionsSelectController = Ember.ArrayController.extend({
+      App.QuestionsSelectController = Ember.ObjectController.extend({
         sortProperties: ['id'],
         sortAscending: false,
-        itemController: 'questionSelectItem',
         advanced: {
           skip: 0,
           limit: 10
@@ -317,7 +328,7 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
         },
         actions: {
           update: function(advanced) {
-            return this.set('model', this.store.find('question', {
+            return this.set('questions', this.store.find('question', {
               advanced: JSON.stringify(advanced)
             }));
           },
@@ -348,16 +359,13 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
           }
         }
       });
-      App.QuestionSelectItemController = Ember.ObjectController.extend({
+      App.QuestionSelectItemView = Ember.View.extend({
         isHidden: (function() {
           if (this.get('flag') > 0) {
             return false;
           }
           return true;
         }).property('flag'),
-        needs: 'questionsSelect'
-      });
-      App.QuestionSelectItemView = Ember.View.extend({
         didInsertElement: function() {
           var element;
           this._super();

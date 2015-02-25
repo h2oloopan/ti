@@ -254,13 +254,21 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 #questions select
 			App.QuestionsSelectRoute = Ember.Route.extend
 				model: ->
-					advanced = @controllerFor('questionsSelect').get 'advanced'
-					return @store.find 'question', {advanced: JSON.stringify advanced }
+					thiz = @
+					return new Ember.RSVP.Promise (resolve, reject) ->
+						new Ember.RSVP.hash
+							schools: thiz.store.find 'school'
+							questions: thiz.store.find 'question', {advanced: JSON.stringify thiz.controllerFor('questionsSelect').get('advanced')}
+						.then (result) ->
+							resolve
+								schools: result.schools
+								questions: result.questions
+						, (errors) ->
+							reject errors
 
-			App.QuestionsSelectController = Ember.ArrayController.extend
+			App.QuestionsSelectController = Ember.ObjectController.extend
 				sortProperties: ['id']
 				sortAscending: false
-				itemController: 'questionSelectItem'
 				advanced:
 					skip: 0
 					limit: 10
@@ -273,7 +281,7 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 						five: 5
 				actions:
 					update: (advanced) ->
-						@set 'model', @store.find('question', {advanced: JSON.stringify(advanced)})
+						@set 'questions', @store.find('question', {advanced: JSON.stringify(advanced)})
 					previous: ->
 						advanced = @get 'advanced'
 						if advanced.skip == 0
@@ -294,15 +302,11 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 					jump: (index) ->
 						return false
 
-
-			App.QuestionSelectItemController = Ember.ObjectController.extend
+			App.QuestionSelectItemView = Ember.View.extend
 				isHidden: ( ->
 					if @get('flag') > 0 then return false
 					return true
 				).property 'flag'
-				needs: 'questionsSelect'
-
-			App.QuestionSelectItemView = Ember.View.extend
 				didInsertElement: ->
 					@_super()
 					element = @get('element')
