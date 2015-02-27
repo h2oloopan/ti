@@ -279,6 +279,20 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 						three: 3
 						four: 4
 						five: 5
+				subjects: (->
+					school = @get 'school'
+					if !school? then return []
+					subjects = school.get('info.subjects')
+					if subjects.length > 0 then @set 'subject', subjects[0]
+					return subjects						
+				).property 'school'
+				courses: (->
+					subject = @get 'subject'
+					if !subject? then return []
+					courses = subject.courses
+					if courses.length > 0 then @set 'course', courses[0]
+					return courses
+				).property 'subject'
 				actions:
 					update: (advanced) ->
 						@set 'questions', @store.find('question', {advanced: JSON.stringify(advanced)})

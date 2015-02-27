@@ -19,13 +19,13 @@
 			<div class="col-md-4">
 				<div class="form-group">
 					<label>Subject</label>
-					{{view Ember.Select classNames="form-control" content=subjects selection=subject}}
+					{{view Ember.Select classNames="form-control" content=subjects optionLabelPath="content.name" selection=subject}}
 				</div>
 			</div>
 			<div class="col-md-4">
 				<div class="form-group">
 					<label>Course</label>
-					{{view Ember.Select classNames="form-control" content=courses selection=course}}
+					{{view Ember.Select classNames="form-control" content=courses optionLabelPath="content.number" selection=course}}
 				</div>
 			</div>
 		</div>

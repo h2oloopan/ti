@@ -326,6 +326,30 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
             five: 5
           }
         },
+        subjects: (function() {
+          var school, subjects;
+          school = this.get('school');
+          if (school == null) {
+            return [];
+          }
+          subjects = school.get('info.subjects');
+          if (subjects.length > 0) {
+            this.set('subject', subjects[0]);
+          }
+          return subjects;
+        }).property('school'),
+        courses: (function() {
+          var courses, subject;
+          subject = this.get('subject');
+          if (subject == null) {
+            return [];
+          }
+          courses = subject.courses;
+          if (courses.length > 0) {
+            this.set('course', courses[0]);
+          }
+          return courses;
+        }).property('subject'),
         actions: {
           update: function(advanced) {
             return this.set('questions', this.store.find('question', {
