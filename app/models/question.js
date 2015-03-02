@@ -173,11 +173,18 @@ module.exports = {
         } else {
           return cb(new Error('You do not have the permission to access this'));
         }
+      },
+      ra: function(req, question, user, power, cb) {
+        if (power >= 999 || user.role.name === 'editor') {
+          return cb(null);
+        } else {
+          return cb(new Error('You do not have the permission to access this'));
+        }
       }
     },
     api: {
       ra: function(req, res, model, form, cb) {
-        var advanced, err, limit, skip;
+        var advanced, err, limit, pattern, search, skip, type, _i, _len, _ref;
         advanced = null;
         try {
           advanced = req.query.advanced;
@@ -201,7 +208,30 @@ module.exports = {
           console.log(advanced);
           skip = advanced.skip || 0;
           limit = advanced.limit || 1000;
-          return model.find({}).skip(skip).limit(limit).exec(function(err, result) {
+          search = {};
+          if (advanced.school != null) {
+            search.school = me.ObjectId(advanced.school);
+          }
+          if (advanced.subject != null) {
+            search.subject = advanced.subject;
+          }
+          if (advanced.course != null) {
+            search.course = advanced.course;
+          }
+          if ((advanced.types != null) && advanced.types.length > 0) {
+            pattern = '';
+            _ref = advanced.types;
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              type = _ref[_i];
+              pattern += type + '|';
+            }
+            if (pattern.charAt(pattern.length - 1) === '|') {
+              pattern = pattern.substr(0, pattern.length - 1);
+            }
+            search.typeTags = new RegExp('(' + pattern + ')', 'i');
+          }
+          console.log(search);
+          return model.find(search).skip(skip).limit(limit).exec(function(err, result) {
             if (err) {
               return cb(err);
             } else {

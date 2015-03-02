@@ -142,6 +142,14 @@ module.exports =
 				else
 					cb new Error 'You do not have the permission to access this'
 
+
+			#ra
+			ra: (req, question, user, power, cb) ->
+				if power >= 999 || user.role.name == 'editor'
+					cb null
+				else
+					cb new Error 'You do not have the permission to access this'
+
 		api:
 			#ra
 			ra: (req, res, model, form, cb) ->
@@ -167,7 +175,20 @@ module.exports =
 					console.log advanced
 					skip = advanced.skip || 0
 					limit = advanced.limit || 1000
-					model.find({}).skip(skip).limit(limit).exec (err, result) ->
+					search = {}
+					if advanced.school? then search.school = me.ObjectId advanced.school
+					if advanced.subject? then search.subject = advanced.subject
+					if advanced.course? then search.course = advanced.course
+					if advanced.types? and advanced.types.length > 0
+						pattern = ''
+						for type in advanced.types
+							pattern += type + '|'
+						if pattern.charAt(pattern.length - 1) == '|' then pattern = pattern.substr 0, pattern.length - 1
+						search.typeTags = new RegExp '(' + pattern + ')', 'i'
+
+
+					console.log search
+					model.find(search).skip(skip).limit(limit).exec (err, result) ->
 						if err
 							cb err
 						else
