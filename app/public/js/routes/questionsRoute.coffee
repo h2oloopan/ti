@@ -334,6 +334,15 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 						return false
 					jump: (index) ->
 						return false
+					addTypeTag: ->
+						#add a type tag from the term/type combo
+						term = @get 'term'
+						type = @get 'type'
+						tag = term + ' ' + type
+						$('#type-tags').tagsinput 'add', tag
+						return false
+					search: ->
+						return false
 
 			App.QuestionSelectItemView = Ember.View.extend
 				isHidden: ( ->

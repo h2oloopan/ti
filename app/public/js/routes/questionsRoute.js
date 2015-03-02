@@ -410,6 +410,17 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
           },
           jump: function(index) {
             return false;
+          },
+          addTypeTag: function() {
+            var tag, term, type;
+            term = this.get('term');
+            type = this.get('type');
+            tag = term + ' ' + type;
+            $('#type-tags').tagsinput('add', tag);
+            return false;
+          },
+          search: function() {
+            return false;
           }
         }
       });
