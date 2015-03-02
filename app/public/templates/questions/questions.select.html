@@ -29,6 +29,18 @@
 				</div>
 			</div>
 		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<label>Type</label>
+				<form class="form-inline">
+					<div class="form-group">
+						{{view Ember.Select classNames="form-control" content=terms selection=term}}
+						{{view Ember.Select classNames="form-control" content=types selection=type}}
+						<button class="btn btn-success" type="button" {{action "addTypeTag"}}>Add Type Tag &gt;</button>
+					</div>
+				</form>
+			</div>
+		</div>
 	</div>
 	<br />
 	<div class="text-center">

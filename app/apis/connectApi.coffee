@@ -4,6 +4,18 @@ config = require '../config'
 path = require 'path'
 
 exports.bind = (app) ->
+	app.get '/api/test/verify', (req, res) ->
+		user = req.user
+		if !user? || user.power < 999 then return res.send 401
+		token = req.query.token
+		if !token? then return res.send 500, 'No token is provided'
+		jwt.verify token, config.secret, (err, user) ->
+			if err
+				res.send 500, err.message
+			else
+				res.send 200, user
+
+
 	app.post '/api/connect/questions/create', (req, res) ->
 		#cors
 		res.header 'Access-Control-Allow-Origin', '*'
@@ -79,6 +91,8 @@ exports.bind = (app) ->
 				res.send 401, err.message
 			else
 				#actually
+				user = user.toJSON()
+				delete user.password
 				token = jwt.sign user, config.secret
 				req.session[config.sessionKey] = user._id.toString()
 				res.send 200, token
