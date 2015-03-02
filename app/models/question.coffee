@@ -164,6 +164,7 @@ module.exports =
 								data: result
 				else
 					#do an advanced lookup
+					console.log advanced
 					skip = advanced.skip || 0
 					limit = advanced.limit || 1000
 					model.find({}).skip(skip).limit(limit).exec (err, result) ->

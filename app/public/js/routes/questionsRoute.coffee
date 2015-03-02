@@ -282,8 +282,6 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 						one: 1
 						two: 2
 						three: 3
-						four: 4
-						five: 5
 				subjects: (->
 					school = @get 'school'
 					if !school? then return []
@@ -314,6 +312,7 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 				).property 'school'
 				actions:
 					update: (advanced) ->
+						@set 'advanced', advanced
 						@set 'questions', @store.find('question', {advanced: JSON.stringify(advanced)})
 					previous: ->
 						advanced = @get 'advanced'
@@ -323,13 +322,11 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 							advanced.skip = 0
 						else
 							advanced.skip -= advanced.limit
-						@set 'advanced', advanced
 						@send 'update', advanced
 						return false
 					next: ->
 						advanced = @get 'advanced'
 						advanced.skip += advanced.limit
-						@set 'advanced', advanced
 						@send 'update', advanced
 						return false
 					jump: (index) ->
@@ -342,6 +339,16 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 						$('#type-tags').tagsinput 'add', tag
 						return false
 					search: ->
+						#update advanced object
+						advanced = 
+							skip: 0
+							limit: 10
+							school: @get 'school.id'
+							subject: @get 'subject.name'
+							course: @get 'course.number'
+							types: $('#type-tags').tagsinput 'items'
+
+						@send 'update', advanced
 						return false
 
 			App.QuestionSelectItemView = Ember.View.extend

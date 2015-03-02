@@ -198,6 +198,7 @@ module.exports = {
             }
           });
         } else {
+          console.log(advanced);
           skip = advanced.skip || 0;
           limit = advanced.limit || 1000;
           return model.find({}).skip(skip).limit(limit).exec(function(err, result) {
