@@ -266,6 +266,11 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 						, (errors) ->
 							reject errors
 
+			App.QuestionsSelectView = Ember.View.extend
+				didInsertElement: ->
+					@_super()
+					$('#type-tags').tagsinput()
+
 			App.QuestionsSelectController = Ember.ObjectController.extend
 				sortProperties: ['id']
 				sortAscending: false

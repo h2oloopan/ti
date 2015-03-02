@@ -310,6 +310,12 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
           });
         }
       });
+      App.QuestionsSelectView = Ember.View.extend({
+        didInsertElement: function() {
+          this._super();
+          return $('#type-tags').tagsinput();
+        }
+      });
       App.QuestionsSelectController = Ember.ObjectController.extend({
         sortProperties: ['id'],
         sortAscending: false,
