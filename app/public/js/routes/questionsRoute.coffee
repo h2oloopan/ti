@@ -293,6 +293,20 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 					if courses.length > 0 then @set 'course', courses[0]
 					return courses
 				).property 'subject'
+				terms: ( ->
+					school = @get 'school'
+					if !school? then return []
+					terms = school.get 'terms'
+					if terms.length > 0 then @set 'term', terms[0]
+					return terms
+				).property 'school'
+				types: ( ->
+					school = @get 'school'
+					if !school? then return []
+					types = school.get 'types'
+					if types.length > 0 then @set 'type', types[0]
+					return types
+				).property 'school'
 				actions:
 					update: (advanced) ->
 						@set 'questions', @store.find('question', {advanced: JSON.stringify(advanced)})

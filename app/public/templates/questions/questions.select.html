@@ -30,15 +30,19 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-md-4">
 				<label>Type</label>
 				<form class="form-inline">
 					<div class="form-group">
 						{{view Ember.Select classNames="form-control" content=terms selection=term}}
 						{{view Ember.Select classNames="form-control" content=types selection=type}}
-						<button class="btn btn-success" type="button" {{action "addTypeTag"}}>Add Type Tag &gt;</button>
+						<button class="btn btn-success" type="button" {{action "addTypeTag"}}>&gt;</button>
 					</div>
 				</form>
+			</div>
+			<div class="col-md-8">
+				<label>Tags</label>
+				<input type="text" id="type-tags" name="type-tags" class="form-control" />
 			</div>
 		</div>
 	</div>
