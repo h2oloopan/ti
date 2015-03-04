@@ -34,6 +34,8 @@ module.exports =
 				type: Number
 			type:
 				type: String
+			number:
+				type: Number
 			photos:
 				type: [String]
 				default: []
