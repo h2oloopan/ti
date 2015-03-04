@@ -51,6 +51,7 @@
 		<button class="btn btn-default" type="button" {{action "search"}}><span class="glyphicon glyphicon-search"></span> Search</button>
 	</div>
 	<hr />
+	{{#if questions.length}}
 	<nav class="text-right">
 	  <ul class="pagination">
 	    <li>
@@ -68,6 +69,7 @@
 	    </li>
 	  </ul>
 	</nav>
+	{{/if}}
 	{{#each question in questions}}
 		{{#view "questionSelectItem"}}
 			{{#unless question.isNew}}
@@ -109,6 +111,7 @@
 			{{/unless}}
 		{{/view}}
 	{{/each}}
+	{{#if questions.length}}
 	<nav class="text-right">
 	  <ul class="pagination">
 	    <li>
@@ -126,6 +129,7 @@
 	    </li>
 	  </ul>
 	</nav>
+	{{/if}}
 </div>
 <br/>
 <br/>

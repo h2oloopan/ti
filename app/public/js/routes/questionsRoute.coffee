@@ -258,11 +258,11 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 					return new Ember.RSVP.Promise (resolve, reject) ->
 						new Ember.RSVP.hash
 							schools: thiz.store.find 'school'
-							questions: thiz.store.find 'question', {advanced: JSON.stringify thiz.controllerFor('questionsSelect').get('advanced')}
+							#questions: thiz.store.find 'question', {advanced: JSON.stringify thiz.controllerFor('questionsSelect').get('advanced')}
 						.then (result) ->
 							resolve
 								schools: result.schools
-								questions: result.questions
+								questions: []
 						, (errors) ->
 							reject errors
 
