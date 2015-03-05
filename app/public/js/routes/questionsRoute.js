@@ -254,7 +254,12 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
       });
       App.QuestionsIndexRoute = Ember.Route.extend({
         model: function() {
-          return this.store.find('question');
+          return this.store.find('question', {
+            advanced: JSON.stringify({
+              skip: 0,
+              limit: 50
+            })
+          });
         }
       });
       App.QuestionsIndexController = Ember.ArrayController.extend({

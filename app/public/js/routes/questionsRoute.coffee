@@ -222,7 +222,7 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 #questions
 			App.QuestionsIndexRoute = Ember.Route.extend
 				model: ->
-					return @store.find 'question'
+					return @store.find 'question', {advanced: JSON.stringify({skip: 0, limit: 50 })}
 
 			App.QuestionsIndexController = Ember.ArrayController.extend
 				sortProperties: ['id']
