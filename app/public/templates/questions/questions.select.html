@@ -52,22 +52,13 @@
 	</div>
 	<hr />
 	{{#if questions.length}}
-	<nav class="text-right">
-	  <ul class="pagination">
-	    <li>
-	      <a href="#" aria-label="Previous" {{action "previous"}}>
-	        <span aria-hidden="true">&laquo;</span>
-	      </a>
-	    </li>
-	    <li><a href="#" {{action "jump" paging.pages.one}}>{{paging.pages.one}}</a></li>
-	    <li><a href="#" {{action "jump" paging.pages.two}}>{{paging.pages.two}}</a></li>
-	    <li><a href="#" {{action "jump" paging.pages.three}}>{{paging.pages.three}}</a></li>
-	    <li>
-	      <a href="#" aria-label="Next" {{action "next"}}>
-	        <span aria-hidden="true">&raquo;</span>
-	      </a>
-	    </li>
-	  </ul>
+	<nav>
+		<ul class="pager">
+			<li class="previous"><a href="#" {{action "first"}}><span aria-hidden="true">|</span> First</a></li>
+			<li class="previous"><a href="#" {{action "previous"}}><span aria-hidden="true">&larr;</span>Previous</a></li>
+    		<li class="next"><a href="#" {{action "last"}}>Last <span aria-hidden="true">|</span></a></li>
+    		<li class="next"><a href="#" {{action "next"}}>Next<span aria-hidden="true">&rarr;</span></a></li>
+		</ul>
 	</nav>
 	{{/if}}
 	{{#each question in questions}}

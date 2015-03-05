@@ -227,6 +227,12 @@ body {
 	display: block;
 }
 
+.pager .previous > a {
+	margin-right: 3px;
+}
 
+.pager .next > a {
+	margin-left: 3px;
+}
 
 

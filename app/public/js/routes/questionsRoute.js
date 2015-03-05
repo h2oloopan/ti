@@ -322,16 +322,10 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
       App.QuestionsSelectController = Ember.ObjectController.extend({
         sortProperties: ['id'],
         sortAscending: false,
+        page: 1,
         advanced: {
           skip: 0,
           limit: 10
-        },
-        paging: {
-          pages: {
-            one: 1,
-            two: 2,
-            three: 3
-          }
         },
         subjects: (function() {
           var school, subjects;
