@@ -177,6 +177,7 @@ module.exports =
 					console.log advanced
 					skip = advanced.skip || 0
 					limit = advanced.limit || 1000
+					order = advanced.order || '-'
 					search = {}
 					if advanced.school? then search.school = me.ObjectId advanced.school
 					if advanced.subject? then search.subject = advanced.subject
@@ -190,7 +191,7 @@ module.exports =
 
 
 					console.log search
-					model.find(search).skip(skip).limit(limit).exec (err, result) ->
+					model.find(search).sort(order + '_id').skip(skip).limit(limit).exec (err, result) ->
 						if err
 							cb err
 						else

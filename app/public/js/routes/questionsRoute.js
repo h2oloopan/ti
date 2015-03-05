@@ -257,7 +257,8 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
           return this.store.find('question', {
             advanced: JSON.stringify({
               skip: 0,
-              limit: 50
+              limit: 50,
+              order: '-'
             })
           });
         }

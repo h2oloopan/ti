@@ -187,7 +187,7 @@ module.exports = {
     },
     api: {
       ra: function(req, res, model, form, cb) {
-        var advanced, err, i, len, limit, pattern, ref, search, skip, type;
+        var advanced, err, i, len, limit, order, pattern, ref, search, skip, type;
         advanced = null;
         try {
           advanced = req.query.advanced;
@@ -211,6 +211,7 @@ module.exports = {
           console.log(advanced);
           skip = advanced.skip || 0;
           limit = advanced.limit || 1000;
+          order = advanced.order || '-';
           search = {};
           if (advanced.school != null) {
             search.school = me.ObjectId(advanced.school);
@@ -234,7 +235,7 @@ module.exports = {
             search.typeTags = new RegExp('(' + pattern + ')', 'i');
           }
           console.log(search);
-          return model.find(search).skip(skip).limit(limit).exec(function(err, result) {
+          return model.find(search).sort(order + '_id').skip(skip).limit(limit).exec(function(err, result) {
             if (err) {
               return cb(err);
             } else {
