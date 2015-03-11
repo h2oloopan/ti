@@ -190,7 +190,8 @@ module.exports =
 						search.typeTags = new RegExp '(' + pattern + ')', 'i'
 
 
-					console.log search
+					
+					
 					model.find(search).sort(order + '_id').skip(skip).limit(limit).exec (err, result) ->
 						if err
 							cb err
