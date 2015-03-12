@@ -325,6 +325,10 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 						advanced.skip += advanced.limit
 						@send 'update', advanced
 						return false
+					first: ->
+						return false
+					last: ->
+						return false
 					jump: (index) ->
 						return false
 					addTypeTag: ->
