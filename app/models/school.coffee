@@ -1,4 +1,6 @@
-Schema = require('mongo-ember').Schema
+me = require 'mongo-ember'
+Schema = me.Schema
+
 module.exports =
 	School:
 		schema:
@@ -17,27 +19,25 @@ module.exports =
 			name:
 				required: 'School name cannot be empty'
 		api:
-			c: (req, res, model, form, cb) ->
+			c: (req, res, model, form, names) ->
 				#just to make sure there is no duplicate
 				school = new model form
 				school.validate (err) ->
 					if err
-						cb err
+						res.send 500, err.message
 					else
 						pattern = new RegExp '^' + school.name + '$', 'i'
 						model.findOne {name: pattern}, (err, result) ->
 							if err
-								cb err
+								res.send 500, err.message
 							else if result?
-								cb new Error 'School ' + school.name + ' was already in the database'
+								res.send 400, 'School ' + school.name + ' was already in the database'
 							else
 								school.save (err, result) ->
 									if err
-										cb err
+										res.send 500, err.message
 									else
-										cb null,
-											code: 201
-											data: result
+										res.send 201, me.helper.wrap result, names.name
 
 		auth:
 			#c
