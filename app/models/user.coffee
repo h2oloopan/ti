@@ -35,22 +35,22 @@ module.exports =
 				required: 'Email cannot be empty'
 				match: 'Invalid email address'
 		api:
-			c: (req, res, model, form, cb) ->
+			c: (req, res, model, form, names) ->
 				user = new model form
 				user.validate (err) ->
 					if err
-						cb err
+						res.send 500, err.message
 					else
 						model.findOne {username: user.username}, (err, result) ->
 							if err
-								cb err
+								res.send 500, err.message
 							else if result?
-								cb new Error 'User ' + user.username + ' was already registered'
+								res.send 400, 'User ' + user.username + ' was already registered'
 							else
 								user.password = me.encrypt user.password
 								user.save (err, result) ->
 									if err
-										cb err
+										res.send 500, err.message
 									else
 										#send email
 										#async doesn't matter if it succeeded or not
@@ -61,19 +61,15 @@ module.exports =
 
 										mailer.sendRegistrationMail originalUser, (err) ->
 											if err then console.log err
-										cb null, 
-											code: 201
-											data: result
+										res.send 201, me.helper.wrap result, names.name
 
 			u: (req, res, model, form, cb) ->
 				if form.password? then form.password = me.encrypt form.password
 				model.findByIdAndUpdate req.params.id, form, (err, result) ->
 					if err
-						cb err
+						res.send 500, err.message
 					else
-						cb null,
-							code: 200
-							data: result
+						res.send 200, me.helper.wrap result, names,name
 
 		auth:
 			#c

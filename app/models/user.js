@@ -51,26 +51,26 @@ module.exports = {
       }
     },
     api: {
-      c: function(req, res, model, form, cb) {
+      c: function(req, res, model, form, names) {
         var user;
         user = new model(form);
         return user.validate(function(err) {
           if (err) {
-            return cb(err);
+            return res.send(500, err.message);
           } else {
             return model.findOne({
               username: user.username
             }, function(err, result) {
               if (err) {
-                return cb(err);
+                return res.send(500, err.message);
               } else if (result != null) {
-                return cb(new Error('User ' + user.username + ' was already registered'));
+                return res.send(400, 'User ' + user.username + ' was already registered');
               } else {
                 user.password = me.encrypt(user.password);
                 return user.save(function(err, result) {
                   var originalUser;
                   if (err) {
-                    return cb(err);
+                    return res.send(500, err.message);
                   } else {
                     originalUser = {
                       username: form.username,
@@ -82,10 +82,7 @@ module.exports = {
                         return console.log(err);
                       }
                     });
-                    return cb(null, {
-                      code: 201,
-                      data: result
-                    });
+                    return res.send(201, me.helper.wrap(result, names.name));
                   }
                 });
               }
@@ -99,12 +96,9 @@ module.exports = {
         }
         return model.findByIdAndUpdate(req.params.id, form, function(err, result) {
           if (err) {
-            return cb(err);
+            return res.send(500, err.message);
           } else {
-            return cb(null, {
-              code: 200,
-              data: result
-            });
+            return res.send(200, me.helper.wrap(result, names, name));
           }
         });
       }
