@@ -240,7 +240,9 @@ module.exports = {
                   return res.send(500, err.message);
                 } else {
                   result = me.helper.wrap(result, names.cname);
-                  result.count = count;
+                  result.count = {
+                    number: count
+                  };
                   return res.send(200, result);
                 }
               });

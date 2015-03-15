@@ -197,7 +197,8 @@ module.exports =
 									res.send 500, err.message
 								else
 									result = me.helper.wrap result, names.cname
-									result.count = count
+									result.count =
+										number: count
 									res.send 200, result
 		before:
 			#c
