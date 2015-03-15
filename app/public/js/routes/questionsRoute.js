@@ -1,1 +1,683 @@
-define(["jquery","me","utils","components/photo-upload","moment","js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML","bootstrap-tagsinput","ehbs!templates/questions/question.index","ehbs!templates/questions/question.edit","ehbs!templates/questions/questions.index","ehbs!templates/questions/questions.select","ehbs!templates/questions/questions.new"],function(t,e,s,n){var i;return i={setup:function(i){return Ember.Handlebars.registerBoundHelper("display-time",function(t,e){return moment(e).format(t)}),i.Router.map(function(){return this.resource("questions",function(){return this.route("new"),this.route("select")}),this.resource("question",{path:"/question/:question_id"},function(){return this.route("edit")})}),i.PhotoUploadComponent=n,i.QuestionsRoute=Ember.Route.extend({beforeModel:function(){var t;return t=this,e.auth.check().then(function(e){return null==e?t.transitionTo("login"):void 0},function(){return this.fail,t.transitionTo("login")})}}),i.QuestionRoute=Ember.Route.extend({beforeModel:function(){var t;return t=this,e.auth.check().then(function(e){return null==e?t.transitionTo("login"):void 0},function(){return this.fail,t.transitionTo("login")})}}),i.QuestionEditRoute=Ember.Route.extend({model:function(){var t,e;return e=this,t=this.modelFor("question").id,new Ember.RSVP.Promise(function(s,n){return new Ember.RSVP.hash({question_real:e.store.find("question",t),question_fake:e.store.createRecord("question",{}),schools:e.store.find("school")}).then(function(t){return s({question_real:t.question_real,question_fake:t.question_fake,schools:t.schools})},function(t){return n(t)})})},afterModel:function(t){var e,s,n,i,o,r,u,l,c,a,h,p,d;for(i=t.question_real,n=t.question_fake,n.set("school",i.get("school")),r=n.get("school").toJSON(),i.eachAttribute(function(t){return n.set(t,i.get(t))}),n.set("id",i.get("id")),n.set("initialize",{subject:!0,course:!0}),u=r.info.subjects[0],p=r.info.subjects,l=0,a=p.length;a>l;l++)if(o=p[l],o.name===i.get("subject")){u=o;break}for(n.set("subject",u),s=u.courses[0],d=u.courses,c=0,h=d.length;h>c;c++)if(e=d[c],e.number===i.get("course")){s=e;break}return n.set("course",s)}}),i.QuestionEditView=Ember.View.extend({didInsertElement:function(){var e,n,i,o;return this._super(),t("#type-tags").tagsinput(),t("#tags").tagsinput(),n=s.createMathEditor(t("#question-input"),t("#question-preview")),e=s.createMathEditor(t("#hint-input"),t("#hint-preview")),i=s.createMathEditor(t("#solution-input"),t("#solution-preview")),o=s.createMathEditor(t("#summary-input"),t("#summary-preview")),n.update(),e.update(),i.update(),o.update()}}),i.QuestionEditController=Ember.ObjectController.extend({uploadLink:"/api/images/temp",difficulties:[1,2,3,4,5],terms:function(){var t;return t=this.get("question_fake.school"),null==t?[]:(t.toJSON().terms.length>0&&this.set("selectedTerm",t.toJSON().terms[0]),t.toJSON().terms)}.property("question_fake.school"),types:function(){var t;return t=this.get("question_fake.school"),null==t?[]:(t.toJSON().types.length>0&&this.set("selectedType",t.toJSON().types[0]),t.toJSON().types)}.property("question_fake.school"),subjects:function(){var t;return t=this.get("question_fake.school"),null==t?[]:(this.get("question_fake.initialize.subject")?this.set("question_fake.initialize.subject",!1):this.set("question_fake.subject",t.info.subjects[0]),t.toJSON().info.subjects)}.property("question_fake.school"),courses:function(){var t;return t=this.get("question_fake.subject"),null==t?[]:(this.get("question_fake.initialize.course")?this.set("question_fake.initialize.course",!1):this.set("question_fake.course",t.courses[0]),t.courses)}.property("question_fake.subject"),prepare:function(e){var s;return s=e.toJSON(),s.subject=e.get("subject.name"),s.course=e.get("course.number"),s.question=t("#question-input").cleanHtml(),s.hint=t("#hint-input").cleanHtml(),s.solution=t("#solution-input").cleanHtml(),s.summary=t("#summary-input").cleanHtml(),s.typeTags=t("#type-tags").val().replace(/, /g,",").replace(/,/g,", "),s.tags=t("#tags").val().replace(/, /g,",").replace(/,/g,", "),null==e.get("difficulty")&&(s.difficulty=0),s=this.store.createRecord("Question",s),s.set("school",e.get("school"))},actions:{addTypeTag:function(){var e,s,n;return s=this.get("selectedTerm"),n=this.get("selectedType"),e=s+" "+n,t("#type-tags").tagsinput("add",e),!1},save:function(){var t,s,n,i,o,r,u,l;for(r=this,i=this.prepare(this.get("question_fake")),o=i.validate(),this.set("question_fake.errors",i.errors),s=e.keys(i.errors),u=0,l=s.length;l>u;u++)t=s[u],alert(i.errors[t]);return o?(n=this.get("question_real"),n.eachAttribute(function(t){return n.set(t,i.get(t))}),n.save().then(function(){return r.transitionToRoute("questions")},function(t){return n.rollback,console.log(t),alert(t.responseText)}),!1):!1}}}),i.QuestionIndexRoute=Ember.Route.extend({model:function(){var t;return t=this.modelFor("question").id,this.store.find("question",t)}}),i.QuestionIndexView=Ember.View.extend({didInsertElement:function(){var e;return this._super(),e=this.controller.get("model").toJSON(),t("#question-preview").html(e.question),t("#hint-preview").html(e.hint),t("#solution-preview").html(e.solution),t("#summary-preview").html(e.summary),MathJax.Hub.Queue(["Typeset",MathJax.Hub,t(".question-form .right")[0]])}}),i.QuestionIndexController=Ember.ObjectController.extend({actions:{back:function(){return window.history.go(-1),!1}}}),i.QuestionsIndexRoute=Ember.Route.extend({model:function(){return this.store.find("question",{advanced:JSON.stringify({skip:0,limit:50,order:"-"})})}}),i.QuestionsIndexController=Ember.ArrayController.extend({sortProperties:["id"],sortAscending:!1,preview:{},itemController:"questionItem"}),i.QuestionItemController=Ember.ObjectController.extend({isHidden:function(){return this.get("flag")>0?!1:!0}.property("flag"),needs:"questionsIndex",actions:{"delete":function(t){var e,s;return s=t.get("school.name")+" "+t.get("term")+" "+t.get("subject")+" "+t.get("course"),e=confirm("Do you want to delete question "+t.get("id")+" of "+s+"?"),e&&(t.set("flag",0),t.save().then(function(){return!0},function(e){return t.rollback(),alert(e.responseText)})),!1}}}),i.QuestionsSelectRoute=Ember.Route.extend({model:function(){var t;return t=this,new Ember.RSVP.Promise(function(e,s){return new Ember.RSVP.hash({schools:t.store.find("school")}).then(function(t){return e({schools:t.schools,questions:[]})},function(t){return s(t)})})}}),i.QuestionsSelectView=Ember.View.extend({didInsertElement:function(){return this._super(),t("#type-tags").tagsinput()}}),i.QuestionsSelectController=Ember.ObjectController.extend({sortProperties:["id"],sortAscending:!1,page:1,advanced:{skip:0,limit:10},subjects:function(){var t,e;return t=this.get("school"),null==t?[]:(e=t.get("info.subjects"),e.length>0&&this.set("subject",e[0]),e)}.property("school"),courses:function(){var t,e;return e=this.get("subject"),null==e?[]:(t=e.courses,t.length>0&&this.set("course",t[0]),t)}.property("subject"),terms:function(){var t,e;return t=this.get("school"),null==t?[]:(e=t.get("terms"),e.length>0&&this.set("term",e[0]),e)}.property("school"),types:function(){var t,e;return t=this.get("school"),null==t?[]:(e=t.get("types"),e.length>0&&this.set("type",e[0]),e)}.property("school"),actions:{update:function(t){return this.set("advanced",t),this.set("questions",this.store.find("question",{advanced:JSON.stringify(t)}))},previous:function(){var t;return t=this.get("advanced"),0===t.skip?!1:(t.skip<t.limit?t.skip=0:t.skip-=t.limit,this.send("update",t),!1)},next:function(){var t;return t=this.get("advanced"),t.skip+=t.limit,this.send("update",t),!1},first:function(){return!1},last:function(){return!1},jump:function(){return!1},addTypeTag:function(){var e,s,n;return s=this.get("term"),n=this.get("type"),e=s+" "+n,t("#type-tags").tagsinput("add",e),!1},search:function(){var e;return e={skip:0,limit:10,school:this.get("school.id"),subject:this.get("subject.name"),course:this.get("course.number"),types:t("#type-tags").tagsinput("items")},this.send("update",e),!1}}}),i.QuestionSelectItemView=Ember.View.extend({isHidden:function(){return this.get("flag")>0?!1:!0}.property("flag"),didInsertElement:function(){var t;return this._super(),t=this.get("element"),MathJax.Hub.Queue(["Typeset",MathJax.Hub,t])}}),i.QuestionsNewRoute=Ember.Route.extend({model:function(){var t;return t=this,new Ember.RSVP.Promise(function(e,s){return new Ember.RSVP.hash({question:t.store.createRecord("question",{}),schools:t.store.find("school")}).then(function(t){return e({question:t.question,schools:t.schools})},function(t){return s(t)})})},afterModel:function(){return this.controllerFor("questionsNew").set("initialize",{school:!0})}}),i.QuestionsNewView=Ember.View.extend({didInsertElement:function(){var e,n,i,o;return this._super(),t("#type-tags").tagsinput(),t("#tags").tagsinput(),n=s.createMathEditor(t("#question-input"),t("#question-preview"),{check:!0,url:"/api/search/questions/text",display:t("#question-display")}),e=s.createMathEditor(t("#hint-input"),t("#hint-preview")),i=s.createMathEditor(t("#solution-input"),t("#solution-preview")),o=s.createMathEditor(t("#summary-input"),t("#summary-preview"))}}),i.QuestionsNewController=Ember.ObjectController.extend({initialize:null,needs:"application",difficulties:[1,2,3,4,5],uploadLink:"/api/images/temp",settings:function(){var e,s;return e=t.cookie("settings"),null==e?null:(s=JSON.parse(e),s[this.get("controllers.application.model._id")])}.property("initialize"),terms:function(){var t;return t=this.get("question.school"),null==t?[]:(t.toJSON().terms.length>0&&this.set("selectedTerm",t.toJSON().terms[0]),t.toJSON().terms)}.property("question.school"),types:function(){var t;return t=this.get("question.school"),null==t?[]:(t.toJSON().types.length>0&&this.set("selectedType",t.toJSON().types[0]),t.toJSON().types)}.property("question.school"),subjects:function(){var t,e,s;return e=this.get("question.school"),null==e?(this.set("question.subject",null),[]):(e.toJSON().info.subjects.length>0?this.get("initialize.subject")&&this.get("settings")?(s=this.get("settings"),t=e.toJSON().info.subjects.find(function(t){return t.name===s.subject?!0:!1}),null!=t&&(this.set("question.subject",t),this.set("initialize.course",!0)),this.set("initialize.subject",!1)):this.set("question.subject",e.toJSON().info.subjects[0]):this.set("question.subject",null),e.toJSON().info.subjects)}.property("question.school"),courses:function(){var t,e,s;return s=this.get("question.subject"),null==s?(this.set("question.course",null),[]):(null!=s.courses&&s.courses.length>0?this.get("initialize.course")&&this.get("settings")?(e=this.get("settings"),t=s.courses.find(function(t){return t.number===e.course?!0:!1}),null!=t&&this.set("question.course",t),this.set("initialize.course",!1)):this.set("question.course",s.courses[0]):this.set("question.course",null),s.courses)}.property("question.subject"),schoolsChanged:function(){var t,e;return this.get("initialize.school")&&this.get("settings")?(e=this.get("settings"),t=this.get("schools").find(function(t){return t.get("name")===e.school?!0:!1}),null!=t&&(this.set("question.school",t),this.set("initialize.subject",!0)),this.set("initialize.school",!1)):void 0}.observes("schools"),prepare:function(e){var s;return s=e.toJSON(),s.subject=e.get("subject.name"),s.course=e.get("course.number"),s.question=t("#question-input").cleanHtml(),s.hint=t("#hint-input").cleanHtml(),s.solution=t("#solution-input").cleanHtml(),s.summary=t("#summary-input").cleanHtml(),s.typeTags=t("#type-tags").val().replace(",",", "),s.tags=t("#tags").val().replace(",",", "),null==e.get("difficulty")&&(s.difficulty=0),s=this.store.createRecord("Question",s),s.set("school",e.get("school")),s},saveSettings:function(){var e,s,n;return n=this.get("controllers.application.model._id"),e={school:this.get("question.school.name"),subject:this.get("question.subject.name"),course:this.get("question.course.number")},s=t.cookie("settings"),s=null==s?{}:JSON.parse(s),s[n]=e,t.cookie("settings",JSON.stringify(s),{expires:7})},actions:{addTypeTag:function(){var e,s,n;return s=this.get("selectedTerm"),n=this.get("selectedType"),e=s+" "+n,t("#type-tags").tagsinput("add",e),!1},add:function(){var t,s,n,i,o,r,u;for(o=this,n=this.prepare(this.get("question")),i=n.validate(),this.set("question.errors",n.errors),s=e.keys(n.errors),r=0,u=s.length;u>r;r++)t=s[r],alert(n.errors[t]);return i?(n.save().then(function(){return o.saveSettings(),o.transitionToRoute("questions")},function(t){return n.rollback(),console.log(t),alert(t.responseText)}),!1):!1}}})}}});
+// Generated by CoffeeScript 1.7.1
+define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML', 'bootstrap-tagsinput', 'ehbs!templates/questions/question.index', 'ehbs!templates/questions/question.edit', 'ehbs!templates/questions/questions.index', 'ehbs!templates/questions/questions.select', 'ehbs!templates/questions/questions.new', 'ehbs!templates/helpers/pager'], function($, me, utils, PhotoUploadComponent, mmt) {
+  var QuestionsRoute;
+  QuestionsRoute = {
+    setup: function(App) {
+      Ember.Handlebars.registerBoundHelper('display-time', function(format, time) {
+        return moment(time).format(format);
+      });
+      App.Router.map(function() {
+        this.resource('questions', function() {
+          this.route('new');
+          return this.route('select');
+        });
+        return this.resource('question', {
+          path: '/question/:question_id'
+        }, function() {
+          return this.route('edit');
+        });
+      });
+      App.PhotoUploadComponent = PhotoUploadComponent;
+      App.QuestionsRoute = Ember.Route.extend({
+        beforeModel: function() {
+          var thiz;
+          thiz = this;
+          return me.auth.check().then(function(user) {
+            if (user == null) {
+              return thiz.transitionTo('login');
+            }
+          }, function(errors) {
+            this.fail;
+            return thiz.transitionTo('login');
+          });
+        }
+      });
+      App.QuestionRoute = Ember.Route.extend({
+        beforeModel: function() {
+          var thiz;
+          thiz = this;
+          return me.auth.check().then(function(user) {
+            if (user == null) {
+              return thiz.transitionTo('login');
+            }
+          }, function(errors) {
+            this.fail;
+            return thiz.transitionTo('login');
+          });
+        }
+      });
+      App.QuestionEditRoute = Ember.Route.extend({
+        model: function() {
+          var qid, thiz;
+          thiz = this;
+          qid = this.modelFor('question').id;
+          return new Ember.RSVP.Promise(function(resolve, reject) {
+            return new Ember.RSVP.hash({
+              question_real: thiz.store.find('question', qid),
+              question_fake: thiz.store.createRecord('question', {}),
+              schools: thiz.store.find('school')
+            }).then(function(result) {
+              return resolve({
+                question_real: result.question_real,
+                question_fake: result.question_fake,
+                schools: result.schools
+              });
+            }, function(errors) {
+              return reject(errors);
+            });
+          });
+        },
+        afterModel: function(model, transition) {
+          var c, course, fake, real, s, school, subject, _i, _j, _len, _len1, _ref, _ref1;
+          real = model.question_real;
+          fake = model.question_fake;
+          fake.set('school', real.get('school'));
+          school = fake.get('school').toJSON();
+          real.eachAttribute(function(name, meta) {
+            return fake.set(name, real.get(name));
+          });
+          fake.set('id', real.get('id'));
+          fake.set('initialize', {
+            subject: true,
+            course: true
+          });
+          subject = school.info.subjects[0];
+          _ref = school.info.subjects;
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            s = _ref[_i];
+            if (s.name === real.get('subject')) {
+              subject = s;
+              break;
+            }
+          }
+          fake.set('subject', subject);
+          course = subject.courses[0];
+          _ref1 = subject.courses;
+          for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+            c = _ref1[_j];
+            if (c.number === real.get('course')) {
+              course = c;
+              break;
+            }
+          }
+          return fake.set('course', course);
+        }
+      });
+      App.QuestionEditView = Ember.View.extend({
+        didInsertElement: function() {
+          var hintEditor, questionEditor, solutionEditor, summaryEditor;
+          this._super();
+          $('#type-tags').tagsinput();
+          $('#tags').tagsinput();
+          questionEditor = utils.createMathEditor($('#question-input'), $('#question-preview'));
+          hintEditor = utils.createMathEditor($('#hint-input'), $('#hint-preview'));
+          solutionEditor = utils.createMathEditor($('#solution-input'), $('#solution-preview'));
+          summaryEditor = utils.createMathEditor($('#summary-input'), $('#summary-preview'));
+          questionEditor.update();
+          hintEditor.update();
+          solutionEditor.update();
+          return summaryEditor.update();
+        }
+      });
+      App.QuestionEditController = Ember.ObjectController.extend({
+        uploadLink: '/api/images/temp',
+        difficulties: [1, 2, 3, 4, 5],
+        terms: (function() {
+          var school;
+          school = this.get('question_fake.school');
+          if (school == null) {
+            return [];
+          }
+          if (school.toJSON().terms.length > 0) {
+            this.set('selectedTerm', school.toJSON().terms[0]);
+          }
+          return school.toJSON().terms;
+        }).property('question_fake.school'),
+        types: (function() {
+          var school;
+          school = this.get('question_fake.school');
+          if (school == null) {
+            return [];
+          }
+          if (school.toJSON().types.length > 0) {
+            this.set('selectedType', school.toJSON().types[0]);
+          }
+          return school.toJSON().types;
+        }).property('question_fake.school'),
+        subjects: (function() {
+          var school;
+          school = this.get('question_fake.school');
+          if (school == null) {
+            return [];
+          }
+          if (this.get('question_fake.initialize.subject')) {
+            this.set('question_fake.initialize.subject', false);
+          } else {
+            this.set('question_fake.subject', school.info.subjects[0]);
+          }
+          return school.toJSON().info.subjects;
+        }).property('question_fake.school'),
+        courses: (function() {
+          var subject;
+          subject = this.get('question_fake.subject');
+          if (subject == null) {
+            return [];
+          }
+          if (this.get('question_fake.initialize.course')) {
+            this.set('question_fake.initialize.course', false);
+          } else {
+            this.set('question_fake.course', subject.courses[0]);
+          }
+          return subject.courses;
+        }).property('question_fake.subject'),
+        prepare: function(question) {
+          var another;
+          another = question.toJSON();
+          another.subject = question.get('subject.name');
+          another.course = question.get('course.number');
+          another.question = $('#question-input').cleanHtml();
+          another.hint = $('#hint-input').cleanHtml();
+          another.solution = $('#solution-input').cleanHtml();
+          another.summary = $('#summary-input').cleanHtml();
+          another.typeTags = $('#type-tags').val().replace(/, /g, ',').replace(/,/g, ', ');
+          another.tags = $('#tags').val().replace(/, /g, ',').replace(/,/g, ', ');
+          if (question.get('difficulty') == null) {
+            another.difficulty = 0;
+          }
+          another = this.store.createRecord('Question', another);
+          return another.set('school', question.get('school'));
+        },
+        actions: {
+          addTypeTag: function() {
+            var tag, term, type;
+            term = this.get('selectedTerm');
+            type = this.get('selectedType');
+            tag = term + ' ' + type;
+            $('#type-tags').tagsinput('add', tag);
+            return false;
+          },
+          save: function() {
+            var key, keys, question, question_fake, result, thiz, _i, _len;
+            thiz = this;
+            question_fake = this.prepare(this.get('question_fake'));
+            result = question_fake.validate();
+            this.set('question_fake.errors', question_fake.errors);
+            keys = me.keys(question_fake.errors);
+            for (_i = 0, _len = keys.length; _i < _len; _i++) {
+              key = keys[_i];
+              alert(question_fake.errors[key]);
+            }
+            if (!result) {
+              return false;
+            }
+            question = this.get('question_real');
+            question.eachAttribute(function(name, meta) {
+              return question.set(name, question_fake.get(name));
+            });
+            question.save().then(function() {
+              return thiz.transitionToRoute('questions');
+            }, function(errors) {
+              question.rollback;
+              console.log(errors);
+              return alert(errors.responseText);
+            });
+            return false;
+          }
+        }
+      });
+      App.QuestionIndexRoute = Ember.Route.extend({
+        model: function() {
+          var qid;
+          qid = this.modelFor('question').id;
+          return this.store.find('question', qid);
+        }
+      });
+      App.QuestionIndexView = Ember.View.extend({
+        didInsertElement: function() {
+          var question;
+          this._super();
+          question = this.controller.get('model').toJSON();
+          $('#question-preview').html(question.question);
+          $('#hint-preview').html(question.hint);
+          $('#solution-preview').html(question.solution);
+          $('#summary-preview').html(question.summary);
+          return MathJax.Hub.Queue(['Typeset', MathJax.Hub, $('.question-form .right')[0]]);
+        }
+      });
+      App.QuestionIndexController = Ember.ObjectController.extend({
+        actions: {
+          back: function() {
+            window.history.go(-1);
+            return false;
+          }
+        }
+      });
+      App.QuestionsIndexRoute = Ember.Route.extend({
+        model: function() {
+          return this.store.find('question', {
+            advanced: JSON.stringify({
+              skip: 0,
+              limit: 50,
+              order: '-'
+            })
+          });
+        }
+      });
+      App.QuestionsIndexController = Ember.ArrayController.extend({
+        sortProperties: ['id'],
+        sortAscending: false,
+        preview: {},
+        itemController: 'questionItem'
+      });
+      App.QuestionItemController = Ember.ObjectController.extend({
+        isHidden: (function() {
+          if (this.get('flag') > 0) {
+            return false;
+          }
+          return true;
+        }).property('flag'),
+        needs: 'questionsIndex',
+        actions: {
+          "delete": function(question) {
+            var ans, name;
+            name = question.get('school.name') + ' ' + question.get('term') + ' ' + question.get('subject') + ' ' + question.get('course');
+            ans = confirm('Do you want to delete question ' + question.get('id') + ' of ' + name + '?');
+            if (ans) {
+              question.set('flag', 0);
+              question.save().then(function() {
+                return true;
+              }, function(errors) {
+                question.rollback();
+                return alert(errors.responseText);
+              });
+            }
+            return false;
+          }
+        }
+      });
+      App.QuestionsSelectRoute = Ember.Route.extend({
+        model: function() {
+          var thiz;
+          thiz = this;
+          return new Ember.RSVP.Promise(function(resolve, reject) {
+            return new Ember.RSVP.hash({
+              schools: thiz.store.find('school')
+            }).then(function(result) {
+              return resolve({
+                schools: result.schools,
+                questions: []
+              });
+            }, function(errors) {
+              return reject(errors);
+            });
+          });
+        }
+      });
+      App.QuestionsSelectView = Ember.View.extend({
+        didInsertElement: function() {
+          this._super();
+          return $('#type-tags').tagsinput();
+        }
+      });
+      App.QuestionsSelectController = Ember.ObjectController.extend({
+        sortProperties: ['id'],
+        sortAscending: false,
+        paging: {
+          current: 1,
+          number: 3,
+          pages: []
+        },
+        advanced: {
+          skip: 0,
+          limit: 10
+        },
+        subjects: (function() {
+          var school, subjects;
+          school = this.get('school');
+          if (school == null) {
+            return [];
+          }
+          subjects = school.get('info.subjects');
+          if (subjects.length > 0) {
+            this.set('subject', subjects[0]);
+          }
+          return subjects;
+        }).property('school'),
+        courses: (function() {
+          var courses, subject;
+          subject = this.get('subject');
+          if (subject == null) {
+            return [];
+          }
+          courses = subject.courses;
+          if (courses.length > 0) {
+            this.set('course', courses[0]);
+          }
+          return courses;
+        }).property('subject'),
+        terms: (function() {
+          var school, terms;
+          school = this.get('school');
+          if (school == null) {
+            return [];
+          }
+          terms = school.get('terms');
+          if (terms.length > 0) {
+            this.set('term', terms[0]);
+          }
+          return terms;
+        }).property('school'),
+        types: (function() {
+          var school, types;
+          school = this.get('school');
+          if (school == null) {
+            return [];
+          }
+          types = school.get('types');
+          if (types.length > 0) {
+            this.set('type', types[0]);
+          }
+          return types;
+        }).property('school'),
+        total: (function() {
+          return this.store.metadataFor('question').total;
+        }).property('model.questions'),
+        actions: {
+          update: function(advanced) {
+            this.set('advanced', advanced);
+            return this.set('questions', this.store.find('question', {
+              advanced: JSON.stringify(advanced)
+            }));
+          },
+          previous: function() {
+            var advanced;
+            advanced = this.get('advanced');
+            if (advanced.skip === 0) {
+              return false;
+            } else if (advanced.skip < advanced.limit) {
+              advanced.skip = 0;
+            } else {
+              advanced.skip -= advanced.limit;
+            }
+            this.send('update', advanced);
+            return false;
+          },
+          next: function() {
+            var advanced;
+            advanced = this.get('advanced');
+            advanced.skip += advanced.limit;
+            this.send('update', advanced);
+            return false;
+          },
+          first: function() {
+            return false;
+          },
+          last: function() {
+            return false;
+          },
+          jump: function(index) {
+            return false;
+          },
+          addTypeTag: function() {
+            var tag, term, type;
+            term = this.get('term');
+            type = this.get('type');
+            tag = term + ' ' + type;
+            $('#type-tags').tagsinput('add', tag);
+            return false;
+          },
+          search: function() {
+            var advanced;
+            advanced = {
+              skip: 0,
+              limit: 10,
+              school: this.get('school.id'),
+              subject: this.get('subject.name'),
+              course: this.get('course.number'),
+              types: $('#type-tags').tagsinput('items')
+            };
+            this.send('update', advanced);
+            return false;
+          }
+        }
+      });
+      App.QuestionSelectItemView = Ember.View.extend({
+        isHidden: (function() {
+          if (this.get('flag') > 0) {
+            return false;
+          }
+          return true;
+        }).property('flag'),
+        didInsertElement: function() {
+          var element;
+          this._super();
+          element = this.get('element');
+          return MathJax.Hub.Queue(['Typeset', MathJax.Hub, element]);
+        }
+      });
+      App.QuestionsNewRoute = Ember.Route.extend({
+        model: function() {
+          var thiz;
+          thiz = this;
+          return new Ember.RSVP.Promise(function(resolve, reject) {
+            return new Ember.RSVP.hash({
+              question: thiz.store.createRecord('question', {}),
+              schools: thiz.store.find('school')
+            }).then(function(result) {
+              return resolve({
+                question: result.question,
+                schools: result.schools
+              });
+            }, function(errors) {
+              return reject(errors);
+            });
+          });
+        },
+        afterModel: function(model, transition) {
+          return this.controllerFor('questionsNew').set('initialize', {
+            school: true
+          });
+        }
+      });
+      App.QuestionsNewView = Ember.View.extend({
+        didInsertElement: function() {
+          var hintEditor, questionEditor, solutionEditor, summaryEditor;
+          this._super();
+          $('#type-tags').tagsinput();
+          $('#tags').tagsinput();
+          questionEditor = utils.createMathEditor($('#question-input'), $('#question-preview'), {
+            check: true,
+            url: '/api/search/questions/text',
+            display: $('#question-display')
+          });
+          hintEditor = utils.createMathEditor($('#hint-input'), $('#hint-preview'));
+          solutionEditor = utils.createMathEditor($('#solution-input'), $('#solution-preview'));
+          return summaryEditor = utils.createMathEditor($('#summary-input'), $('#summary-preview'));
+        }
+      });
+      return App.QuestionsNewController = Ember.ObjectController.extend({
+        initialize: null,
+        needs: 'application',
+        difficulties: [1, 2, 3, 4, 5],
+        uploadLink: '/api/images/temp',
+        settings: (function() {
+          var cookie, data;
+          cookie = $.cookie('settings');
+          if (cookie == null) {
+            return null;
+          }
+          data = JSON.parse(cookie);
+          return data[this.get('controllers.application.model._id')];
+        }).property('initialize'),
+        terms: (function() {
+          var school;
+          school = this.get('question.school');
+          if (school == null) {
+            return [];
+          }
+          if (school.toJSON().terms.length > 0) {
+            this.set('selectedTerm', school.toJSON().terms[0]);
+          }
+          return school.toJSON().terms;
+        }).property('question.school'),
+        types: (function() {
+          var school;
+          school = this.get('question.school');
+          if (school == null) {
+            return [];
+          }
+          if (school.toJSON().types.length > 0) {
+            this.set('selectedType', school.toJSON().types[0]);
+          }
+          return school.toJSON().types;
+        }).property('question.school'),
+        subjects: (function() {
+          var found, school, settings;
+          school = this.get('question.school');
+          if (school == null) {
+            this.set('question.subject', null);
+            return [];
+          }
+          if (school.toJSON().info.subjects.length > 0) {
+            if (this.get('initialize.subject') && this.get('settings')) {
+              settings = this.get('settings');
+              found = school.toJSON().info.subjects.find(function(item) {
+                if (item.name === settings.subject) {
+                  return true;
+                }
+                return false;
+              });
+              if (found != null) {
+                this.set('question.subject', found);
+                this.set('initialize.course', true);
+              }
+              this.set('initialize.subject', false);
+            } else {
+              this.set('question.subject', school.toJSON().info.subjects[0]);
+            }
+          } else {
+            this.set('question.subject', null);
+          }
+          return school.toJSON().info.subjects;
+        }).property('question.school'),
+        courses: (function() {
+          var found, settings, subject;
+          subject = this.get('question.subject');
+          if (subject == null) {
+            this.set('question.course', null);
+            return [];
+          }
+          if ((subject.courses != null) && subject.courses.length > 0) {
+            if (this.get('initialize.course') && this.get('settings')) {
+              settings = this.get('settings');
+              found = subject.courses.find(function(item) {
+                if (item.number === settings.course) {
+                  return true;
+                }
+                return false;
+              });
+              if (found != null) {
+                this.set('question.course', found);
+              }
+              this.set('initialize.course', false);
+            } else {
+              this.set('question.course', subject.courses[0]);
+            }
+          } else {
+            this.set('question.course', null);
+          }
+          return subject.courses;
+        }).property('question.subject'),
+        schoolsChanged: (function() {
+          var found, settings;
+          if (this.get('initialize.school') && this.get('settings')) {
+            settings = this.get('settings');
+            found = this.get('schools').find(function(item) {
+              if (item.get('name') === settings.school) {
+                return true;
+              }
+              return false;
+            });
+            if (found != null) {
+              this.set('question.school', found);
+              this.set('initialize.subject', true);
+            }
+            return this.set('initialize.school', false);
+          }
+        }).observes('schools'),
+        prepare: function(question) {
+          var another;
+          another = question.toJSON();
+          another.subject = question.get('subject.name');
+          another.course = question.get('course.number');
+          another.question = $('#question-input').cleanHtml();
+          another.hint = $('#hint-input').cleanHtml();
+          another.solution = $('#solution-input').cleanHtml();
+          another.summary = $('#summary-input').cleanHtml();
+          another.typeTags = $('#type-tags').val().replace(',', ', ');
+          another.tags = $('#tags').val().replace(',', ', ');
+          if (question.get('difficulty') == null) {
+            another.difficulty = 0;
+          }
+          another = this.store.createRecord('Question', another);
+          another.set('school', question.get('school'));
+          return another;
+        },
+        saveSettings: function() {
+          var settings, storage, uid;
+          uid = this.get('controllers.application.model._id');
+          settings = {
+            school: this.get('question.school.name'),
+            subject: this.get('question.subject.name'),
+            course: this.get('question.course.number')
+          };
+          storage = $.cookie('settings');
+          if (storage == null) {
+            storage = {};
+          } else {
+            storage = JSON.parse(storage);
+          }
+          storage[uid] = settings;
+          return $.cookie('settings', JSON.stringify(storage), {
+            expires: 7
+          });
+        },
+        actions: {
+          addTypeTag: function() {
+            var tag, term, type;
+            term = this.get('selectedTerm');
+            type = this.get('selectedType');
+            tag = term + ' ' + type;
+            $('#type-tags').tagsinput('add', tag);
+            return false;
+          },
+          add: function() {
+            var key, keys, question, result, thiz, _i, _len;
+            thiz = this;
+            question = this.prepare(this.get('question'));
+            result = question.validate();
+            this.set('question.errors', question.errors);
+            keys = me.keys(question.errors);
+            for (_i = 0, _len = keys.length; _i < _len; _i++) {
+              key = keys[_i];
+              alert(question.errors[key]);
+            }
+            if (!result) {
+              return false;
+            }
+            question.save().then(function() {
+              thiz.saveSettings();
+              return thiz.transitionToRoute('questions');
+            }, function(errors) {
+              question.rollback();
+              console.log(errors);
+              return alert(errors.responseText);
+            });
+            return false;
+          }
+        }
+      });
+    }
+  };
+  return QuestionsRoute;
+});

@@ -7,8 +7,6 @@ define ['me', 'routes/questionsRoute', 'routes/adminRoute',
 		start: ->
 			App = Ember.Application.create()
 			me.attach App, ['User', 'Question', 'School']
-			App['Count'] = DS.Model.extend
-				number: DS.attr()
 
 			App.Router.map ->
 				@route 'login'

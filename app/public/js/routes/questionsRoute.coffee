@@ -6,7 +6,8 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 'ehbs!templates/questions/question.edit',
 'ehbs!templates/questions/questions.index',
 'ehbs!templates/questions/questions.select',
-'ehbs!templates/questions/questions.new'], 
+'ehbs!templates/questions/questions.new',
+'ehbs!templates/helpers/pager'], 
 ($, me, utils, PhotoUploadComponent, mmt) ->
 	QuestionsRoute = 
 		setup: (App) ->
@@ -274,7 +275,10 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 			App.QuestionsSelectController = Ember.ObjectController.extend
 				sortProperties: ['id']
 				sortAscending: false
-				page: 1
+				paging:
+					current: 1
+					number: 3
+					pages: []
 				advanced:
 					skip: 0
 					limit: 10
@@ -306,10 +310,15 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 					if types.length > 0 then @set 'type', types[0]
 					return types
 				).property 'school'
+				total: ( ->
+					return @store.metadataFor('question').total
+				).property 'model.questions'
 				actions:
 					update: (advanced) ->
 						@set 'advanced', advanced
 						@set 'questions', @store.find('question', {advanced: JSON.stringify(advanced)})
+						#need to fix paging here
+						
 					previous: ->
 						advanced = @get 'advanced'
 						if advanced.skip == 0
