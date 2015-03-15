@@ -186,7 +186,7 @@ module.exports = {
       }
     },
     api: {
-      ra: function(req, res, model, form, cb) {
+      ra: function(req, res, model, form, names) {
         var advanced, err, limit, order, pattern, search, skip, type, _i, _len, _ref;
         advanced = null;
         try {
@@ -199,12 +199,9 @@ module.exports = {
         if (advanced == null) {
           return model.find({}, function(err, result) {
             if (err) {
-              return cb(err);
+              return res.send(500, err.message);
             } else {
-              return cb(null, {
-                code: 200,
-                data: result
-              });
+              return res.send(200, me.helper.wrap(result, names.cname));
             }
           });
         } else {
@@ -234,13 +231,18 @@ module.exports = {
             }
             search.typeTags = new RegExp('(' + pattern + ')', 'i');
           }
-          return model.find(search).sort(order + '_id').skip(skip).limit(limit).exec(function(err, result) {
+          return model.find(search).count(function(err, count) {
             if (err) {
-              return cb(err);
+              return res.send(500, err.message);
             } else {
-              return cb(null, {
-                code: 200,
-                data: result
+              return model.find(search).sort(order + '_id').skip(skip).limit(limit).exec(function(err, result) {
+                if (err) {
+                  return res.send(500, err.message);
+                } else {
+                  result = me.helper.wrap(result, names.cname);
+                  result.count = count;
+                  return res.send(200, result);
+                }
               });
             }
           });

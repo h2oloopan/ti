@@ -154,7 +154,7 @@ module.exports =
 
 		api:
 			#ra
-			ra: (req, res, model, form, cb) ->
+			ra: (req, res, model, form, names) ->
 				advanced = null
 				try
 					advanced = req.query.advanced
@@ -167,11 +167,9 @@ module.exports =
 					#do a regular lookup
 					model.find {}, (err, result) ->
 						if err
-							cb err
+							res.send 500, err.message
 						else
-							cb null,
-								code: 200
-								data: result
+							res.send 200, me.helper.wrap result, names.cname
 				else
 					#do an advanced lookup
 					console.log advanced
@@ -190,19 +188,17 @@ module.exports =
 						search.typeTags = new RegExp '(' + pattern + ')', 'i'
 
 
-					
-					
-					model.find(search).sort(order + '_id').skip(skip).limit(limit).exec (err, result) ->
+					model.find(search).count (err, count) ->
 						if err
-							cb err
+							res.send 500, err.message
 						else
-							cb null,
-								code: 200
-								data: result
-
-					#cb new Error 'Not implemented yet'
-				
-
+							model.find(search).sort(order + '_id').skip(skip).limit(limit).exec (err, result) ->
+								if err
+									res.send 500, err.message
+								else
+									result = me.helper.wrap result, names.cname
+									result.count = count
+									res.send 200, result
 		before:
 			#c
 			c: (question, user, cb) ->
