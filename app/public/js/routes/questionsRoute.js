@@ -384,38 +384,39 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
         }).property('model.questions'),
         actions: {
           update: function(advanced) {
+            var paging;
             this.set('advanced', advanced);
-            return this.set('questions', this.store.find('question', {
+            this.set('questions', this.store.find('question', {
               advanced: JSON.stringify(advanced)
             }));
+            return paging = this.get('paging');
           },
           previous: function() {
-            var advanced;
+            var advanced, paging;
+            paging = this.get('paging');
             advanced = this.get('advanced');
             if (advanced.skip === 0) {
               return false;
             } else if (advanced.skip < advanced.limit) {
               advanced.skip = 0;
+              paging.current = 1;
             } else {
               advanced.skip -= advanced.limit;
+              paging.current = paging.current - 1;
+              if (paging.current < 1) {
+                paging.current = 1;
+              }
             }
             this.send('update', advanced);
             return false;
           },
           next: function() {
-            var advanced;
+            var advanced, paging, total;
+            paging = this.get('paging');
             advanced = this.get('advanced');
+            total = this.get('total');
             advanced.skip += advanced.limit;
             this.send('update', advanced);
-            return false;
-          },
-          first: function() {
-            return false;
-          },
-          last: function() {
-            return false;
-          },
-          jump: function(index) {
             return false;
           },
           addTypeTag: function() {

@@ -318,27 +318,29 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 						@set 'advanced', advanced
 						@set 'questions', @store.find('question', {advanced: JSON.stringify(advanced)})
 						#need to fix paging here
-						
+						paging = @get 'paging'
+
 					previous: ->
+						paging = @get 'paging'
 						advanced = @get 'advanced'
 						if advanced.skip == 0
 							return false
 						else if advanced.skip < advanced.limit
 							advanced.skip = 0
+							paging.current = 1
 						else
 							advanced.skip -= advanced.limit
+							paging.current = paging.current - 1
+							if paging.current < 1 then paging.current = 1
 						@send 'update', advanced
 						return false
 					next: ->
+						paging = @get 'paging'
 						advanced = @get 'advanced'
+						total = @get 'total'
+						
 						advanced.skip += advanced.limit
 						@send 'update', advanced
-						return false
-					first: ->
-						return false
-					last: ->
-						return false
-					jump: (index) ->
 						return false
 					addTypeTag: ->
 						#add a type tag from the term/type combo
