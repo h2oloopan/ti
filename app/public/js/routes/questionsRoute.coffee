@@ -276,10 +276,10 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 			App.QuestionsSelectController = Ember.ObjectController.extend
 				sortProperties: ['id']
 				sortAscending: false
+				pages: []
 				paging:
 					current: 1
 					number: 3
-					pages: []
 				advanced:
 					skip: 0
 					limit: 10
@@ -325,16 +325,19 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 							paging = thiz.get 'paging'
 							total = thiz.get 'total'
 							advanced = thiz.get 'advanced'
-							paging.pages = []
-							paging.pages.pushObject paging.current
+							pages = thiz.get 'pages'
+							pages.clear()
+							pages.pushObject paging.current
 							maxPage = Math.ceil(total / advanced.limit)
 							for i in [1...paging.number]
 								pageFront = paging.current - i
 								pageEnd = paging.current + i
-								if pageFront >= 1 then paging.pages.unshiftObject pageFront
-								if pageEnd <= maxPage then paging.pages.pushObject pageEnd
+								if pageFront >= 1 then pages.unshiftObject pageFront
+								if pageEnd <= maxPage then pages.pushObject pageEnd
+							return true
 						, (errors) ->
 							alert errors.responseText
+							return false
 							#error
 						return false
 					jump: (page) ->

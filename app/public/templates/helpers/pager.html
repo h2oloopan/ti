@@ -5,7 +5,7 @@
 				<span aria-hidden="true">&laquo;</span>
 			</a>
 		</li>
-		{{#each page in paging.pages}}
+		{{#each page in pages}}
 			<li><a href="#" {{action "jump" page}}>{{page}}</a></li>
 		{{/each}}
 		<li>

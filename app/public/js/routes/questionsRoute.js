@@ -322,10 +322,10 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
       App.QuestionsSelectController = Ember.ObjectController.extend({
         sortProperties: ['id'],
         sortAscending: false,
+        pages: [],
         paging: {
           current: 1,
-          number: 3,
-          pages: []
+          number: 3
         },
         advanced: {
           skip: 0,
@@ -390,30 +390,29 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
             this.store.find('question', {
               advanced: JSON.stringify(advanced)
             }).then(function(result) {
-              var i, maxPage, pageEnd, pageFront, paging, total, _i, _ref, _results;
+              var i, maxPage, pageEnd, pageFront, pages, paging, total, _i, _ref;
               thiz.set('questions', result);
               paging = thiz.get('paging');
               total = thiz.get('total');
               advanced = thiz.get('advanced');
-              paging.pages = [];
-              paging.pages.pushObject(paging.current);
+              pages = thiz.get('pages');
+              pages.clear();
+              pages.pushObject(paging.current);
               maxPage = Math.ceil(total / advanced.limit);
-              _results = [];
               for (i = _i = 1, _ref = paging.number; 1 <= _ref ? _i < _ref : _i > _ref; i = 1 <= _ref ? ++_i : --_i) {
                 pageFront = paging.current - i;
                 pageEnd = paging.current + i;
                 if (pageFront >= 1) {
-                  paging.pages.unshiftObject(pageFront);
+                  pages.unshiftObject(pageFront);
                 }
                 if (pageEnd <= maxPage) {
-                  _results.push(paging.pages.pushObject(pageEnd));
-                } else {
-                  _results.push(void 0);
+                  pages.pushObject(pageEnd);
                 }
               }
-              return _results;
+              return true;
             }, function(errors) {
-              return alert(errors.responseText);
+              alert(errors.responseText);
+              return false;
             });
             return false;
           },
