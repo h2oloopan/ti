@@ -196,6 +196,8 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 							alert errors.responseText
 						return false
 
+			App.PagerController = Ember.ObjectController.extend {}
+
 #question, single item view
 			App.QuestionIndexRoute = Ember.Route.extend
 				model: ->
@@ -331,7 +333,6 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 								pageEnd = paging.current + i
 								if pageFront >= 1 then paging.pages.unshift pageFront
 								if pageEnd <= maxPage then paging.pages.push pageEnd
-							console.log paging 
 						, (errors) ->
 							alert errors.responseText
 							#error

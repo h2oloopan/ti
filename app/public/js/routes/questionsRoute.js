@@ -225,6 +225,7 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
           }
         }
       });
+      App.PagerController = Ember.ObjectController.extend({});
       App.QuestionIndexRoute = Ember.Route.extend({
         model: function() {
           var qid;
@@ -390,13 +391,14 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
             this.set('questions', this.store.find('question', {
               advanced: JSON.stringify(advanced)
             }).then(function(result) {
-              var i, maxPage, pageEnd, pageFront, paging, total, _i, _ref;
+              var i, maxPage, pageEnd, pageFront, paging, total, _i, _ref, _results;
               paging = thiz.get('paging');
               total = thiz.get('total');
               advanced = thiz.get('advanced');
               paging.pages = [];
               paging.pages.push(paging.current);
               maxPage = Math.ceil(total / advanced.limit);
+              _results = [];
               for (i = _i = 1, _ref = paging.number; 1 <= _ref ? _i < _ref : _i > _ref; i = 1 <= _ref ? ++_i : --_i) {
                 pageFront = paging.current - i;
                 pageEnd = paging.current + i;
@@ -404,10 +406,12 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
                   paging.pages.unshift(pageFront);
                 }
                 if (pageEnd <= maxPage) {
-                  paging.pages.push(pageEnd);
+                  _results.push(paging.pages.push(pageEnd));
+                } else {
+                  _results.push(void 0);
                 }
               }
-              return console.log(paging);
+              return _results;
             }, function(errors) {
               return alert(errors.responseText);
             }));
