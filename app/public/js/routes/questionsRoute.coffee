@@ -315,11 +315,27 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 				).property 'model.questions'
 				actions:
 					update: (advanced) ->
+						thiz = @
 						@set 'advanced', advanced
-						@set 'questions', @store.find('question', {advanced: JSON.stringify(advanced)})
-						#need to fix paging here
-						paging = @get 'paging'
-
+						@set 'questions', @store.find('question', {advanced: JSON.stringify(advanced)}).then (result) ->
+							#done
+							#need to fix paging here
+							paging = thiz.get 'paging'
+							total = thiz.get 'total'
+							advanced = thiz.get 'advanced'
+							paging.pages = []
+							paging.pages.push paging.current
+							maxPage = Math.ceil(total / advanced.limit)
+							for i in [1...paging.number]
+								pageFront = paging.current - i
+								pageEnd = paging.current + i
+								if pageFront >= 1 then paging.pages.unshift pageFront
+								if pageEnd <= maxPage then paging.pages.push pageEnd
+							console.log paging 
+						, (errors) ->
+							alert errors.responseText
+							#error
+						return false
 					previous: ->
 						paging = @get 'paging'
 						advanced = @get 'advanced'
@@ -340,6 +356,11 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 						total = @get 'total'
 						
 						advanced.skip += advanced.limit
+						paging.current++
+						if advanced.skip >= total
+							advanced.skip -= advanced.limit
+							paging.current--
+
 						@send 'update', advanced
 						return false
 					addTypeTag: ->
