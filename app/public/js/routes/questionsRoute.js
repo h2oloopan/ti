@@ -225,7 +225,6 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
           }
         }
       });
-      App.PagerController = Ember.ObjectController.extend({});
       App.QuestionIndexRoute = Ember.Route.extend({
         model: function() {
           var qid;
@@ -388,25 +387,26 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
             var thiz;
             thiz = this;
             this.set('advanced', advanced);
-            this.set('questions', this.store.find('question', {
+            this.store.find('question', {
               advanced: JSON.stringify(advanced)
             }).then(function(result) {
               var i, maxPage, pageEnd, pageFront, paging, total, _i, _ref, _results;
+              thiz.set('questions', result);
               paging = thiz.get('paging');
               total = thiz.get('total');
               advanced = thiz.get('advanced');
               paging.pages = [];
-              paging.pages.push(paging.current);
+              paging.pages.pushObject(paging.current);
               maxPage = Math.ceil(total / advanced.limit);
               _results = [];
               for (i = _i = 1, _ref = paging.number; 1 <= _ref ? _i < _ref : _i > _ref; i = 1 <= _ref ? ++_i : --_i) {
                 pageFront = paging.current - i;
                 pageEnd = paging.current + i;
                 if (pageFront >= 1) {
-                  paging.pages.unshift(pageFront);
+                  paging.pages.unshiftObject(pageFront);
                 }
                 if (pageEnd <= maxPage) {
-                  _results.push(paging.pages.push(pageEnd));
+                  _results.push(paging.pages.pushObject(pageEnd));
                 } else {
                   _results.push(void 0);
                 }
@@ -414,7 +414,16 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'js/MathJa
               return _results;
             }, function(errors) {
               return alert(errors.responseText);
-            }));
+            });
+            return false;
+          },
+          jump: function(page) {
+            var advanced, paging;
+            paging = this.get('paging');
+            advanced = this.get('advanced');
+            advanced.skip = advanced.limit * (page - 1);
+            paging.current = page;
+            this.send('update', advanced);
             return false;
           },
           previous: function() {

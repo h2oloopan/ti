@@ -52,7 +52,7 @@
 	</div>
 	<hr />
 	{{#if questions.length}}
-		{{render "pager" paging}}
+		{{partial "pager"}}
 	{{/if}}
 	{{#each question in questions}}
 		{{#view "questionSelectItem"}}
@@ -96,7 +96,7 @@
 		{{/view}}
 	{{/each}}
 	{{#if questions.length}}
-		
+		{{partial "pager"}}
 	{{/if}}
 </div>
 <br/>

@@ -196,7 +196,6 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 							alert errors.responseText
 						return false
 
-			App.PagerController = Ember.ObjectController.extend {}
 
 #question, single item view
 			App.QuestionIndexRoute = Ember.Route.extend
@@ -319,23 +318,31 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 					update: (advanced) ->
 						thiz = @
 						@set 'advanced', advanced
-						@set 'questions', @store.find('question', {advanced: JSON.stringify(advanced)}).then (result) ->
+						@store.find('question', {advanced: JSON.stringify(advanced)}).then (result) ->
 							#done
 							#need to fix paging here
+							thiz.set 'questions', result
 							paging = thiz.get 'paging'
 							total = thiz.get 'total'
 							advanced = thiz.get 'advanced'
 							paging.pages = []
-							paging.pages.push paging.current
+							paging.pages.pushObject paging.current
 							maxPage = Math.ceil(total / advanced.limit)
 							for i in [1...paging.number]
 								pageFront = paging.current - i
 								pageEnd = paging.current + i
-								if pageFront >= 1 then paging.pages.unshift pageFront
-								if pageEnd <= maxPage then paging.pages.push pageEnd
+								if pageFront >= 1 then paging.pages.unshiftObject pageFront
+								if pageEnd <= maxPage then paging.pages.pushObject pageEnd
 						, (errors) ->
 							alert errors.responseText
 							#error
+						return false
+					jump: (page) ->
+						paging = @get 'paging'
+						advanced = @get 'advanced'
+						advanced.skip = advanced.limit * (page - 1)
+						paging.current = page
+						@send 'update', advanced
 						return false
 					previous: ->
 						paging = @get 'paging'
