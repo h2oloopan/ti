@@ -268,12 +268,17 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 						, (errors) ->
 							reject errors
 
-			App.QuestionsSelectView = Ember.View.extend
+			App.QuestionsSelectView = Ember.View.extend InfiniteScroll.ViewMixin,
 				didInsertElement: ->
 					@_super()
+					@setupInfiniteScrollListener()
 					$('#type-tags').tagsinput()
+				willDestroyElement: ->
+					@_super()
+					@teardownInfiniteScrollListener()
 
-			App.QuestionsSelectController = Ember.ObjectController.extend
+
+			App.QuestionsSelectController = Ember.ObjectController.extend InfiniteScroll.ControllerMixin,
 				sortProperties: ['id']
 				sortAscending: false
 				testA: []
@@ -343,13 +348,16 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 						
 						if advanced.skip >= total
 							#now we have hit the last page
+							@set 'hasMore', false
 							return false
+						@send 'update', advanced
 						return false
 					search: ->
 						#update advanced object
 						@set 'testA', []
 						@set 'testB', []
 						@set 'testC', []
+						@set 'questions', []
 						advanced = 
 							skip: 0
 							limit: 10

@@ -1,7 +1,80 @@
-/*!
-Waypoints Infinite Scroll Shortcut - 3.1.1
-Copyright © 2011-2015 Caleb Troughton
-Licensed under the MIT license.
-https://github.com/imakewebthings/waypoints/blog/master/licenses.txt
-*/
-!function(){"use strict";function t(n){this.options=i.extend({},t.defaults,n),this.container=this.options.element,"auto"!==this.options.container&&(this.container=this.options.container),this.$container=i(this.container),this.$more=i(this.options.more),this.$more.length&&(this.setupHandler(),this.waypoint=new o(this.options))}var i=window.jQuery,o=window.Waypoint;t.prototype.setupHandler=function(){this.options.handler=i.proxy(function(){this.options.onBeforePageLoad(),this.destroy(),this.$container.addClass(this.options.loadingClass),i.get(i(this.options.more).attr("href"),i.proxy(function(t){var n=i(i.parseHTML(t)),e=n.find(this.options.more),s=n.find(this.options.items);s.length||(s=n.filter(this.options.items)),this.$container.append(s),this.$container.removeClass(this.options.loadingClass),e.length||(e=n.filter(this.options.more)),e.length?(this.$more.replaceWith(e),this.$more=e,this.waypoint=new o(this.options)):this.$more.remove(),this.options.onAfterPageLoad()},this))},this)},t.prototype.destroy=function(){this.waypoint&&this.waypoint.destroy()},t.defaults={container:"auto",items:".infinite-item",more:".infinite-more-link",offset:"bottom-in-view",loadingClass:"infinite-loading",onBeforePageLoad:i.noop,onAfterPageLoad:i.noop},o.Infinite=t}();
+(function(window, Ember, $){
+  var InfiniteScroll = {
+    PAGE:     1,  // default start page
+    PER_PAGE: 25 // default per page
+  };
+
+  InfiniteScroll.ControllerMixin = Ember.Mixin.create({
+    loadingMore: false,
+    page: InfiniteScroll.PAGE,
+    perPage: InfiniteScroll.PER_PAGE,
+
+    actions: {
+      getMore: function(){
+        if (this.get('loadingMore')) return;
+
+        this.set('loadingMore', true);
+        this.get('target').send('getMore');
+      },
+
+      gotMore: function(items, nextPage){
+        this.set('loadingMore', false);
+        this.pushObjects(items);
+        this.set('page', nextPage);
+      }
+    }
+  });
+
+  InfiniteScroll.RouteMixin = Ember.Mixin.create({
+    actions: {
+      getMore: function() {
+        throw new Error("Must override Route action `getMore`.");
+      },
+      fetchPage: function() {
+        throw new Error("Must override Route action `getMore`.");
+      }
+    }
+  });
+
+  InfiniteScroll.ViewMixin = Ember.Mixin.create({
+    setupInfiniteScrollListener: function(){
+      $('.inf-scroll-outer-container').on('scroll.infinite', Ember.run.bind(this, this.didScroll));
+    },
+    teardownInfiniteScrollListener: function(){
+      $('.inf-scroll-outer-container').off('scroll.infinite');
+    },
+    didScroll: function(){
+      if (this.isScrolledToRight() || this.isScrolledToBottom()) {
+        this.get('controller').send('getMore');
+      }
+    },
+    isScrolledToRight: function(){
+      var distanceToViewportLeft = (
+        $('.inf-scroll-inner-container').width() - $('.inf-scroll-outer-container').width());
+      var viewPortLeft = $('.inf-scroll-outer-container').scrollLeft();
+
+      if (viewPortLeft === 0) {
+        // if we are at the left of the page, don't do
+        // the infinite scroll thing
+        return false;
+      }
+
+      return (viewPortLeft - distanceToViewportLeft);
+    },
+    isScrolledToBottom: function(){
+      var distanceToViewportTop = (
+        $('.inf-scroll-inner-container').height() - $('.inf-scroll-outer-container').height());
+      var viewPortTop = $('.inf-scroll-outer-container').scrollTop();
+
+      if (viewPortTop === 0) {
+        // if we are at the top of the page, don't do
+        // the infinite scroll thing
+        return false;
+      }
+
+      return (viewPortTop >= distanceToViewportTop);
+    }
+  });
+
+  window.InfiniteScroll = InfiniteScroll;
+})(this, Ember, jQuery);

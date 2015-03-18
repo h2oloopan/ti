@@ -313,13 +313,18 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'infinite'
           });
         }
       });
-      App.QuestionsSelectView = Ember.View.extend({
+      App.QuestionsSelectView = Ember.View.extend(InfiniteScroll.ViewMixin, {
         didInsertElement: function() {
           this._super();
+          this.setupInfiniteScrollListener();
           return $('#type-tags').tagsinput();
+        },
+        willDestroyElement: function() {
+          this._super();
+          return this.teardownInfiniteScrollListener();
         }
       });
-      App.QuestionsSelectController = Ember.ObjectController.extend({
+      App.QuestionsSelectController = Ember.ObjectController.extend(InfiniteScroll.ControllerMixin, {
         sortProperties: ['id'],
         sortAscending: false,
         testA: [],
@@ -415,8 +420,10 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'infinite'
             advanced = this.get('advanced');
             advanced.skip += advanced.limit;
             if (advanced.skip >= total) {
+              this.set('hasMore', false);
               return false;
             }
+            this.send('update', advanced);
             return false;
           },
           search: function() {
@@ -424,6 +431,7 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'infinite'
             this.set('testA', []);
             this.set('testB', []);
             this.set('testC', []);
+            this.set('questions', []);
             advanced = {
               skip: 0,
               limit: 10,

@@ -54,6 +54,8 @@
 			<p class="help-block">{{total}} matching questions have been found.</p>
 		</div>
 	{{/if}}
+	<div class="infinite-container">
+	</div>
 	{{#each question in questions}}
 		{{#view "questionSelectItem"}}
 			{{#unless question.isNew}}
