@@ -282,7 +282,7 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 				sortProperties: ['id']
 				sortAscending: false
 				perPage: 10
-				page: 1
+				page: 0
 				hasMore: false
 				testA: []
 				testB: []
@@ -340,7 +340,9 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 					getMore: ->
 						page = @get 'page'
 						per = @get 'perPage'
-						@send 'fetchPage', page, per
+						next = page + 1
+						@set 'page', next
+						@send 'fetchPage', next, per
 						return false
 					fetchPage: (page, perPage) ->
 						thiz = @

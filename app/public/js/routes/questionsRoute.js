@@ -328,7 +328,7 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'infinite'
         sortProperties: ['id'],
         sortAscending: false,
         perPage: 10,
-        page: 1,
+        page: 0,
         hasMore: false,
         testA: [],
         testB: [],
@@ -406,10 +406,12 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'infinite'
             return false;
           },
           getMore: function() {
-            var page, per;
+            var next, page, per;
             page = this.get('page');
             per = this.get('perPage');
-            this.send('fetchPage', page, per);
+            next = page + 1;
+            this.set('page', next);
+            this.send('fetchPage', next, per);
             return false;
           },
           fetchPage: function(page, perPage) {

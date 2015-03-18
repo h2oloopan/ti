@@ -238,3 +238,13 @@ body {
 .test-select label {
 	margin-right: 10px;
 }
+
+.inf-scroll-inner-container {
+	padding-left: 0;
+	overflow: visible;
+}
+
+.inf-scroll-outer-container.vertical {
+	overflow-y: scroll;
+	height: 200px;
+}
