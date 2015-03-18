@@ -4,7 +4,9 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/tests/tests.index', 'ehbs!templ
   return TestsRoute = {
     setup: function(App) {
       return App.Router.map(function() {
-        return this.resource('tests');
+        return this.resource('tests', function() {
+          return this.route('new');
+        });
       });
     }
   };

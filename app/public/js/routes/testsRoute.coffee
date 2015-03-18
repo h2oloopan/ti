@@ -5,4 +5,5 @@ define ['jquery', 'me', 'utils',
 		setup: (App) ->
 			#route
 			App.Router.map ->
-				@resource 'tests'
+				@resource 'tests', ->
+					@route 'new'
