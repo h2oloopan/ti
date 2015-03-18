@@ -1,5 +1,5 @@
 define ['jquery', 'me', 'utils', 'components/photo-upload',
-'moment',
+'moment', 'infinite',
 'js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML',
 'bootstrap-tagsinput',
 'ehbs!templates/questions/question.index',
@@ -276,13 +276,9 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 			App.QuestionsSelectController = Ember.ObjectController.extend
 				sortProperties: ['id']
 				sortAscending: false
-				pages: []
 				testA: []
 				testB: []
 				testC: []
-				paging:
-					current: 1
-					number: 3
 				advanced:
 					skip: 0
 					limit: 10
@@ -318,6 +314,13 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 					return @store.metadataFor('question').total
 				).property 'model.questions'
 				actions:
+					addTypeTag: ->
+						#add a type tag from the term/type combo
+						term = @get 'term'
+						type = @get 'type'
+						tag = term + ' ' + type
+						$('#type-tags').tagsinput 'add', tag
+						return false
 					update: (advanced) ->
 						thiz = @
 						@set 'advanced', advanced
@@ -343,46 +346,13 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 							return false
 							#error
 						return false
-					jump: (page) ->
-						paging = @get 'paging'
-						advanced = @get 'advanced'
-						advanced.skip = advanced.limit * (page - 1)
-						paging.current = page
-						@send 'update', advanced
-						return false
-					previous: ->
-						paging = @get 'paging'
-						advanced = @get 'advanced'
-						if advanced.skip == 0
-							return false
-						else if advanced.skip < advanced.limit
-							advanced.skip = 0
-							paging.current = 1
-						else
-							advanced.skip -= advanced.limit
-							paging.current = paging.current - 1
-							if paging.current < 1 then paging.current = 1
-						@send 'update', advanced
-						return false
 					next: ->
-						paging = @get 'paging'
 						advanced = @get 'advanced'
-						total = @get 'total'
-						
 						advanced.skip += advanced.limit
-						paging.current++
+						
 						if advanced.skip >= total
-							advanced.skip -= advanced.limit
-							paging.current--
-
-						@send 'update', advanced
-						return false
-					addTypeTag: ->
-						#add a type tag from the term/type combo
-						term = @get 'term'
-						type = @get 'type'
-						tag = term + ' ' + type
-						$('#type-tags').tagsinput 'add', tag
+							#now we have hit the last page
+							return false
 						return false
 					search: ->
 						#update advanced object
