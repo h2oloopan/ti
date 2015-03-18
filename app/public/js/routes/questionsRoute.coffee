@@ -283,6 +283,7 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 				sortAscending: false
 				perPage: 10
 				page: 1
+				hasMore: false
 				testA: []
 				testB: []
 				testC: []
@@ -339,9 +340,6 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 					getMore: ->
 						page = @get 'page'
 						per = @get 'perPage'
-						total = @get 'total'
-						#need to stop if already loaded everything
-						
 						@send 'fetchPage', page, per
 						return false
 					fetchPage: (page, perPage) ->
@@ -354,6 +352,10 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 							#done
 							questions = thiz.get 'questions'
 							questions.pushObjects result.content
+							thiz.set 'questions', questions
+							total = thiz.get 'total'
+							#need to stop if already loaded everything
+							if page * perPage >= total then thiz.set 'hasMore', false
 							return true
 						, (errors) ->
 							alert errors.responseText
@@ -374,6 +376,7 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 							course: @get 'course.number'
 							types: $('#type-tags').tagsinput 'items'
 
+						@set 'hasMore', true
 						@set 'advanced', advanced
 						@send 'getMore'
 						return false

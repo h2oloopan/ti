@@ -329,6 +329,7 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'infinite'
         sortAscending: false,
         perPage: 10,
         page: 1,
+        hasMore: false,
         testA: [],
         testB: [],
         testC: [],
@@ -405,10 +406,9 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'infinite'
             return false;
           },
           getMore: function() {
-            var page, per, total;
+            var page, per;
             page = this.get('page');
             per = this.get('perPage');
-            total = this.get('total');
             this.send('fetchPage', page, per);
             return false;
           },
@@ -422,8 +422,14 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'infinite'
             return this.store.find('question', {
               advanced: JSON.stringify(advanced)
             }).then(function(result) {
+              var total;
               questions = thiz.get('questions');
               questions.pushObjects(result.content);
+              thiz.set('questions', questions);
+              total = thiz.get('total');
+              if (page * perPage >= total) {
+                thiz.set('hasMore', false);
+              }
               return true;
             }, function(errors) {
               alert(errors.responseText);
@@ -444,6 +450,7 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'infinite'
               course: this.get('course.number'),
               types: $('#type-tags').tagsinput('items')
             };
+            this.set('hasMore', true);
             this.set('advanced', advanced);
             this.send('getMore');
             return false;

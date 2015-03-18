@@ -127,9 +127,11 @@
 			Loading more data (automatically!)
 		</div>
 	{{else}}
-		<div class="text-center">
-			<a class="btn btn-primary infinite-more-link" {{action "getMore"}}>More</a>
-		</div>
+		{{#if hasMore}}
+			<div class="text-center">
+				<a class="btn btn-primary infinite-more-link" {{action "getMore"}}>More</a>
+			</div>
+		{{/if}}
 	{{/if}}
 </div>
 <br/>
