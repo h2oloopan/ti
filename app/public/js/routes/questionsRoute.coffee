@@ -282,6 +282,7 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 				advanced:
 					skip: 0
 					limit: 10
+				hasMore: false
 				subjects: (->
 					school = @get 'school'
 					if !school? then return []
@@ -328,18 +329,8 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 							#done
 							#need to fix paging here
 							thiz.set 'questions', result
-							paging = thiz.get 'paging'
 							total = thiz.get 'total'
-							advanced = thiz.get 'advanced'
-							pages = thiz.get 'pages'
-							pages.clear()
-							pages.pushObject paging.current
-							maxPage = Math.ceil(total / advanced.limit)
-							for i in [1...paging.number]
-								pageFront = paging.current - i
-								pageEnd = paging.current + i
-								if pageFront >= 1 then pages.unshiftObject pageFront
-								if pageEnd <= maxPage then pages.pushObject pageEnd
+							if advanced.skip + advanced.limit < total then thiz.set 'hasMore', true
 							return true
 						, (errors) ->
 							alert errors.responseText

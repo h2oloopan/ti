@@ -86,7 +86,7 @@
 						</tr>
 						<tr>
 							<td colspan="5">
-								<form class="form-inline">
+								<form class="form-inline test-select">
 									<p class="help-block">
 										Select the tests this question is in
 									</p>
@@ -117,7 +117,11 @@
 			{{/unless}}
 		{{/view}}
 	{{/each}}
-
+	{{#if hasMore}}
+		<div class="text-center">
+			<a class="btn btn-primary infinite-more-link" {{action "next"}}>More</a>
+		</div>
+	{{/if}}
 </div>
 <br/>
 <br/>

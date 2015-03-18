@@ -329,6 +329,7 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'infinite'
           skip: 0,
           limit: 10
         },
+        hasMore: false,
         subjects: (function() {
           var school, subjects;
           school = this.get('school');
@@ -396,24 +397,11 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'infinite'
             this.store.find('question', {
               advanced: JSON.stringify(advanced)
             }).then(function(result) {
-              var i, maxPage, pageEnd, pageFront, pages, paging, total, _i, _ref;
+              var total;
               thiz.set('questions', result);
-              paging = thiz.get('paging');
               total = thiz.get('total');
-              advanced = thiz.get('advanced');
-              pages = thiz.get('pages');
-              pages.clear();
-              pages.pushObject(paging.current);
-              maxPage = Math.ceil(total / advanced.limit);
-              for (i = _i = 1, _ref = paging.number; 1 <= _ref ? _i < _ref : _i > _ref; i = 1 <= _ref ? ++_i : --_i) {
-                pageFront = paging.current - i;
-                pageEnd = paging.current + i;
-                if (pageFront >= 1) {
-                  pages.unshiftObject(pageFront);
-                }
-                if (pageEnd <= maxPage) {
-                  pages.pushObject(pageEnd);
-                }
+              if (advanced.skip + advanced.limit < total) {
+                thiz.set('hasMore', true);
               }
               return true;
             }, function(errors) {

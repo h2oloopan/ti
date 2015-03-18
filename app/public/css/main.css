@@ -235,4 +235,6 @@ body {
 	margin-left: 3px;
 }
 
-
+.test-select label {
+	margin-right: 10px;
+}
