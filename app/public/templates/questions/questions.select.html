@@ -84,7 +84,29 @@
 						</tr>
 						<tr>
 							<td colspan="5">
-								Select
+								<form class="form-inline">
+									<p class="help-block">
+										Select the tests this question is in
+									</p>
+									<div class="checkbox">
+										<label>
+											{{input type="checkbox" checked=question.inA}}
+											<span style="color:red;">Test A</span>
+										</label>
+									</div>
+									<div class="checkbox">
+										<label>
+											{{input type="checkbox" checked=question.inB}}
+											<span style="color:green;">Test B</span>
+										</label>
+									</div>
+									<div class="checkbox">
+										<label>
+											{{input type="checkbox" checked=question.inC}}
+											<span style="color:blue;">Test C</span>
+										</label>
+									</div>
+								</form>
 							</td>
 						</tr>
 					</table>
@@ -95,7 +117,12 @@
 	{{/each}}
 	{{#if questions.length}}
 		{{partial "pager"}}
+		<div class="text-center">
+			<button class="btn btn-default" type="button" {{action "generate"}}><span class="glyphicon glyphicon-new-window"></span> Generate Tests</button>
+		</div>
 	{{/if}}
+
+
 </div>
 <br/>
 <br/>
