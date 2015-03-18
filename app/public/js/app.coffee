@@ -1,8 +1,8 @@
-define ['me', 'routes/questionsRoute', 'routes/adminRoute',
+define ['me', 'routes/questionsRoute', 'routes/adminRoute', 'routes/testsRoute',
 'ehbs!templates/header', 'ehbs!templates/footer',
 'ehbs!templates/login', 'ehbs!templates/signup',
 'ehbs!templates/error'
-], (me, QuestionsRoute, AdminRoute) ->
+], (me, QuestionsRoute, AdminRoute, TestsRoute) ->
 	app =
 		start: ->
 			App = Ember.Application.create()
@@ -15,6 +15,7 @@ define ['me', 'routes/questionsRoute', 'routes/adminRoute',
 
 			QuestionsRoute.setup App
 			AdminRoute.setup App
+			TestsRoute.setup App
 
 			App.ApplicationRoute = Ember.Route.extend
 				model: ->
