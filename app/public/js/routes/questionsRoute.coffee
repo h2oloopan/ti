@@ -277,6 +277,9 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 				sortProperties: ['id']
 				sortAscending: false
 				pages: []
+				testA: []
+				testB: []
+				testC: []
 				paging:
 					current: 1
 					number: 3
@@ -383,6 +386,9 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 						return false
 					search: ->
 						#update advanced object
+						@set 'testA', []
+						@set 'testB', []
+						@set 'testC', []
 						advanced = 
 							skip: 0
 							limit: 10
@@ -392,6 +398,9 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 							types: $('#type-tags').tagsinput 'items'
 
 						@send 'update', advanced
+						return false
+					generate: ->
+
 						return false
 
 			App.QuestionSelectItemView = Ember.View.extend
