@@ -326,21 +326,6 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 						tag = term + ' ' + type
 						$('#type-tags').tagsinput 'add', tag
 						return false
-					update: (advanced) ->
-						thiz = @
-						@set 'advanced', advanced
-						@store.find('question', {advanced: JSON.stringify(advanced)}).then (result) ->
-							#done
-							#need to fix paging here
-							thiz.set 'questions', result
-							total = thiz.get 'total'
-							if advanced.skip + advanced.limit < total then thiz.set 'hasMore', true
-							return true
-						, (errors) ->
-							alert errors.responseText
-							return false
-							#error
-						return false
 					next: ->
 						advanced = @get 'advanced'
 						advanced.skip += advanced.limit
@@ -354,17 +339,21 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 					getMore: ->
 						page = @get 'page'
 						per = @get 'perPage'
+						total = @get 'total'
 						#need to stop if already loaded everything
+						
 						@send 'fetchPage', page, per
 						return false
 					fetchPage: (page, perPage) ->
+						thiz = @
 						questions = @get 'questions'
 						advanced = @get 'advanced'
 						advanced.limit = perPage
 						advanced.skip = (page - 1) * perPage
 						@store.find('question', {advanced: JSON.stringify(advanced)}).then (result) ->
 							#done
-
+							questions = thiz.get 'questions'
+							questions.pushObjects result.content
 							return true
 						, (errors) ->
 							alert errors.responseText

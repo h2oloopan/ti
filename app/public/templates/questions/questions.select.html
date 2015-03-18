@@ -54,74 +54,81 @@
 			<p class="help-block">{{total}} matching questions have been found.</p>
 		</div>
 	{{/if}}
-	<div class="infinite-container">
+	<div class="inf-scroll-outer-container vertical">
+		<ul class="inf-scroll-inner-container">
+			{{#each question in questions}}
+				{{#view "questionSelectItem"}}
+					{{#unless question.isNew}}
+					{{#unless isHidden}}
+						<div class="question-select-item">
+							<table class="table table-bordered">
+								<tr>
+									<td style="width:20%;">
+										{{question.id}}
+									</td>
+									<td style="width:18%;">
+										{{question.school.name}}
+									</td>
+									<td style="width:10%;">
+										{{question.subject}}
+									</td>
+									<td style="width:10%;">
+										{{question.course}}
+									</td>
+									<td>
+										{{question.typeTags}}
+									</td>
+								</tr>
+								<tr>
+									<td colspan="5">
+										<div class="question-preview">
+											{{{question.question}}}
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="5">
+										<form class="form-inline test-select">
+											<p class="help-block">
+												Select the tests this question is in
+											</p>
+											<div class="checkbox">
+												<label>
+													{{input type="checkbox" checked=question.inA}}
+													<span style="color:red;">Test A</span>
+												</label>
+											</div>
+											<div class="checkbox">
+												<label>
+													{{input type="checkbox" checked=question.inB}}
+													<span style="color:green;">Test B</span>
+												</label>
+											</div>
+											<div class="checkbox">
+												<label>
+													{{input type="checkbox" checked=question.inC}}
+													<span style="color:blue;">Test C</span>
+												</label>
+											</div>
+										</form>
+									</td>
+								</tr>
+							</table>
+						</div>
+					{{/unless}}
+					{{/unless}}
+				{{/view}}
+			{{/each}}
+		</ul>
 	</div>
-	{{#each question in questions}}
-		{{#view "questionSelectItem"}}
-			{{#unless question.isNew}}
-			{{#unless isHidden}}
-				<div class="question-select-item">
-					<table class="table table-bordered">
-						<tr>
-							<td style="width:20%;">
-								{{question.id}}
-							</td>
-							<td style="width:18%;">
-								{{question.school.name}}
-							</td>
-							<td style="width:10%;">
-								{{question.subject}}
-							</td>
-							<td style="width:10%;">
-								{{question.course}}
-							</td>
-							<td>
-								{{question.typeTags}}
-							</td>
-						</tr>
-						<tr>
-							<td colspan="5">
-								<div class="question-preview">
-									{{{question.question}}}
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="5">
-								<form class="form-inline test-select">
-									<p class="help-block">
-										Select the tests this question is in
-									</p>
-									<div class="checkbox">
-										<label>
-											{{input type="checkbox" checked=question.inA}}
-											<span style="color:red;">Test A</span>
-										</label>
-									</div>
-									<div class="checkbox">
-										<label>
-											{{input type="checkbox" checked=question.inB}}
-											<span style="color:green;">Test B</span>
-										</label>
-									</div>
-									<div class="checkbox">
-										<label>
-											{{input type="checkbox" checked=question.inC}}
-											<span style="color:blue;">Test C</span>
-										</label>
-									</div>
-								</form>
-							</td>
-						</tr>
-					</table>
-				</div>
-			{{/unless}}
-			{{/unless}}
-		{{/view}}
-	{{/each}}
-	{{#if hasMore}}
+
+	{{#if loadingMore}}
 		<div class="text-center">
-			<a class="btn btn-primary infinite-more-link" {{action "next"}}>More</a>
+			Loading more data (automatically!)
+		</div>
+	{{else}}
+		<div class="text-center">
+			<a class="btn btn-primary infinite-more-link" {{action "getMore"}}>More</a>
 		</div>
 	{{/if}}
 </div>

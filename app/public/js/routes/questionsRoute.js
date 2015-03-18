@@ -393,26 +393,6 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'infinite'
             $('#type-tags').tagsinput('add', tag);
             return false;
           },
-          update: function(advanced) {
-            var thiz;
-            thiz = this;
-            this.set('advanced', advanced);
-            this.store.find('question', {
-              advanced: JSON.stringify(advanced)
-            }).then(function(result) {
-              var total;
-              thiz.set('questions', result);
-              total = thiz.get('total');
-              if (advanced.skip + advanced.limit < total) {
-                thiz.set('hasMore', true);
-              }
-              return true;
-            }, function(errors) {
-              alert(errors.responseText);
-              return false;
-            });
-            return false;
-          },
           next: function() {
             var advanced;
             advanced = this.get('advanced');
@@ -425,14 +405,16 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'infinite'
             return false;
           },
           getMore: function() {
-            var page, per;
+            var page, per, total;
             page = this.get('page');
             per = this.get('perPage');
+            total = this.get('total');
             this.send('fetchPage', page, per);
             return false;
           },
           fetchPage: function(page, perPage) {
-            var advanced, questions;
+            var advanced, questions, thiz;
+            thiz = this;
             questions = this.get('questions');
             advanced = this.get('advanced');
             advanced.limit = perPage;
@@ -440,6 +422,8 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'infinite'
             return this.store.find('question', {
               advanced: JSON.stringify(advanced)
             }).then(function(result) {
+              questions = thiz.get('questions');
+              questions.pushObjects(result.content);
               return true;
             }, function(errors) {
               alert(errors.responseText);
