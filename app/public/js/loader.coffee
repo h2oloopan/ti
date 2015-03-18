@@ -18,7 +18,8 @@ require.config
 		'ember': ['handlebars', 'jquery']
 		'ember-data': ['ember']
 		'jquery.fileupload': ['jquery', 'jquery.ui.widget', 'jquery.iframe-transport']
-		'infinite': ['jquery', 'ember']
+		'waypoints': ['jquery']
+		'infinite': ['ember', 'waypoints']
 		'app': ['ember', 'ember-data', 'bootstrap', 'jquery.cookie', 'moment']
 
 require ['app'], (app) ->

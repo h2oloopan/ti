@@ -246,5 +246,5 @@ body {
 
 .inf-scroll-outer-container.vertical {
 	overflow-y: scroll;
-	height: 200px;
+	min-height: 600px;
 }
