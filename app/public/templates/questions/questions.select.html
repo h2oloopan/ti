@@ -122,16 +122,13 @@
 		</ul>
 	</div>
 
-	{{#if loadingMore}}
+	{{#if questions.length}}
 		<div class="text-center">
-			Loading more data (automatically!)
+			{{#if hasMore}}
+			<a class="btn btn-primary infinite-more-link" {{action "getMore"}}>Load More</a>
+			{{/if}}
+			<a class="btn btn-success" {{action "generate"}}>Generate Tests</a>
 		</div>
-	{{else}}
-		{{#if hasMore}}
-			<div class="text-center">
-				<a class="btn btn-primary infinite-more-link" {{action "getMore"}}>More</a>
-			</div>
-		{{/if}}
 	{{/if}}
 </div>
 <br/>
