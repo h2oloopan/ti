@@ -281,13 +281,12 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 			App.QuestionsSelectController = Ember.ObjectController.extend InfiniteScroll.ControllerMixin,
 				sortProperties: ['id']
 				sortAscending: false
+				perPage: 10
+				page: 1
 				testA: []
 				testB: []
 				testC: []
-				advanced:
-					skip: 0
-					limit: 10
-				hasMore: false
+				advanced: {}
 				subjects: (->
 					school = @get 'school'
 					if !school? then return []
@@ -352,21 +351,42 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 							return false
 						@send 'update', advanced
 						return false
+					getMore: ->
+						page = @get 'page'
+						per = @get 'perPage'
+						#need to stop if already loaded everything
+						@send 'fetchPage', page, per
+						return false
+					fetchPage: (page, perPage) ->
+						questions = @get 'questions'
+						advanced = @get 'advanced'
+						advanced.limit = perPage
+						advanced.skip = (page - 1) * perPage
+						@store.find('question', {advanced: JSON.stringify(advanced)}).then (result) ->
+							#done
+
+							return true
+						, (errors) ->
+							alert errors.responseText
+							return false
 					search: ->
 						#update advanced object
 						@set 'testA', []
 						@set 'testB', []
 						@set 'testC', []
 						@set 'questions', []
+
+						skip = (@get('page') - 1) * @get('perPage')
+						limit = @get 'perPage'
+
 						advanced = 
-							skip: 0
-							limit: 10
 							school: @get 'school.id'
 							subject: @get 'subject.name'
 							course: @get 'course.number'
 							types: $('#type-tags').tagsinput 'items'
 
-						@send 'update', advanced
+						@set 'advanced', advanced
+						@send 'getMore'
 						return false
 					generate: ->
 

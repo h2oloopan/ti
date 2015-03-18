@@ -327,14 +327,12 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'infinite'
       App.QuestionsSelectController = Ember.ObjectController.extend(InfiniteScroll.ControllerMixin, {
         sortProperties: ['id'],
         sortAscending: false,
+        perPage: 10,
+        page: 1,
         testA: [],
         testB: [],
         testC: [],
-        advanced: {
-          skip: 0,
-          limit: 10
-        },
-        hasMore: false,
+        advanced: {},
         subjects: (function() {
           var school, subjects;
           school = this.get('school');
@@ -426,21 +424,44 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'infinite'
             this.send('update', advanced);
             return false;
           },
+          getMore: function() {
+            var page, per;
+            page = this.get('page');
+            per = this.get('perPage');
+            this.send('fetchPage', page, per);
+            return false;
+          },
+          fetchPage: function(page, perPage) {
+            var advanced, questions;
+            questions = this.get('questions');
+            advanced = this.get('advanced');
+            advanced.limit = perPage;
+            advanced.skip = (page - 1) * perPage;
+            return this.store.find('question', {
+              advanced: JSON.stringify(advanced)
+            }).then(function(result) {
+              return true;
+            }, function(errors) {
+              alert(errors.responseText);
+              return false;
+            });
+          },
           search: function() {
-            var advanced;
+            var advanced, limit, skip;
             this.set('testA', []);
             this.set('testB', []);
             this.set('testC', []);
             this.set('questions', []);
+            skip = (this.get('page') - 1) * this.get('perPage');
+            limit = this.get('perPage');
             advanced = {
-              skip: 0,
-              limit: 10,
               school: this.get('school.id'),
               subject: this.get('subject.name'),
               course: this.get('course.number'),
               types: $('#type-tags').tagsinput('items')
             };
-            this.send('update', advanced);
+            this.set('advanced', advanced);
+            this.send('getMore');
             return false;
           },
           generate: function() {
