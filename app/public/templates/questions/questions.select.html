@@ -50,7 +50,9 @@
 	</div>
 	<hr />
 	{{#if questions.length}}
-		{{partial "pager"}}
+		<div class="text-center">
+			<p class="help-block">{{total}} matching questions have been found.</p>
+		</div>
 	{{/if}}
 	{{#each question in questions}}
 		{{#view "questionSelectItem"}}
@@ -115,13 +117,6 @@
 			{{/unless}}
 		{{/view}}
 	{{/each}}
-	{{#if questions.length}}
-		{{partial "pager"}}
-		<div class="text-center">
-			<button class="btn btn-default" type="button" {{action "generate"}}><span class="glyphicon glyphicon-new-window"></span> Generate Tests</button>
-		</div>
-	{{/if}}
-
 
 </div>
 <br/>
