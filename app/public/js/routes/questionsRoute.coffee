@@ -377,6 +377,11 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 						@send 'getMore'
 						return false
 					generate: ->
+						thiz = @
+						school = @get 'school.id'
+						schoolName = @get 'school.name'
+						subject = @get 'subject.name'
+						course = @get 'course.number'
 						questions = @get 'questions'
 						testA = []
 						testB = []
@@ -388,10 +393,13 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 						counter = 0
 						if testA.length > 0
 							#get A ready
+							testA.name = school + ' ' + subject + ' ' + course
 						if testB.length > 0
 							#get B ready
+							testB.name = school + ' ' + subject + ' ' + course
 						if testC.length > 0
 							#get C ready
+							testC.name = school + ' ' + subject + ' ' + course
 						return false
 
 			App.QuestionSelectItemView = Ember.View.extend

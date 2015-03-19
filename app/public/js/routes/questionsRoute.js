@@ -452,7 +452,12 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'infinite'
             return false;
           },
           generate: function() {
-            var counter, question, questions, testA, testB, testC, _i, _len;
+            var counter, course, question, questions, school, schoolName, subject, testA, testB, testC, thiz, _i, _len;
+            thiz = this;
+            school = this.get('school.id');
+            schoolName = this.get('school.name');
+            subject = this.get('subject.name');
+            course = this.get('course.number');
             questions = this.get('questions');
             testA = [];
             testB = [];
@@ -470,6 +475,15 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'infinite'
               }
             }
             counter = 0;
+            if (testA.length > 0) {
+              testA.name = school + ' ' + subject + ' ' + course;
+            }
+            if (testB.length > 0) {
+              testB.name = school + ' ' + subject + ' ' + course;
+            }
+            if (testC.length > 0) {
+              testC.name = school + ' ' + subject + ' ' + course;
+            }
             return false;
           }
         }
