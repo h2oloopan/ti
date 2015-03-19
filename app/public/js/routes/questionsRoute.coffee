@@ -383,7 +383,8 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 						@send 'getMore'
 						return false
 					generate: ->
-
+						questions = @get 'questions'
+						
 						return false
 
 			App.QuestionSelectItemView = Ember.View.extend

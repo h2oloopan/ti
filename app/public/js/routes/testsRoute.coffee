@@ -7,3 +7,4 @@ define ['jquery', 'me', 'utils',
 			App.Router.map ->
 				@resource 'tests', ->
 					@route 'new'
+					@route 'review'

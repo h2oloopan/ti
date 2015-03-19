@@ -12,6 +12,9 @@ module.exports =
 				default: []
 			note:
 				type: String
+			public:
+				type: Boolean
+				default: false
 			creator:
 				type: Schema.Types.ObjectId
 				ref: 'User'
