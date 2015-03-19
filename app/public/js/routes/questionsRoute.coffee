@@ -394,12 +394,15 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 						if testA.length > 0
 							#get A ready
 							testA.name = school + ' ' + subject + ' ' + course
+							testA.school = school
 						if testB.length > 0
 							#get B ready
 							testB.name = school + ' ' + subject + ' ' + course
+							testB.school = school
 						if testC.length > 0
 							#get C ready
 							testC.name = school + ' ' + subject + ' ' + course
+							testC.school = school
 						return false
 
 			App.QuestionSelectItemView = Ember.View.extend

@@ -477,12 +477,15 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'infinite'
             counter = 0;
             if (testA.length > 0) {
               testA.name = school + ' ' + subject + ' ' + course;
+              testA.school = school;
             }
             if (testB.length > 0) {
               testB.name = school + ' ' + subject + ' ' + course;
+              testB.school = school;
             }
             if (testC.length > 0) {
               testC.name = school + ' ' + subject + ' ' + course;
+              testC.school = school;
             }
             return false;
           }
