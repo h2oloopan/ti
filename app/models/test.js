@@ -19,7 +19,8 @@ module.exports = {
         "default": []
       },
       note: {
-        type: String
+        type: String,
+        "default": ''
       },
       "public": {
         type: Boolean,
@@ -72,9 +73,10 @@ module.exports = {
           return cb(new Error('No user is present'));
         }
         time = moment().toDate();
-        test.creator = user._id;
+        test.creator = me.ObjectId(user._id);
         test.createdTime = time;
         test.lastModifiedTime = time;
+        console.log(test);
         return cb(null, test);
       }
     }

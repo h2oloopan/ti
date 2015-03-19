@@ -362,9 +362,7 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 					search: ->
 						#update advanced object
 						@set 'questions', []
-
-						skip = (@get('page') - 1) * @get('perPage')
-						limit = @get 'perPage'
+						@set 'page', 0
 
 						advanced = 
 							school: @get 'school.id'
@@ -383,39 +381,88 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 						subject = @get 'subject.name'
 						course = @get 'course.number'
 						questions = @get 'questions'
-						testA = []
-						testB = []
-						testC = []
+						testA =
+							questions: []
+						testB =
+							questions: []
+						testC =
+							questions: []
 						for question in questions
-							if question.inA then testA.push question
-							if question.inB then testB.push question
-							if question.inC then testC.push question
+							if question.inA then testA.questions.push question
+							if question.inB then testB.questions.push question
+							if question.inC then testC.questions.push question
 						counter = 0
-						if testA.length > 0
+						if testA.questions.length > 0
 							#get A ready
-							testA.name = school + ' ' + subject + ' ' + course
+							testA.name = schoolName + ' ' + subject + ' ' + course
 							testA.school = school
 							testA.subject = subject
 							testA.course = course
-							testA = @store.createRecord 'test', testA
-							testA.save().then ->
-								#done
-								return true
-							, (errors) ->
-								#fail
-								return false
-						if testB.length > 0
+							counter++
+						if testB.questions.length > 0
 							#get B ready
-							testB.name = school + ' ' + subject + ' ' + course
+							testB.name = schoolName + ' ' + subject + ' ' + course
 							testB.school = school
 							testB.subject = subject
 							testB.course = course
-						if testC.length > 0
+							counter++
+						if testC.questions.length > 0
 							#get C ready
-							testC.name = school + ' ' + subject + ' ' + course
+							testC.name = schoolName + ' ' + subject + ' ' + course
 							testC.school = school
 							testC.subject = subject
 							testC.course = course
+							counter++
+
+						jump = ->
+							tests = []
+							if testA? then tests.push testA
+							if testB? then tests.push testB
+							if testC? then tests.push testC
+							thiz.transitionToRoute 'tests.review', tests
+
+						if testA.questions.length > 0
+							testA = @store.createRecord 'test', testA
+							testA.save().then (result) ->
+								#done
+								testA = result
+								counter--
+								if counter == 0 then jump()
+								return true
+							, (errors) ->
+								#fail
+								testA = null
+								counter--
+								if counter == 0 then jump()
+								return false
+						if testB.questions.length > 0
+							testB = @store.createRecord 'test', testB
+							testB.save().then (result) ->
+								#done
+								testB = result
+								counter--
+								if counter == 0 then jump()
+								return true
+							, (errors) ->
+								#fail
+								testB = null
+								counter--
+								if counter == 0 then jump()
+								return false
+						if testC.questions.length > 0
+							testC = @store.createRecord 'test', testC
+							testC.save().then (result) ->
+								#done
+								testC = result
+								counter--
+								if counter == 0 then jump()
+								return true
+							, (errors) ->
+								#fail
+								testC = null
+								counter--
+								if counter == 0 then jump()
+								return false
 						return false
 
 			App.QuestionSelectItemView = Ember.View.extend

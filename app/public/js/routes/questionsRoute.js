@@ -436,10 +436,9 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'infinite'
             });
           },
           search: function() {
-            var advanced, limit, skip;
+            var advanced;
             this.set('questions', []);
-            skip = (this.get('page') - 1) * this.get('perPage');
-            limit = this.get('perPage');
+            this.set('page', 0);
             advanced = {
               school: this.get('school.id'),
               subject: this.get('subject.name'),
@@ -452,52 +451,123 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'infinite'
             return false;
           },
           generate: function() {
-            var counter, course, question, questions, school, schoolName, subject, testA, testB, testC, thiz, _i, _len;
+            var counter, course, jump, question, questions, school, schoolName, subject, testA, testB, testC, thiz, _i, _len;
             thiz = this;
             school = this.get('school.id');
             schoolName = this.get('school.name');
             subject = this.get('subject.name');
             course = this.get('course.number');
             questions = this.get('questions');
-            testA = [];
-            testB = [];
-            testC = [];
+            testA = {
+              questions: []
+            };
+            testB = {
+              questions: []
+            };
+            testC = {
+              questions: []
+            };
             for (_i = 0, _len = questions.length; _i < _len; _i++) {
               question = questions[_i];
               if (question.inA) {
-                testA.push(question);
+                testA.questions.push(question);
               }
               if (question.inB) {
-                testB.push(question);
+                testB.questions.push(question);
               }
               if (question.inC) {
-                testC.push(question);
+                testC.questions.push(question);
               }
             }
             counter = 0;
-            if (testA.length > 0) {
-              testA.name = school + ' ' + subject + ' ' + course;
+            if (testA.questions.length > 0) {
+              testA.name = schoolName + ' ' + subject + ' ' + course;
               testA.school = school;
               testA.subject = subject;
               testA.course = course;
-              testA = this.store.createRecord('test', testA);
-              testA.save().then(function() {
-                return true;
-              }, function(errors) {
-                return false;
-              });
+              counter++;
             }
-            if (testB.length > 0) {
-              testB.name = school + ' ' + subject + ' ' + course;
+            if (testB.questions.length > 0) {
+              testB.name = schoolName + ' ' + subject + ' ' + course;
               testB.school = school;
               testB.subject = subject;
               testB.course = course;
+              counter++;
             }
-            if (testC.length > 0) {
-              testC.name = school + ' ' + subject + ' ' + course;
+            if (testC.questions.length > 0) {
+              testC.name = schoolName + ' ' + subject + ' ' + course;
               testC.school = school;
               testC.subject = subject;
               testC.course = course;
+              counter++;
+            }
+            jump = function() {
+              var tests;
+              tests = [];
+              if (testA != null) {
+                tests.push(testA);
+              }
+              if (testB != null) {
+                tests.push(testB);
+              }
+              if (testC != null) {
+                tests.push(testC);
+              }
+              return thiz.transitionToRoute('tests.review', tests);
+            };
+            if (testA.questions.length > 0) {
+              testA = this.store.createRecord('test', testA);
+              testA.save().then(function(result) {
+                testA = result;
+                counter--;
+                if (counter === 0) {
+                  jump();
+                }
+                return true;
+              }, function(errors) {
+                testA = null;
+                counter--;
+                if (counter === 0) {
+                  jump();
+                }
+                return false;
+              });
+            }
+            if (testB.questions.length > 0) {
+              testB = this.store.createRecord('test', testB);
+              testB.save().then(function(result) {
+                testB = result;
+                counter--;
+                if (counter === 0) {
+                  jump();
+                }
+                return true;
+              }, function(errors) {
+                testB = null;
+                counter--;
+                if (counter === 0) {
+                  jump();
+                }
+                return false;
+              });
+            }
+            if (testC.questions.length > 0) {
+              testC = this.store.createRecord('test', testC);
+              testC.save().then(function(result) {
+                testC = result;
+                counter--;
+                if (counter === 0) {
+                  jump();
+                }
+                return true;
+              }, function(errors) {
+                testC = null;
+                counter--;
+                if (counter === 0) {
+                  jump();
+                }
+                return false;
+              });
             }
             return false;
           }

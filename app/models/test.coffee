@@ -13,6 +13,7 @@ module.exports =
 				default: []
 			note:
 				type: String
+				default: ''
 			public:
 				type: Boolean
 				default: false
@@ -52,7 +53,8 @@ module.exports =
 			c: (test, user, cb) ->
 				if !user? then return cb new Error 'No user is present'
 				time = moment().toDate()
-				test.creator = user._id
+				test.creator = me.ObjectId user._id
 				test.createdTime = time
 				test.lastModifiedTime = time
+				console.log test
 				cb null, test
