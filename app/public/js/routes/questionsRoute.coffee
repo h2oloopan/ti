@@ -397,6 +397,13 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 							testA.school = school
 							testA.subject = subject
 							testA.course = course
+							testA = @store.createRecord 'test', testA
+							testA.save().then ->
+								#done
+								return true
+							, (errors) ->
+								#fail
+								return false
 						if testB.length > 0
 							#get B ready
 							testB.name = school + ' ' + subject + ' ' + course

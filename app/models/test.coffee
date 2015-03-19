@@ -1,4 +1,5 @@
 me = require 'mongo-ember'
+moment = require 'moment'
 Schema = me.Schema
 
 module.exports = 
@@ -44,3 +45,14 @@ module.exports =
 				required: 'subject cannot be empty'
 			course:
 				required: 'course cannot be empty'
+
+
+		before:
+			#c
+			c: (test, user, cb) ->
+				if !user? then return cb new Error 'No user is present'
+				time = moment().toDate()
+				test.creator = user._id
+				test.createdTime = time
+				test.lastModifiedTime = time
+				cb null, test
