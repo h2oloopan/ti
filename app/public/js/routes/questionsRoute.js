@@ -478,14 +478,20 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'infinite'
             if (testA.length > 0) {
               testA.name = school + ' ' + subject + ' ' + course;
               testA.school = school;
+              testA.subject = subject;
+              testA.course = course;
             }
             if (testB.length > 0) {
               testB.name = school + ' ' + subject + ' ' + course;
               testB.school = school;
+              testB.subject = subject;
+              testB.course = course;
             }
             if (testC.length > 0) {
               testC.name = school + ' ' + subject + ' ' + course;
               testC.school = school;
+              testC.subject = subject;
+              testC.course = course;
             }
             return false;
           }
