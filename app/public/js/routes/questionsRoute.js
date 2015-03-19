@@ -330,9 +330,6 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'infinite'
         perPage: 10,
         page: 0,
         hasMore: false,
-        testA: [],
-        testB: [],
-        testC: [],
         advanced: {},
         subjects: (function() {
           var school, subjects;
@@ -440,9 +437,6 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'infinite'
           },
           search: function() {
             var advanced, limit, skip;
-            this.set('testA', []);
-            this.set('testB', []);
-            this.set('testC', []);
             this.set('questions', []);
             skip = (this.get('page') - 1) * this.get('perPage');
             limit = this.get('perPage');
@@ -458,8 +452,24 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'infinite'
             return false;
           },
           generate: function() {
-            var questions;
+            var counter, question, questions, testA, testB, testC, _i, _len;
             questions = this.get('questions');
+            testA = [];
+            testB = [];
+            testC = [];
+            for (_i = 0, _len = questions.length; _i < _len; _i++) {
+              question = questions[_i];
+              if (question.inA) {
+                testA.push(question);
+              }
+              if (question.inB) {
+                testB.push(question);
+              }
+              if (question.inC) {
+                testC.push(question);
+              }
+            }
+            counter = 0;
             return false;
           }
         }

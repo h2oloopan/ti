@@ -284,9 +284,6 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 				perPage: 10
 				page: 0
 				hasMore: false
-				testA: []
-				testB: []
-				testC: []
 				advanced: {}
 				subjects: (->
 					school = @get 'school'
@@ -364,9 +361,6 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 							return false
 					search: ->
 						#update advanced object
-						@set 'testA', []
-						@set 'testB', []
-						@set 'testC', []
 						@set 'questions', []
 
 						skip = (@get('page') - 1) * @get('perPage')
@@ -384,7 +378,20 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 						return false
 					generate: ->
 						questions = @get 'questions'
-						
+						testA = []
+						testB = []
+						testC = []
+						for question in questions
+							if question.inA then testA.push question
+							if question.inB then testB.push question
+							if question.inC then testC.push question
+						counter = 0
+						if testA.length > 0
+							#get A ready
+						if testB.length > 0
+							#get B ready
+						if testC.length > 0
+							#get C ready
 						return false
 
 			App.QuestionSelectItemView = Ember.View.extend
