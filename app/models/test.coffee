@@ -56,5 +56,15 @@ module.exports =
 				test.creator = me.ObjectId user._id
 				test.createdTime = time
 				test.lastModifiedTime = time
-				console.log test
+
+				for question in test.questions
+					question._id = me.ObjectId question._id
+					question.editor = me.ObjectId question.editor
+					question.school = me.ObjectId question.school
+
 				cb null, test
+
+
+
+
+

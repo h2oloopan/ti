@@ -376,42 +376,50 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 						return false
 					generate: ->
 						thiz = @
-						school = @get 'school.id'
+						school = @get 'school'
 						schoolName = @get 'school.name'
 						subject = @get 'subject.name'
 						course = @get 'course.number'
 						questions = @get 'questions'
-						testA =
-							questions: []
-						testB =
-							questions: []
-						testC =
-							questions: []
+						title = schoolName + ' ' + subject + ' ' + course
+						
+						questionsA = []
+						questionsB = []
+						questionsC = []
+
 						for question in questions
-							if question.inA then testA.questions.push question
-							if question.inB then testB.questions.push question
-							if question.inC then testC.questions.push question
+							json = question.toJSON()
+							json._id = question.get 'id'
+							if question.inA then questionsA.push json
+							if question.inB then questionsB.push json
+							if question.inC then questionsC.push json
 						counter = 0
-						if testA.questions.length > 0
+						if questionsA.length > 0
 							#get A ready
-							testA.name = schoolName + ' ' + subject + ' ' + course
-							testA.school = school
-							testA.subject = subject
-							testA.course = course
+							testA = @store.createRecord 'test', {}
+							testA.set 'name', title + ' A'
+							testA.set 'school', school
+							testA.set 'subject', subject
+							testA.set 'course', course
+							testA.set 'questions', questionsA
 							counter++
-						if testB.questions.length > 0
+						if questionsB.length > 0
 							#get B ready
-							testB.name = schoolName + ' ' + subject + ' ' + course
-							testB.school = school
-							testB.subject = subject
-							testB.course = course
+							testB = @store.createRecord 'test', {}
+							testB.set 'name', title + ' B'
+							testB.set 'school', school
+							testB.set 'subject', subject
+							testB.set 'course', course
+							testB.set 'questions', questionsB
 							counter++
-						if testC.questions.length > 0
+						if questionsC.length > 0
 							#get C ready
-							testC.name = schoolName + ' ' + subject + ' ' + course
-							testC.school = school
-							testC.subject = subject
-							testC.course = course
+							testC = @store.createRecord 'test', {}
+							testC.set 'name', title + ' C'
+							testC.set 'school', school
+							testC.set 'subject', subject
+							testC.set 'course', course
+							testC.set 'questions', questionsC
 							counter++
 
 						jump = ->
@@ -419,10 +427,10 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 							if testA? then tests.push testA
 							if testB? then tests.push testB
 							if testC? then tests.push testC
-							thiz.transitionToRoute 'tests.review', tests
+							thiz.transitionToRoute 'tests.review',
+								tests: JSON.stringify tests
 
-						if testA.questions.length > 0
-							testA = @store.createRecord 'test', testA
+						if testA?
 							testA.save().then (result) ->
 								#done
 								testA = result
@@ -435,8 +443,7 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 								counter--
 								if counter == 0 then jump()
 								return false
-						if testB.questions.length > 0
-							testB = @store.createRecord 'test', testB
+						if testB? > 0
 							testB.save().then (result) ->
 								#done
 								testB = result
@@ -449,8 +456,7 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 								counter--
 								if counter == 0 then jump()
 								return false
-						if testC.questions.length > 0
-							testC = @store.createRecord 'test', testC
+						if testC? > 0
 							testC.save().then (result) ->
 								#done
 								testC = result
