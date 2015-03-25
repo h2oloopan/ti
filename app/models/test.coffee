@@ -14,6 +14,9 @@ module.exports =
 			note:
 				type: String
 				default: ''
+			options:
+				type: Schema.Types.Mixed
+				default: {}
 			public:
 				type: Boolean
 				default: false
