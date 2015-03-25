@@ -65,6 +65,26 @@ module.exports =
 				cb null, test
 
 
+		api:
+			#ro
+			ro: (req, res, model, form, names) ->
+				id = JSON.parse req.params.id
+				if Object.prototype.toString.call(id) == '[object Array]'
+					#is array
+					model.find {_id: {$in: id}}, (err, result) ->
+						if err
+							res.send 500, err.message
+						else
+							res.send 200, me.helper.wrap result, names.cname
+				else
+					#single one
+					model.findById id, (err, result) ->
+						if err
+							res.send 500, err.message
+						else
+							res.send 200, me.helper.wrap result, names.name
+
+				
 
 
 

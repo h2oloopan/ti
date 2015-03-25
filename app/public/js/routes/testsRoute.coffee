@@ -10,3 +10,7 @@ define ['jquery', 'me', 'utils',
 					@route 'new'
 					@route 'review', 
 						path: '/review/:tests'
+
+			App.TestsReviewRoute = Ember.Route.extend
+				model: (params) ->
+					return @store.find 'test', params.tests
