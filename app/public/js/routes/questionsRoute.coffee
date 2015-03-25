@@ -424,9 +424,9 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 
 						jump = ->
 							tests = []
-							if testA? then tests.push testA
-							if testB? then tests.push testB
-							if testC? then tests.push testC
+							if testA? then tests.push testA.get('id')
+							if testB? then tests.push testB.get('id')
+							if testC? then tests.push testC.get('id')
 							thiz.transitionToRoute 'tests.review',
 								tests: JSON.stringify tests
 
