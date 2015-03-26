@@ -13,4 +13,23 @@ define ['jquery', 'me', 'utils',
 
 			App.TestsReviewRoute = Ember.Route.extend
 				model: (params) ->
-					return @store.find 'test', params.tests
+					return @store.find 'test', {ids: params.tests}
+
+			App.TestsReviewController = Ember.ArrayController.extend
+				actions:
+					switch: (test) ->
+						return false
+					save: ->
+						return false
+###
+			App.TestsReviewController = Ember.ArrayController.extend
+				itemController: 'testReview'
+				actions:
+					switch: (test) ->
+						return false
+					save: ->
+						return false
+
+			App.TestReviewController = Ember.ObjectController.extend
+				needs: 'testsReview'
+###

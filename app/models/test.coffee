@@ -14,7 +14,7 @@ module.exports =
 			note:
 				type: String
 				default: ''
-			options:
+			settings:
 				type: Schema.Types.Mixed
 				default: {}
 			public:
@@ -51,6 +51,45 @@ module.exports =
 				required: 'course cannot be empty'
 
 
+		auth:
+			#c
+			c: (req, test, user, power, cb) ->
+				if power > 0
+					cb null
+				else
+					cb new Error 'You do not have the permission to access this'
+
+			#r
+			ro: (req, test, user, power, cb) ->
+				if power > 0
+					cb null
+				else
+					cb new Error 'You do not have the permission to access this'
+
+
+			ra: (req, tests, user, power, cb) ->
+				if power > 0
+					cb null
+				else
+					cb new Error 'You do not have the permission to access this'
+
+
+			#u
+			u: (req, test, user, power, cb) ->
+				if power > 0
+					cb null
+				else
+					cb new Error 'You do not have the permission to access this'
+
+			#d
+			d: (req, test, user, power, cb) ->
+				if power > 0
+					cb null
+				else
+					cb new Error 'You do not have the permission to access this'
+
+
+
 		before:
 			#c
 			c: (test, user, cb) ->
@@ -69,7 +108,25 @@ module.exports =
 
 
 		api:
+			ra: (req, res, model, form, names) ->
+				ids = req.query.ids
+				if ids? then ids = JSON.parse ids
+				if ids? and Object.prototype.toString.call(ids) == '[object Array]'
+					#is array
+					model.find {_id: {$in: ids}}, (err, result) ->
+						if err
+							res.send 500, err.message
+						else
+							res.send 200, me.helper.wrap result, names.name
+				else
+					#regular one
+					model.find {}, (err, result) ->
+						if err
+							res.send 500, err.message
+						else
+							res.send 200, me.helper.wrap result, names.cname
 			#ro
+###
 			ro: (req, res, model, form, names) ->
 				id = JSON.parse req.params.id
 				if Object.prototype.toString.call(id) == '[object Array]'
@@ -86,7 +143,7 @@ module.exports =
 							res.send 500, err.message
 						else
 							res.send 200, me.helper.wrap result, names.name
-
+###
 				
 
 

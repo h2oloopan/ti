@@ -22,7 +22,7 @@ module.exports = {
         type: String,
         "default": ''
       },
-      options: {
+      settings: {
         type: Schema.Types.Mixed,
         "default": {}
       },
@@ -70,6 +70,43 @@ module.exports = {
         required: 'course cannot be empty'
       }
     },
+    auth: {
+      c: function(req, test, user, power, cb) {
+        if (power > 0) {
+          return cb(null);
+        } else {
+          return cb(new Error('You do not have the permission to access this'));
+        }
+      },
+      ro: function(req, test, user, power, cb) {
+        if (power > 0) {
+          return cb(null);
+        } else {
+          return cb(new Error('You do not have the permission to access this'));
+        }
+      },
+      ra: function(req, tests, user, power, cb) {
+        if (power > 0) {
+          return cb(null);
+        } else {
+          return cb(new Error('You do not have the permission to access this'));
+        }
+      },
+      u: function(req, test, user, power, cb) {
+        if (power > 0) {
+          return cb(null);
+        } else {
+          return cb(new Error('You do not have the permission to access this'));
+        }
+      },
+      d: function(req, test, user, power, cb) {
+        if (power > 0) {
+          return cb(null);
+        } else {
+          return cb(new Error('You do not have the permission to access this'));
+        }
+      }
+    },
     before: {
       c: function(test, user, cb) {
         var question, time, _i, _len, _ref;
@@ -91,27 +128,30 @@ module.exports = {
       }
     },
     api: {
-      ro: function(req, res, model, form, names) {
-        var id;
-        id = JSON.parse(req.params.id);
-        if (Object.prototype.toString.call(id) === '[object Array]') {
+      ra: function(req, res, model, form, names) {
+        var ids;
+        ids = req.query.ids;
+        if (ids != null) {
+          ids = JSON.parse(ids);
+        }
+        if ((ids != null) && Object.prototype.toString.call(ids) === '[object Array]') {
           return model.find({
             _id: {
-              $in: id
+              $in: ids
             }
           }, function(err, result) {
             if (err) {
               return res.send(500, err.message);
             } else {
-              return res.send(200, me.helper.wrap(result, names.cname));
+              return res.send(200, me.helper.wrap(result, names.name));
             }
           });
         } else {
-          return model.findById(id, function(err, result) {
+          return model.find({}, function(err, result) {
             if (err) {
               return res.send(500, err.message);
             } else {
-              return res.send(200, me.helper.wrap(result, names.name));
+              return res.send(200, me.helper.wrap(result, names.cname));
             }
           });
         }
@@ -119,3 +159,23 @@ module.exports = {
     }
   }
 };
+
+
+/*
+			ro: (req, res, model, form, names) ->
+				id = JSON.parse req.params.id
+				if Object.prototype.toString.call(id) == '[object Array]'
+					 *is array
+					model.find {_id: {$in: id}}, (err, result) ->
+						if err
+							res.send 500, err.message
+						else
+							res.send 200, me.helper.wrap result, names.cname
+				else
+					 *single one
+					model.findById id, (err, result) ->
+						if err
+							res.send 500, err.message
+						else
+							res.send 200, me.helper.wrap result, names.name
+ */
