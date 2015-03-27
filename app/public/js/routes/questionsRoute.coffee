@@ -431,7 +431,6 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 							thiz.transitionToRoute 'tests.review',
 								queryParams:
 									tests: query
-									refreshModel: true
 
 						if testA?
 							testA.save().then (result) ->

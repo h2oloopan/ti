@@ -10,6 +10,12 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/tests/tests.index', 'ehbs!templ
         });
       });
       App.TestsReviewRoute = Ember.Route.extend({
+        queryParams: {
+          tests: {
+            refreshModel: true,
+            replace: true
+          }
+        },
         model: function(params) {
           return this.store.find('test', {
             ids: params.tests
@@ -17,6 +23,7 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/tests/tests.index', 'ehbs!templ
         }
       });
       return App.TestsReviewController = Ember.ArrayController.extend({
+        queryParams: ['tests'],
         actions: {
           "switch": function(test) {
             return false;

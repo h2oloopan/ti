@@ -519,8 +519,7 @@ define(['jquery', 'me', 'utils', 'components/photo-upload', 'moment', 'infinite'
               query = JSON.stringify(tests);
               return thiz.transitionToRoute('tests.review', {
                 queryParams: {
-                  tests: query,
-                  refreshModel: true
+                  tests: query
                 }
               });
             };

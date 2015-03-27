@@ -11,10 +11,15 @@ define ['jquery', 'me', 'utils',
 					@route 'review'
 
 			App.TestsReviewRoute = Ember.Route.extend
+				queryParams:
+					tests:
+						refreshModel: true
+						replace: true
 				model: (params) ->
 					return @store.find 'test', {ids: params.tests}
 
 			App.TestsReviewController = Ember.ArrayController.extend
+				queryParams: ['tests']
 				actions:
 					switch: (test) ->
 						return false
