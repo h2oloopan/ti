@@ -8,8 +8,7 @@ define ['jquery', 'me', 'utils',
 			App.Router.map ->
 				@resource 'tests', ->
 					@route 'new'
-					@route 'review', 
-						path: '/review/:tests'
+					@route 'review'
 
 			App.TestsReviewRoute = Ember.Route.extend
 				model: (params) ->

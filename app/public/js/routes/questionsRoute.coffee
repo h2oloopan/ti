@@ -427,8 +427,11 @@ define ['jquery', 'me', 'utils', 'components/photo-upload',
 							if testA? then tests.push testA.get('id')
 							if testB? then tests.push testB.get('id')
 							if testC? then tests.push testC.get('id')
+							query = JSON.stringify tests
 							thiz.transitionToRoute 'tests.review',
-								tests: JSON.stringify tests
+								queryParams:
+									tests: query
+									refreshModel: true
 
 						if testA?
 							testA.save().then (result) ->
