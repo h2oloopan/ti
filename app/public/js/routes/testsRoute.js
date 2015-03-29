@@ -24,6 +24,31 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/tests/tests.index', 'ehbs!templ
       });
       return App.TestsReviewController = Ember.ArrayController.extend({
         queryParams: ['tests'],
+        tabs: (function() {
+          var counter, i, match, tab, tabs, tests, _i, _ref;
+          tests = this.get('model');
+          if (tests == null) {
+            return [];
+          }
+          tabs = [];
+          counter = 0;
+          match = ['A', 'B', 'C'];
+          for (i = _i = 0, _ref = tests.get('length'); 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+            tab = {
+              name: 'Test ' + match[counter],
+              id: 't-' + match[counter],
+              link: '#t-' + match[counter],
+              test: tests.content[counter],
+              active: false
+            };
+            if (counter === 0) {
+              tab.active = true;
+            }
+            tabs.push(tab);
+            counter++;
+          }
+          return tabs;
+        }).property('model'),
         actions: {
           "switch": function(test) {
             return false;

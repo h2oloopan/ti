@@ -4,19 +4,26 @@
 		<h6>Review tests before making them available to use</h6>
 	</div>
 </div>
-<div class="container">
+<div class="container tests-review-holder">
 	<div class="row">
-		<div class="col-md-2">
+		<div class="col-md-4">
 			<div role="tabpanel">
 				<ul class="nav nav-tabs" role="tablist">
-					{{#each test in model}}
-						{{test.name}}
+					{{#each tab in tabs}}
+						<li role="presentation" {{bind-attr class="tab.active:active"}}><a {{bind-attr href=tab.link}} {{bind-attr aria-controls=tab.id}} role="tab" data-toggle="tab" {{action "switch" tab.test}}>{{tab.name}}</a></li>
 					{{/each}}
 				</ul>
+				<div class="tab-content">
+					{{#each tab in tabs}}
+						<div role="tabpanel" {{bind-attr class=":tab-pane tab.active:active"}} {{bind-attr id=tab.id}}>
+							{{tab.test.name}}
+						</div>
+					{{/each}}
+				</div>
 			</div>
 		</div>
-		<div class="col-md-10">
-		
+		<div class="col-md-8">
+			<!-- HERE we have a list view of all the questions in the test -->
 		</div>
 	</div>
 </div>
