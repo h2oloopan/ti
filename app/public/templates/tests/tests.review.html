@@ -16,7 +16,23 @@
 				<div class="tab-content">
 					{{#each tab in tabs}}
 						<div role="tabpanel" {{bind-attr class=":tab-pane tab.active:active"}} {{bind-attr id=tab.id}}>
-							{{tab.test.name}}
+							<div class="form-group">
+								<label>Name</label>
+								{{input class="form-control" value=tab.test.name}}
+							</div>
+							<div class="form-group">
+								<label>Note</label>
+								{{input class="form-control" value=tab.test.note}}
+							</div>
+							<div class="form-group">
+								<label>Subject</label>
+								{{input class="form-control" value=tab.test.subject disabled="true"}}
+							</div>
+							<div class="form-group">
+								<label>Course</label>
+								{{input class="form-control" value=tab.test.course disabled="true"}}
+							</div>
+							<button class="btn btn-primary" {{action "publish" tab.test}}>Publish</button>
 						</div>
 					{{/each}}
 				</div>
@@ -25,8 +41,11 @@
 		<div class="col-md-8">
 			<!-- HERE we have a list view of all the questions in the test -->
 			<div class="test-settings">
+				<h4>Settings</h4>
 			</div>
+			<hr/>
 			<div class="questions-list">
+				<h4>Questions</h4>
 			{{#each question in test.questions}}
 			{{#view "questionItem"}}
 				<div class="test-review-item">
@@ -47,8 +66,17 @@
 						</tr>
 						<tr>
 							<td colspan="4">
+								<h5>Question</h5>
 								<div class="question-preview">
 									{{{question.question}}}
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4">
+								<h5>Solution</h5>
+								<div class="solution-preview">
+									{{{question.solution}}}
 								</div>
 							</td>
 						</tr>
