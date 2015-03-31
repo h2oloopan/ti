@@ -22,7 +22,7 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/tests/tests.index', 'ehbs!templ
           });
         }
       });
-      return App.TestsReviewController = Ember.ArrayController.extend({
+      App.TestsReviewController = Ember.ArrayController.extend({
         queryParams: ['tests'],
         tabs: (function() {
           var counter, i, match, tab, tabs, tests, _i, _ref;
@@ -44,6 +44,9 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/tests/tests.index', 'ehbs!templ
             if (counter === 0) {
               tab.active = true;
             }
+            if (counter === 0) {
+              this.send('switch', tests.content[counter]);
+            }
             tabs.push(tab);
             counter++;
           }
@@ -51,11 +54,20 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/tests/tests.index', 'ehbs!templ
         }).property('model'),
         actions: {
           "switch": function(test) {
+            this.set('test', test);
             return false;
           },
           save: function() {
             return false;
           }
+        }
+      });
+      return App.QuestionItemView = Ember.View.extend({
+        didInsertElement: function() {
+          var element;
+          this._super();
+          element = this.get('element');
+          return MathJax.Hub.Queue(['Typeset', MathJax.Hub, element]);
         }
       });
     }

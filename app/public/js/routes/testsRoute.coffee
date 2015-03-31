@@ -34,16 +34,23 @@ define ['jquery', 'me', 'utils',
 							test: tests.content[counter]
 							active: false
 						if counter == 0 then tab.active = true
+						if counter == 0 then @send 'switch', tests.content[counter]
 						tabs.push tab
 						counter++
 					return tabs
 				).property 'model'
-
 				actions:
 					switch: (test) ->
+						@set 'test', test
 						return false
 					save: ->
 						return false
+
+			App.QuestionItemView = Ember.View.extend
+				didInsertElement: ->
+					@_super()
+					element = @get('element')
+					MathJax.Hub.Queue ['Typeset', MathJax.Hub, element]
 ###
 			App.TestsReviewController = Ember.ArrayController.extend
 				itemController: 'testReview'
