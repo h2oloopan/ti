@@ -42,8 +42,28 @@ define ['jquery', 'me', 'utils',
 				actions:
 					switch: (test) ->
 						@set 'test', test
+						@set 'settings', JSON.stringify test.get('settings')
 						return false
 					save: ->
+						return false
+					publish: (test) ->
+						thiz = @
+						settings = @get 'settings'
+						if !settings?
+							settings = {}
+						else
+							settings = JSON.parse settings
+						test.set 'settings', settings
+						test.set 'public', true
+						test.save().then (result) ->
+							#done
+							thiz.transitionToRoute 'tests'
+							return true
+						, (errors) ->
+							#fail
+							alert errors.responseText
+							return false
+
 						return false
 
 			App.QuestionItemView = Ember.View.extend

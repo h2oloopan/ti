@@ -55,9 +55,30 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/tests/tests.index', 'ehbs!templ
         actions: {
           "switch": function(test) {
             this.set('test', test);
+            this.set('settings', JSON.stringify(test.get('settings')));
             return false;
           },
           save: function() {
+            return false;
+          },
+          publish: function(test) {
+            var settings, thiz;
+            thiz = this;
+            settings = this.get('settings');
+            if (settings == null) {
+              settings = {};
+            } else {
+              settings = JSON.parse(settings);
+            }
+            test.set('settings', settings);
+            test.set('public', true);
+            test.save().then(function(result) {
+              thiz.transitionToRoute('tests');
+              return true;
+            }, function(errors) {
+              alert(errors.responseText);
+              return false;
+            });
             return false;
           }
         }
