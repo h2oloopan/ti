@@ -57,7 +57,7 @@ define ['jquery', 'me', 'utils',
 						test.set 'public', true
 						test.save().then (result) ->
 							#done
-							thiz.transitionToRoute 'tests'
+							#do nothing here
 							return true
 						, (errors) ->
 							#fail

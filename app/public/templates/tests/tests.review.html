@@ -32,7 +32,11 @@
 								<label>Course</label>
 								{{input class="form-control" value=tab.test.course disabled="true"}}
 							</div>
+							{{#if tab.test.public}}
+							<button class="btn btn-info" disabled="disabled">Published</button>
+							{{else}}
 							<button class="btn btn-primary" {{action "publish" tab.test}}>Publish</button>
+							{{/if}}
 						</div>
 					{{/each}}
 				</div>

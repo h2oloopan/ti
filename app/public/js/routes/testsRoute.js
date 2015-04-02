@@ -73,7 +73,6 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/tests/tests.index', 'ehbs!templ
             test.set('settings', settings);
             test.set('public', true);
             test.save().then(function(result) {
-              thiz.transitionToRoute('tests');
               return true;
             }, function(errors) {
               alert(errors.responseText);
