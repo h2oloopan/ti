@@ -9,6 +9,15 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/tests/tests.index', 'ehbs!templ
           return this.route('review');
         });
       });
+      App.TestsIndexRoute = Ember.Route.extend({
+        model: function() {
+          return this.store.find('test');
+        }
+      });
+      App.TestsIndexController = Ember.ArrayController.extend({
+        sortProperties: ['id'],
+        sortAscending: false
+      });
       App.TestsReviewRoute = Ember.Route.extend({
         queryParams: {
           tests: {

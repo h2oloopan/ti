@@ -10,6 +10,14 @@ define ['jquery', 'me', 'utils',
 					@route 'new'
 					@route 'review'
 
+			App.TestsIndexRoute = Ember.Route.extend
+				model: ->
+					return @store.find 'test'
+
+			App.TestsIndexController = Ember.ArrayController.extend
+				sortProperties: ['id']
+				sortAscending: false
+
 			App.TestsReviewRoute = Ember.Route.extend
 				queryParams:
 					tests:
