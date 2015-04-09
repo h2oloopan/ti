@@ -24,15 +24,19 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/tests/tests.index', 'ehbs!templ
           return 'hello';
         }).property('model'),
         actions: {
+          republish: function(test) {
+            return false;
+          },
           review: function(test) {
             var a, id;
             id = test.get('id');
             a = [id];
-            return this.transitionToRoute('tests.review', {
+            this.transitionToRoute('tests.review', {
               queryParams: {
                 tests: JSON.stringify(a)
               }
             });
+            return false;
           }
         }
       });

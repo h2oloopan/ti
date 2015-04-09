@@ -24,13 +24,15 @@ define ['jquery', 'me', 'utils',
 					return 'hello'
 				).property 'model'
 				actions:
+					republish: (test) ->
+						return false
 					review: (test) ->
 						id = test.get 'id'
 						a = [id]
 						@transitionToRoute 'tests.review',
 							queryParams:
 								tests: JSON.stringify a
-
+						return false
 
 			App.TestsReviewRoute = Ember.Route.extend
 				queryParams:

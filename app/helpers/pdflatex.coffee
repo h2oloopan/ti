@@ -5,13 +5,17 @@ path = require 'path'
 fs = require 'fs'
 pdfFolder = path.resolve 'temp/pdfs'
 texFolder = path.resolve 'temp/texs'
+templateFolder = path.resolve 'templates'
+
+testTemplateFile = path.join templateFolder, 'test.hbs'
 
 pdflatex = module.exports =
-	compileTest: (test, template, settings, cb) ->
+	compileTest: (test, settings, cb) ->
 		obj =
 			test: test
 			settings: settings
-		template = handlebars.compile template
+		template = fs.readFileSync testTemplateFile
+		template = handlebars.compile template.toString()
 		tex = template obj
 		texFile = path.join texFolder, test._id + '.tex'
 		fs.writeFile texFile, tex, (err) ->

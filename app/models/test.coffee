@@ -1,5 +1,6 @@
 me = require 'mongo-ember'
 moment = require 'moment'
+pdflatex = require '../helpers/pdflatex'
 Schema = me.Schema
 
 module.exports = 
@@ -129,6 +130,21 @@ module.exports =
 							res.send 500, err.message
 						else
 							res.send 200, me.helper.wrap result, names.cname
+
+		after:
+			#u
+			u: (test, user, cb) ->
+				if test.public
+					#this is to publish the test
+					pdflatex.compileTest test, {}, (err) ->
+						if err
+							cb err
+						else
+							cb test
+				else
+					#otherwise just do nothing
+					cb null, test
+
 			#ro
 ###
 			ro: (req, res, model, form, names) ->
