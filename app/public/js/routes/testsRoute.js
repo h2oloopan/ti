@@ -21,10 +21,17 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/tests/tests.index', 'ehbs!templ
       });
       App.TestItemController = Ember.ObjectController.extend({
         downloadPath: (function() {
-          return 'hello';
+          return '/api/download/pdfs/' + this.get('id');
         }).property('model'),
         actions: {
           republish: function(test) {
+            test.set('public', true);
+            test.save().then(function(result) {
+              return true;
+            }, function(errors) {
+              alert(errors.responseText);
+              return false;
+            });
             return false;
           },
           review: function(test) {

@@ -11,5 +11,8 @@ config = module.exports = {
   	height: 960,
   	quality: 80,
   	format: '.gif'
+  },
+  download: {
+    pdfFloder: 'temp/pdfs'
   }
 };

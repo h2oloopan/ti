@@ -172,7 +172,7 @@ module.exports = {
             if (err) {
               return cb(err);
             } else {
-              return cb(test);
+              return cb(null, test);
             }
           });
         } else {

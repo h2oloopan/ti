@@ -21,10 +21,17 @@ define ['jquery', 'me', 'utils',
 
 			App.TestItemController = Ember.ObjectController.extend
 				downloadPath: (->
-					return 'hello'
+					return '/api/download/pdfs/' + @get 'id'
 				).property 'model'
 				actions:
 					republish: (test) ->
+						test.set 'public', true
+						test.save().then (result) ->
+							#done
+							return true #do nothing
+						, (errors) ->
+							alert errors.responseText
+							return false
 						return false
 					review: (test) ->
 						id = test.get 'id'

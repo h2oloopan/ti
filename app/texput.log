@@ -1,0 +1,21 @@
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.4.8)  9 APR 2015 13:44
+entering extended mode
+ %&-line parsing enabled.
+**55269aab6876d57b8354cc97 -output-directory /home/s5pan/Projects/ti/app/temp/p
+dfs /home/s5pan/Projects/ti/app/temp/texs/55269aab6876d57b8354cc97.tex
+
+! Emergency stop.
+<*> 55269aab6876d57b8354cc97 
+                             -output-directory /home/s5pan/Projects/ti/app/t...
+End of file on the terminal!
+
+ 
+Here is how much of TeX's memory you used:
+ 3 strings out of 495061
+ 125 string characters out of 1182622
+ 45108 words of memory out of 3000000
+ 3282 multiletter control sequences out of 15000+50000
+ 3640 words of font info for 14 fonts, out of 3000000 for 9000
+ 28 hyphenation exceptions out of 8191
+ 0i,0n,0p,150b,6s stack positions out of 5000i,500n,10000p,200000b,50000s
+!  ==> Fatal error occurred, no output PDF file produced!

@@ -140,7 +140,7 @@ module.exports =
 						if err
 							cb err
 						else
-							cb test
+							cb null, test
 				else
 					#otherwise just do nothing
 					cb null, test
