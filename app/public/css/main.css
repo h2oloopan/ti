@@ -246,3 +246,13 @@ body {
 
 .inf-scroll-outer-container.vertical {
 }
+
+table.table-tests {
+	font-size: 0.9em;
+}
+
+table.table-tests > tbody > tr > td {
+	vertical-align: middle;
+
+}
+

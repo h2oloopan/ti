@@ -8,11 +8,28 @@
 	{{#link-to "questions.select" class="btn btn-success"}}Create New Test{{/link-to}}
 	<p class="help-block">Both published and unpublished tests are listed here.</p>
 	{{#if model.length}}
-	<table class="table table-bordered">
+	<table class="table table-bordered table-tests">
 		<tbody>
+			<tr>
+				<th style="width:35%;">Name</th>
+				<th style="width:15%;">Subject</th>
+				<th style="width:15%;">Number</th>
+				<th style="width:15%;">Creator</th>
+				<th>Options</th>
+			</tr>
 			{{#each test in model}}
 				<tr>
 					<td>{{test.name}}</td>
+					<td>{{test.subject}}</td>
+					<td>{{test.course}}</td>
+					<td>{{test.creator.username}}</td>
+					<td>
+						{{#if test.public}}
+							<button class="btn btn-xs btn-primary">Download PDF</button>
+						{{else}}
+							<button class="btn btn-xs btn-success">Review/Publish</button>
+						{{/if}}
+					</td>
 				</tr>
 			{{/each}}
 		</tbody>
