@@ -21,7 +21,7 @@ define ['jquery', 'me', 'utils',
 
 			App.TestItemController = Ember.ObjectController.extend
 				downloadPath: (->
-					return ''
+					return 'hello'
 				).property 'model'
 				actions:
 					review: (test) ->
