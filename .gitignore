@@ -6,3 +6,7 @@ app/public/images/temp/questions/*
 app/public/images/temp/questions/*/*
 app/public/temp/questions/*
 app/public/temp/questions/*/*
+app/temp/pdfs/*.aux
+app/temp/pdfs/*.log
+app/temp/pdfs/*.pdf
+app/temp/texs/*.tex
