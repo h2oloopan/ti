@@ -113,8 +113,12 @@ module.exports =
 				if ids? then ids = JSON.parse ids
 				if ids? and Object.prototype.toString.call(ids) == '[object Array]'
 					#is array
-					model.find {_id: {$in: ids}}, (err, result) ->
+					a = []
+					for id in ids
+						a.push me.ObjectId id
+					model.find {_id: {$in: a}}, (err, result) ->
 						if err
+							console.log err
 							res.send 500, err.message
 						else
 							res.send 200, me.helper.wrap result, names.name
