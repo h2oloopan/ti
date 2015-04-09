@@ -16,7 +16,25 @@ define(['jquery', 'me', 'utils', 'ehbs!templates/tests/tests.index', 'ehbs!templ
       });
       App.TestsIndexController = Ember.ArrayController.extend({
         sortProperties: ['id'],
-        sortAscending: false
+        sortAscending: false,
+        itemController: 'testItem'
+      });
+      App.TestItemController = Ember.ObjectController.extend({
+        downloadPath: (function() {
+          return '';
+        }).property('model'),
+        actions: {
+          review: function(test) {
+            var a, id;
+            id = test.get('id');
+            a = [id];
+            return this.transitionToRoute('tests.review', {
+              queryParams: {
+                tests: JSON.stringify(a)
+              }
+            });
+          }
+        }
       });
       App.TestsReviewRoute = Ember.Route.extend({
         queryParams: {

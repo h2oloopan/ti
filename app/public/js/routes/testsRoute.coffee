@@ -17,6 +17,20 @@ define ['jquery', 'me', 'utils',
 			App.TestsIndexController = Ember.ArrayController.extend
 				sortProperties: ['id']
 				sortAscending: false
+				itemController: 'testItem'
+
+			App.TestItemController = Ember.ObjectController.extend
+				downloadPath: (->
+					return ''
+				).property 'model'
+				actions:
+					review: (test) ->
+						id = test.get 'id'
+						a = [id]
+						@transitionToRoute 'tests.review',
+							queryParams:
+								tests: JSON.stringify a
+
 
 			App.TestsReviewRoute = Ember.Route.extend
 				queryParams:

@@ -17,7 +17,7 @@
 				<th style="width:15%;">Creator</th>
 				<th>Options</th>
 			</tr>
-			{{#each test in model}}
+			{{#each test in controller}}
 				<tr>
 					<td>{{test.name}}</td>
 					<td>{{test.subject}}</td>
@@ -25,9 +25,9 @@
 					<td>{{test.creator.username}}</td>
 					<td>
 						{{#if test.public}}
-							<button class="btn btn-xs btn-primary">Download PDF</button>
+							<a class="btn btn-xs btn-primary">Download PDF</a>
 						{{else}}
-							<button class="btn btn-xs btn-success">Review/Publish</button>
+							<button class="btn btn-xs btn-success" {{action "review" test}}>Review/Publish</button>
 						{{/if}}
 					</td>
 				</tr>
