@@ -5,7 +5,19 @@
 	</div>
 </div>
 <div class="container">
-	
+	{{#link-to "questions.select" class="btn btn-success"}}Create New Test{{/link-to}}
+	<p class="help-block">Both published and unpublished tests are listed here.</p>
+	{{#if model.length}}
+	<table class="table table-bordered">
+		<tbody>
+			{{#each test in model}}
+				<tr>
+					<td>{{test.name}}</td>
+				</tr>
+			{{/each}}
+		</tbody>
+	</table>
+	{{/if}}
 </div>
 <br/>
 <br/>
