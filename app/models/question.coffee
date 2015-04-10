@@ -178,8 +178,8 @@ module.exports =
 					order = advanced.order || '-'
 					search = {}
 					if advanced.school? then search.school = me.ObjectId advanced.school
-					if advanced.subject? then search.subject = advanced.subject
-					if advanced.course? then search.course = advanced.course
+					if advanced.subject? then search.subject = new RegExp advanced.subject, 'i'
+					if advanced.course? then search.course = new RegExp advanced.course, 'i'
 					if advanced.types? and advanced.types.length > 0
 						pattern = ''
 						for type in advanced.types

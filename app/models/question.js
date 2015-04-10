@@ -214,10 +214,10 @@ module.exports = {
             search.school = me.ObjectId(advanced.school);
           }
           if (advanced.subject != null) {
-            search.subject = advanced.subject;
+            search.subject = new RegExp(advanced.subject, 'i');
           }
           if (advanced.course != null) {
-            search.course = advanced.course;
+            search.course = new RegExp(advanced.course, 'i');
           }
           if ((advanced.types != null) && advanced.types.length > 0) {
             pattern = '';
