@@ -11,8 +11,14 @@ testTemplateFile = path.join templateFolder, 'test.hbs'
 
 pdflatex = module.exports =
 	sanitize: (test) ->
+		
 		for question in test.questions
-			question.question = htmlToText.fromString question.question
+			html = question.question
+			console.log 'HTML---------'
+			console.log html
+			question.question = htmlToText.fromString html
+			console.log 'TEXT---------'
+			console.log question.question
 		return test
 	compileTest: (test, settings, cb) ->
 		obj =
@@ -20,6 +26,8 @@ pdflatex = module.exports =
 			settings: settings
 		template = fs.readFileSync testTemplateFile
 		template = handlebars.compile template.toString()
+
+
 		tex = template obj
 		texFile = path.join texFolder, test._id + '.tex'
 		fs.writeFile texFile, tex, (err) ->

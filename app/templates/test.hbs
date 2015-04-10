@@ -1,9 +1,6 @@
 \title{
 	{{{test.name}}}
 }
-\author{
-        {{{settings.author}}}
-}
 \date{\today}
 
 \documentclass[12pt]{article}
@@ -12,7 +9,11 @@
 \maketitle
 
 {{#each test.questions}}
+
+    
     {{{this.question}}}
+
+
 {{/each}}
 
 \end{document}

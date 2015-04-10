@@ -21,11 +21,16 @@ testTemplateFile = path.join(templateFolder, 'test.hbs');
 
 pdflatex = module.exports = {
   sanitize: function(test) {
-    var question, _i, _len, _ref;
+    var html, question, _i, _len, _ref;
     _ref = test.questions;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       question = _ref[_i];
-      question.question = htmlToText.fromString(question.question);
+      html = question.question;
+      console.log('HTML---------');
+      console.log(html);
+      question.question = htmlToText.fromString(html);
+      console.log('TEXT---------');
+      console.log(question.question);
     }
     return test;
   },
