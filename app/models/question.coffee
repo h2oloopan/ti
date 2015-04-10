@@ -187,7 +187,7 @@ module.exports =
 						if pattern.charAt(pattern.length - 1) == '|' then pattern = pattern.substr 0, pattern.length - 1
 						search.typeTags = new RegExp '(' + pattern + ')', 'i'
 
-
+					console.log search
 					model.find(search).count (err, count) ->
 						if err
 							res.send 500, err.message

@@ -231,6 +231,7 @@ module.exports = {
             }
             search.typeTags = new RegExp('(' + pattern + ')', 'i');
           }
+          console.log(search);
           return model.find(search).count(function(err, count) {
             if (err) {
               return res.send(500, err.message);
