@@ -2,6 +2,7 @@ handlebars = require 'handlebars'
 path = require 'path'
 fs = require 'fs'
 exec = require('child_process').exec
+htmlToText = require 'html-to-text'
 pdfFolder = path.resolve 'temp/pdfs'
 texFolder = path.resolve 'temp/texs'
 templateFolder = path.resolve 'templates'
@@ -9,9 +10,13 @@ templateFolder = path.resolve 'templates'
 testTemplateFile = path.join templateFolder, 'test.hbs'
 
 pdflatex = module.exports =
+	sanitize: (test) ->
+		for question in test.questions
+			question.question = htmlToText.fromString question.question
+		return test
 	compileTest: (test, settings, cb) ->
 		obj =
-			test: test
+			test: @sanitize test
 			settings: settings
 		template = fs.readFileSync testTemplateFile
 		template = handlebars.compile template.toString()
@@ -23,7 +28,7 @@ pdflatex = module.exports =
 			else
 				cmd = 'pdflatex -jobname ' + test._id.toString() + ' -output-directory ' + pdfFolder + ' ' + texFile
 				console.log cmd
-				exec cmd, (err, stdout, stderr) ->
+				exec cmd, {timeout: 5000}, (err, stdout, stderr) ->
 					if err
 						cb err
 					else

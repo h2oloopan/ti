@@ -13,4 +13,5 @@ exports.bind = (app) ->
 			if err
 				res.send 500, err.message
 			else
-				
+				res.set 'Content-Type', 'application/pdf'
+				res.send data

@@ -64,6 +64,7 @@ define ['jquery', 'me', 'utils',
 							link: '#t-' + match[counter] 
 							test: tests.content[counter]
 							active: false
+						tab.test.downloadPath = '/api/download/pdfs/' + tab.test.get('id')
 						if counter == 0 then tab.active = true
 						if counter == 0 then @send 'switch', tests.content[counter]
 						tabs.push tab

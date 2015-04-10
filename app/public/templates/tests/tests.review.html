@@ -34,6 +34,7 @@
 							</div>
 							{{#if tab.test.public}}
 							<button class="btn btn-info" disabled="disabled">Published</button>
+							<a class="btn btn-default" {{bind-attr href=tab.test.downloadPath}}>Download</a>
 							{{else}}
 							<button class="btn btn-primary" {{action "publish" tab.test}}>Publish</button>
 							{{/if}}

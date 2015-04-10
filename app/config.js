@@ -13,6 +13,6 @@ config = module.exports = {
   	format: '.gif'
   },
   download: {
-    pdfFloder: 'temp/pdfs'
+    pdfFolder: 'temp/pdfs'
   }
 };
