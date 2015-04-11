@@ -84,7 +84,11 @@ define ['jquery', 'me', 'utils',
 						if !settings?
 							settings = {}
 						else
-							settings = JSON.parse settings
+							try
+								settings = JSON.parse settings
+							catch err
+								alert 'Invalid setting format, must be JSON'
+								return false
 						test.set 'settings', settings
 						test.set 'public', true
 						test.save().then (result) ->

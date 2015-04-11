@@ -25,9 +25,9 @@
 					<td>{{test.creator.username}}</td>
 					<td>
 						{{#if test.public}}
-							<a class="btn btn-xs btn-primary" {{bind-attr href=test.downloadPath}}>Download PDF</a>
 							<button class="btn btn-xs btn-success" {{action "review" test}}>Review</button>
 							<button class="btn btn-xs btn-default" {{action "republish" test}}>Republish</button>
+							<a class="btn btn-xs btn-primary" {{bind-attr href=test.downloadPath}}>Download PDF</a>
 						{{else}}
 							<button class="btn btn-xs btn-success" {{action "review" test}}>Review/Publish</button>
 						{{/if}}

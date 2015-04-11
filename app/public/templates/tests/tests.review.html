@@ -33,7 +33,7 @@
 								{{input class="form-control" value=tab.test.course disabled="true"}}
 							</div>
 							{{#if tab.test.public}}
-							<button class="btn btn-info" disabled="disabled">Published</button>
+							<button class="btn btn-info" {{action "publish" tab.test}}>Republish</button>
 							<a class="btn btn-default" {{bind-attr href=tab.test.downloadPath}}>Download</a>
 							{{else}}
 							<button class="btn btn-primary" {{action "publish" tab.test}}>Publish</button>
