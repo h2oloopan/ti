@@ -24,6 +24,7 @@ pdflatex = module.exports =
 		obj =
 			test: @sanitize test
 			settings: settings
+		obj.settings.preamble = obj.settings.preamble || ''
 		template = fs.readFileSync testTemplateFile
 		template = handlebars.compile template.toString()
 

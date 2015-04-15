@@ -40,6 +40,7 @@ pdflatex = module.exports = {
       test: this.sanitize(test),
       settings: settings
     };
+    obj.settings.preamble = obj.settings.preamble || '';
     template = fs.readFileSync(testTemplateFile);
     template = handlebars.compile(template.toString());
     tex = template(obj);
