@@ -3,6 +3,7 @@ define ['jquery', 'me', 'utils',
 'ehbs!templates/admin/users',
 'ehbs!templates/admin/users.new',
 'ehbs!templates/admin/users.edit',
+'ehbs!templates/admin/tests',
 'ehbs!templates/admin/schools',
 'ehbs!templates/admin/school.edit',
 'ehbs!templates/admin/console'], ($, me, utils) ->
