@@ -8,7 +8,7 @@
 	<ul class="nav nav-tabs" role="tablist">
 		<li><a role="tab" data-toggle="tab" href="#users">Users</a></li>
 		<li><a role="tab" data-toggle="tab" href="#schools">Schools</a></li>
-		<li><a role="tab" data-toggle="tab" href="#tests">Tests</a></li>
+		<li><a role="tab" data-toggle="tab" href="#rendering">Rendering</a></li>
 		<li><a role="tab" data-toggle="tab" href="#settings">Settings</a></li>
 		<li><a role="tab" data-toggle="tab" href="#console">Console</a></li>
 	</ul>
@@ -19,8 +19,8 @@
 		<div class="tab-pane" id="schools">
 			{{render "schools" schools}}
 		</div>
-		<div class="tab-pane" id="tests">
-			{{render "tests"}}
+		<div class="tab-pane" id="rendering">
+			{{render "rendering" template}}
 		</div>
 		<div class="tab-pane" id="settings">
 			<a class="btn btn-default" {{action "deleteQuestionPhoto"}}>Delete Temporary Question Photos</a>

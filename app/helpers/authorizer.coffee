@@ -1,3 +1,5 @@
+config = require '../config'
+
 authorizer = module.exports =
 	canAccessQuestion: (user, question) ->
 		#admin can always access
@@ -19,4 +21,8 @@ authorizer = module.exports =
 			if exist(privilege.course) and privilege.course.trim().toLowerCase() != question.course.trim().toLowerCase() then continue
 			#console.log 'E'
 			return true
+		return false
+
+	isAdmin: (user) ->
+		if user and user.power >= config.admin.power then return true
 		return false

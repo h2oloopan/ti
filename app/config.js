@@ -12,7 +12,13 @@ config = module.exports = {
   	quality: 80,
   	format: '.gif'
   },
+  tests: {
+    templatePath: 'templates/test.hbs'
+  },
   download: {
     pdfFolder: 'temp/pdfs'
+  },
+  admin: {
+    power: 999
   }
 };

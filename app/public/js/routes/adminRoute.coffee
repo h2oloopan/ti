@@ -3,7 +3,7 @@ define ['jquery', 'me', 'utils',
 'ehbs!templates/admin/users',
 'ehbs!templates/admin/users.new',
 'ehbs!templates/admin/users.edit',
-'ehbs!templates/admin/tests',
+'ehbs!templates/admin/rendering',
 'ehbs!templates/admin/schools',
 'ehbs!templates/admin/school.edit',
 'ehbs!templates/admin/console'], ($, me, utils) ->
@@ -28,10 +28,12 @@ define ['jquery', 'me', 'utils',
 						new Ember.RSVP.hash
 							users: thiz.store.find 'user'
 							schools: thiz.store.find 'school'
+							template: $.getJSON '/api/edit/tests/template'
 						.then (result) ->
 							resolve
 								users: result.users
 								schools: result.schools
+								template: result.template.text
 						, (errors) ->
 							reject errors
 
@@ -232,6 +234,15 @@ define ['jquery', 'me', 'utils',
 						.fail (response) ->
 							thiz.set 'result', response.responseText
 							return false
+						return false
+
+
+			#tests
+			App.RenderingController = Ember.ObjectController.extend
+				actions:
+					save: ->
+						thiz = @
+						template = @get 'template'
 						return false
 
 			#schools
